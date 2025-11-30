@@ -342,12 +342,12 @@
                             }
                         });
                         document.querySelectorAll(".custom-select-container").forEach(container => {                    const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
-                                            selectedDisplay.addEventListener("click", e => {
-                                                e.stopPropagation();
-                                                
-                                                itemsContainer.classList.toggle("select-hide");
-                                                selectedDisplay.classList.toggle("select-arrow-active");
-                                            });            options.forEach(option => {
+                                                        selectedDisplay.addEventListener("click", e => {
+                                                            e.stopPropagation();
+                                                            passengerPanel.classList.remove('active');
+                                                            itemsContainer.classList.toggle("select-hide");
+                                                            selectedDisplay.classList.toggle("select-arrow-active");
+                                                        });            options.forEach(option => {
                         option.addEventListener("click", function() {
                             selectedDisplay.innerHTML = this.innerHTML;
                             const value = this.getAttribute('data-value') || this.textContent.trim().toLowerCase();
