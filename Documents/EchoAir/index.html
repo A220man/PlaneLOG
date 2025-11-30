@@ -327,19 +327,27 @@
         document.getElementById('depart-1').setAttribute('min', dateToday);
         document.getElementById('return').setAttribute('min', dateToday);
         updateFormUI('round-trip');
-        
-        const passengerDisplay = document.getElementById('passengers-display');
-        const passengerPanel = document.getElementById('passenger-panel');
-        const adultsCountEl = document.getElementById('adults-count');
-        const childrenCountEl = document.getElementById('children-count');
-        const infantsCountEl = document.getElementById('infants-count');
-        let passengerCounts = { adults: 1, children: 0, infants: 0 };
 
+        function closeAllSelects(except) {
+            document.querySelectorAll(".select-items").forEach((items) => {
+                if (items.parentElement !== except) {
+                    items.classList.add("select-hide");
+                }
+            });
+            document.querySelectorAll(".select-selected").forEach((selected) => {
+                if (selected.parentElement !== except) {
+                    selected.classList.remove("select-arrow-active");
+                }
+            });
+            if (passengerPanel && passengerPanel.parentElement !== except) {
+                passengerPanel.classList.remove('active');
+            }
+        }
         document.querySelectorAll(".custom-select-container").forEach(container => {
             const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
             selectedDisplay.addEventListener("click", e => {
                 e.stopPropagation();
-                passengerPanel.classList.remove('active');
+                closeAllSelects(container);
                 itemsContainer.classList.toggle("select-hide");
                 selectedDisplay.classList.toggle("select-arrow-active");
             });
@@ -358,12 +366,7 @@
 
         passengerDisplay.addEventListener('click', (e) => {
             e.stopPropagation();
-            document.querySelectorAll(".select-items").forEach((items) => {
-                items.classList.add("select-hide");
-            });
-            document.querySelectorAll(".select-selected").forEach((selected) => {
-                selected.classList.remove("select-arrow-active");
-            });
+            closeAllSelects(passengerDisplay.parentElement);
             passengerPanel.classList.toggle('active');
         });
 
@@ -419,6 +422,10 @@
         });
 
         updatePassengerDisplay();
+
+        document.addEventListener('click', () => {
+            closeAllSelects();
+        });
     });
     </script>
 </body>
