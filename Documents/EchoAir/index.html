@@ -327,27 +327,25 @@
         document.getElementById('depart-1').setAttribute('min', dateToday);
         document.getElementById('return').setAttribute('min', dateToday);
         updateFormUI('round-trip');
+        
+        const passengerDisplay = document.getElementById('passengers-display');
+        const passengerPanel = document.getElementById('passenger-panel');
+        const adultsCountEl = document.getElementById('adults-count');
+        const childrenCountEl = document.getElementById('children-count');
+        const infantsCountEl = document.getElementById('infants-count');
+        let passengerCounts = { adults: 1, children: 0, infants: 0 };
 
-        function closeAllSelects(except) {
-            document.querySelectorAll(".select-items").forEach((items) => {
-                if (items.parentElement !== except) {
-                    items.classList.add("select-hide");
-                }
-            });
-            document.querySelectorAll(".select-selected").forEach((selected) => {
-                if (selected.parentElement !== except) {
-                    selected.classList.remove("select-arrow-active");
-                }
-            });
-            if (passengerPanel && passengerPanel.parentElement !== except) {
-                passengerPanel.classList.remove('active');
-            }
-        }
         document.querySelectorAll(".custom-select-container").forEach(container => {
             const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
             selectedDisplay.addEventListener("click", e => {
                 e.stopPropagation();
-                closeAllSelects(container);
+                passengerPanel.classList.remove('active');
+                document.querySelectorAll(".select-items").forEach(item => {
+                    if(item !== itemsContainer) {
+                        item.classList.add("select-hide");
+                        item.previousElementSibling.classList.remove("select-arrow-active");
+                    }
+                });
                 itemsContainer.classList.toggle("select-hide");
                 selectedDisplay.classList.toggle("select-arrow-active");
             });
@@ -366,12 +364,18 @@
 
         passengerDisplay.addEventListener('click', (e) => {
             e.stopPropagation();
-            closeAllSelects(passengerDisplay.parentElement);
+            document.querySelectorAll(".select-items").forEach((items) => {
+                items.classList.add("select-hide");
+            });
+            document.querySelectorAll(".select-selected").forEach((selected) => {
+                selected.classList.remove("select-arrow-active");
+            });
             passengerPanel.classList.toggle('active');
         });
 
         passengerPanel.addEventListener('click', (e) => {
             if (e.target.classList.contains('control-btn')) {
+                e.stopPropagation();
                 const type = e.target.dataset.type;
                 const action = e.target.dataset.action;
                 
@@ -407,25 +411,19 @@
             document.querySelector('.control-btn[data-type="infants"][data-action="minus"]').disabled = passengerCounts.infants <= 0;
         }
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.custom-select-container')) {
-                document.querySelectorAll(".select-items").forEach((items) => {
-                    items.classList.add("select-hide");
-                });
-                document.querySelectorAll(".select-selected").forEach((selected) => {
-                    selected.classList.remove("select-arrow-active");
-                });
-            }
-            if (passengerPanel && !e.target.closest('.passenger-dropdown-container')) {
+        document.addEventListener('click', () => {
+            document.querySelectorAll(".select-items").forEach((items) => {
+                items.classList.add("select-hide");
+            });
+            document.querySelectorAll(".select-selected").forEach((selected) => {
+                selected.classList.remove("select-arrow-active");
+            });
+            if (passengerPanel) {
                 passengerPanel.classList.remove('active');
             }
         });
 
         updatePassengerDisplay();
-
-        document.addEventListener('click', () => {
-            closeAllSelects();
-        });
     });
     </script>
 </body>
