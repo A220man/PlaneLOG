@@ -202,7 +202,7 @@
                                         <div class="select-item" data-value="business">Business</div>
                                         <div class="select-item" data-value="first">First</div>
                                         <div class="select-item premium-option" data-value="shard"><div class="premium-logo-placeholder">SHARD</div></div>
-                                        <div class="select-item premium-option" data-value="longhaul+" id="longhaul-plus-option"><div class="premium-logo-placeholder">LongHaul+</div></div>
+                                        <div class="select-item premium-option" data-value="longhaul+"><div class="premium-logo-placeholder">LongHaul+</div></div>
                                     </div>
                                 </div>
                             </div>
@@ -329,13 +329,7 @@
         updateFormUI('round-trip');
         document.querySelectorAll(".custom-select-container").forEach(container => {
             const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
-            selectedDisplay.addEventListener("click", e => {
-                e.stopPropagation();
-                
-                passengerPanel.classList.remove('active');
-                itemsContainer.classList.toggle("select-hide");
-                selectedDisplay.classList.toggle("select-arrow-active");
-            });
+            selectedDisplay.addEventListener("click", e => { e.stopPropagation(); closeAllSelects(selectedDisplay); itemsContainer.classList.toggle("select-hide"); selectedDisplay.classList.toggle("select-arrow-active"); });
             options.forEach(option => {
                 option.addEventListener("click", function() {
                     selectedDisplay.innerHTML = this.innerHTML;
@@ -346,22 +340,8 @@
                 });
             });
         });
-        document.addEventListener("click", (e) => {
-            // Close class dropdown
-            if (!e.target.closest('.custom-select-container')) {
-                document.querySelectorAll(".select-items").forEach((items) => {
-                    items.classList.add("select-hide");
-                });
-                document.querySelectorAll(".select-selected").forEach((selected) => {
-                    selected.classList.remove("select-arrow-active");
-                });
-            }
-
-            // Close passenger dropdown
-            if (passengerPanel && !passengerPanel.closest('.passenger-dropdown-container').contains(e.target)) {
-                passengerPanel.classList.remove('active');
-            }
-        });
+        function closeAllSelects(elmnt) { document.querySelectorAll(".select-items").forEach((items, index) => { const selected = document.querySelectorAll(".select-selected")[index]; if (selected !== elmnt) { items.classList.add("select-hide"); selected.classList.remove("select-arrow-active"); } }); }
+        document.addEventListener("click", closeAllSelects);
 
         const passengerDisplay = document.getElementById('passengers-display');
         const passengerPanel = document.getElementById('passenger-panel');
@@ -413,13 +393,13 @@
             document.querySelector('.control-btn[data-type="infants"][data-action="minus"]').disabled = passengerCounts.infants <= 0;
         }
 
-        updatePassengerDisplay();
-
-        document.getElementById('longhaul-plus-option').addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            window.location.href = 'longhaul+.html';
+        document.addEventListener('click', (e) => {
+            if (!passengerPanel.contains(e.target) && e.target !== passengerDisplay) {
+                passengerPanel.classList.remove('active');
+            }
         });
+
+        updatePassengerDisplay();
     });
     </script>
 </body>
