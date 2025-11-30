@@ -371,6 +371,12 @@
 
         passengerDisplay.addEventListener('click', (e) => {
             e.stopPropagation();
+            document.querySelectorAll(".select-items").forEach((items) => {
+                items.classList.add("select-hide");
+            });
+            document.querySelectorAll(".select-selected").forEach((selected) => {
+                selected.classList.remove("select-arrow-active");
+            });
             passengerPanel.classList.toggle('active');
         });
 
