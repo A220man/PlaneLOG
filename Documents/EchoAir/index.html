@@ -347,6 +347,7 @@
             });
         });
         function closeAllSelects(elmnt) {
+            if (elmnt && elmnt.id === 'longhaul-plus-option') return;
             document.querySelectorAll(".select-items").forEach((items, index) => {
                 const selected = document.querySelectorAll(".select-selected")[index];
                 if (selected !== elmnt) {
