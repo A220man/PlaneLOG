@@ -326,98 +326,100 @@
         segmentsContainer.addEventListener('click', e => { if (e.target.classList.contains('delete-segment-btn')) e.target.closest('.flight-segment').remove(); });
         document.getElementById('depart-1').setAttribute('min', dateToday);
         document.getElementById('return').setAttribute('min', dateToday);
-                        updateFormUI('round-trip');
-                
-                        document.addEventListener('click', (e) => {
-                            if (!e.target.closest('.custom-select-container')) {
-                                document.querySelectorAll(".select-items").forEach((items) => {
-                                    items.classList.add("select-hide");
-                                });
-                                document.querySelectorAll(".select-selected").forEach((selected) => {
-                                    selected.classList.remove("select-arrow-active");
-                                });
-                            }
-                            if (passengerPanel && !e.target.closest('.passenger-dropdown-container')) {
-                                passengerPanel.classList.remove('active');
-                            }
-                        });
-                        document.querySelectorAll(".custom-select-container").forEach(container => {                    const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
-                                                        selectedDisplay.addEventListener("click", e => {
-                                                            e.stopPropagation();
-                                                            passengerPanel.classList.remove('active');
-                                                            itemsContainer.classList.toggle("select-hide");
-                                                            selectedDisplay.classList.toggle("select-arrow-active");
-                                                        });            options.forEach(option => {
-                        option.addEventListener("click", function() {
-                            selectedDisplay.innerHTML = this.innerHTML;
-                            const value = this.getAttribute('data-value') || this.textContent.trim().toLowerCase();
-                            select.value = value;
-                            options.forEach(opt => opt.classList.remove("same-as-selected")); this.classList.add("same-as-selected");
-                            itemsContainer.classList.add("select-hide");
-                            selectedDisplay.classList.remove("select-arrow-active");
-                        });
-                    });
-                });
+        updateFormUI('round-trip');
         
-        
-                const passengerDisplay = document.getElementById('passengers-display');
-                const passengerPanel = document.getElementById('passenger-panel');
-                const adultsCountEl = document.getElementById('adults-count');
-                const childrenCountEl = document.getElementById('children-count');
-                const infantsCountEl = document.getElementById('infants-count');
-        
-                let passengerCounts = { adults: 1, children: 0, infants: 0 };
-        
-                passengerDisplay.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    document.querySelectorAll(".select-items").forEach((items) => {
-                        items.classList.add("select-hide");
-                    });
-                    document.querySelectorAll(".select-selected").forEach((selected) => {
-                        selected.classList.remove("select-arrow-active");
-                    });
-                    passengerPanel.classList.toggle('active');
-                });
-        
-                passengerPanel.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('control-btn')) {
-                        const type = e.target.dataset.type;
-                        const action = e.target.dataset.action;
-                        
-                        if (action === 'plus') {
-                            passengerCounts[type]++;
-                        } else if (action === 'minus') {
-                            if (type === 'adults' && passengerCounts.adults > 1) {
-                                passengerCounts.adults--;
-                            } else if (type !== 'adults' && passengerCounts[type] > 0) {
-                                passengerCounts[type]--;
-                            }
-                        }
-                        updatePassengerDisplay();
-                    }
-                });
-        
-                function updatePassengerDisplay() {
-                    adultsCountEl.textContent = passengerCounts.adults;
-                    childrenCountEl.textContent = passengerCounts.children;
-                    infantsCountEl.textContent = passengerCounts.infants;
-        
-                    let displayText = `${passengerCounts.adults} Adult`;
-                    if (passengerCounts.children > 0) {
-                        displayText += `, ${passengerCounts.children} Children`;
-                    }
-                    if (passengerCounts.infants > 0) {
-                        displayText += `, ${passengerCounts.infants} Infants`;
-                    }
-                    passengerDisplay.value = displayText;
-        
-                    document.querySelector('.control-btn[data-type="adults"][data-action="minus"]').disabled = passengerCounts.adults <= 1;
-                    document.querySelector('.control-btn[data-type="children"][data-action="minus"]').disabled = passengerCounts.children <= 0;
-                    document.querySelector('.control-btn[data-type="infants"][data-action="minus"]').disabled = passengerCounts.infants <= 0;
-                }
-        
-                updatePassengerDisplay();
+        const passengerDisplay = document.getElementById('passengers-display');
+        const passengerPanel = document.getElementById('passenger-panel');
+        const adultsCountEl = document.getElementById('adults-count');
+        const childrenCountEl = document.getElementById('children-count');
+        const infantsCountEl = document.getElementById('infants-count');
+        let passengerCounts = { adults: 1, children: 0, infants: 0 };
+
+        document.querySelectorAll(".custom-select-container").forEach(container => {
+            const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
+            selectedDisplay.addEventListener("click", e => {
+                e.stopPropagation();
+                passengerPanel.classList.remove('active');
+                itemsContainer.classList.toggle("select-hide");
+                selectedDisplay.classList.toggle("select-arrow-active");
             });
+            options.forEach(option => {
+                option.addEventListener("click", function() {
+                    selectedDisplay.innerHTML = this.innerHTML;
+                    const value = this.getAttribute('data-value') || this.textContent.trim().toLowerCase();
+                    select.value = value;
+                    options.forEach(opt => opt.classList.remove("same-as-selected"));
+                    this.classList.add("same-as-selected");
+                    itemsContainer.classList.add("select-hide");
+                    selectedDisplay.classList.remove("select-arrow-active");
+                });
+            });
+        });
+
+        passengerDisplay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll(".select-items").forEach((items) => {
+                items.classList.add("select-hide");
+            });
+            document.querySelectorAll(".select-selected").forEach((selected) => {
+                selected.classList.remove("select-arrow-active");
+            });
+            passengerPanel.classList.toggle('active');
+        });
+
+        passengerPanel.addEventListener('click', (e) => {
+            if (e.target.classList.contains('control-btn')) {
+                const type = e.target.dataset.type;
+                const action = e.target.dataset.action;
+                
+                if (action === 'plus') {
+                    passengerCounts[type]++;
+                } else if (action === 'minus') {
+                    if (type === 'adults' && passengerCounts.adults > 1) {
+                        passengerCounts.adults--;
+                    } else if (type !== 'adults' && passengerCounts[type] > 0) {
+                        passengerCounts[type]--;
+                    }
+                }
+                updatePassengerDisplay();
+            }
+        });
+
+        function updatePassengerDisplay() {
+            adultsCountEl.textContent = passengerCounts.adults;
+            childrenCountEl.textContent = passengerCounts.children;
+            infantsCountEl.textContent = passengerCounts.infants;
+
+            let displayText = `${passengerCounts.adults} Adult`;
+            if (passengerCounts.children > 0) {
+                displayText += `, ${passengerCounts.children} Children`;
+            }
+            if (passengerCounts.infants > 0) {
+                displayText += `, ${passengerCounts.infants} Infants`;
+            }
+            passengerDisplay.value = displayText;
+
+            document.querySelector('.control-btn[data-type="adults"][data-action="minus"]').disabled = passengerCounts.adults <= 1;
+            document.querySelector('.control-btn[data-type="children"][data-action="minus"]').disabled = passengerCounts.children <= 0;
+            document.querySelector('.control-btn[data-type="infants"][data-action="minus"]').disabled = passengerCounts.infants <= 0;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-select-container')) {
+                document.querySelectorAll(".select-items").forEach((items) => {
+                    items.classList.add("select-hide");
+                });
+                document.querySelectorAll(".select-selected").forEach((selected) => {
+                    selected.classList.remove("select-arrow-active");
+                });
+            }
+            if (passengerPanel && !e.target.closest('.passenger-dropdown-container')) {
+                passengerPanel.classList.remove('active');
+            }
+        });
+
+        updatePassengerDisplay();
+    });
     </script>
 </body>
 </html>
