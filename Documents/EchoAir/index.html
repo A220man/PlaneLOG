@@ -327,9 +327,28 @@
         document.getElementById('depart-1').setAttribute('min', dateToday);
         document.getElementById('return').setAttribute('min', dateToday);
         updateFormUI('round-trip');
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-select-container')) {
+                document.querySelectorAll(".select-items").forEach((items) => {
+                    items.classList.add("select-hide");
+                });
+                document.querySelectorAll(".select-selected").forEach((selected) => {
+                    selected.classList.remove("select-arrow-active");
+                });
+            }
+            if (passengerPanel && !e.target.closest('.passenger-dropdown-container')) {
+                passengerPanel.classList.remove('active');
+            }
+        });
+
         document.querySelectorAll(".custom-select-container").forEach(container => {
             const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
-            selectedDisplay.addEventListener("click", e => { e.stopPropagation(); closeAllSelects(selectedDisplay); itemsContainer.classList.toggle("select-hide"); selectedDisplay.classList.toggle("select-arrow-active"); });
+                        selectedDisplay.addEventListener("click", e => {
+                            e.stopPropagation();
+                            itemsContainer.classList.toggle("select-hide");
+                            selectedDisplay.classList.toggle("select-arrow-active");
+                        });
             options.forEach(option => {
                 option.addEventListener("click", function() {
                     selectedDisplay.innerHTML = this.innerHTML;
@@ -340,8 +359,7 @@
                 });
             });
         });
-        function closeAllSelects(elmnt) { document.querySelectorAll(".select-items").forEach((items, index) => { const selected = document.querySelectorAll(".select-selected")[index]; if (selected !== elmnt) { items.classList.add("select-hide"); selected.classList.remove("select-arrow-active"); } }); }
-        document.addEventListener("click", closeAllSelects);
+
 
         const passengerDisplay = document.getElementById('passengers-display');
         const passengerPanel = document.getElementById('passenger-panel');
