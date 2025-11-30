@@ -375,7 +375,6 @@
 
         passengerPanel.addEventListener('click', (e) => {
             if (e.target.classList.contains('control-btn')) {
-                e.stopPropagation();
                 const type = e.target.dataset.type;
                 const action = e.target.dataset.action;
                 
