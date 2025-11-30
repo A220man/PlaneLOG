@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Air</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prosto+One&family=Goldman:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #00aeff; --dark-navy: #0A192F; --light-navy: #112240;
+            --lightest-navy: #233554; --slate: #8892b0; --light-slate: #a8b2d1;
+            --white: #e6f1ff; --font-main: 'Prosto One', sans-serif; --font-body: 'Goldman', sans-serif;
+            --danger-red: #ff3b5f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); color: var(--slate); background-color: var(--dark-navy); line-height: 1.6; position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; background-image: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('https://www.kmeel.com/wp-content/uploads/2023/05/230513-Montaggi-35F-10-scaled.jpg'); background-size: cover; background-position: center center; }
+        h1, h2, h3, .logo-placeholder-text, .btn-primary, .flight-type label, .select-selected, .btn-secondary { font-family: var(--font-main); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .hidden { display: none !important; }
+        .main-header { padding: 20px 0; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--lightest-navy); }
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-placeholder-icon { width: 50px; height: 50px; }
+        .logo-placeholder-text { font-size: 24px; color: var(--white); letter-spacing: 2px; margin-left: 15px; }
+        .main-nav ul { list-style: none; display: flex; gap: 30px; }
+        .main-nav a { font-family: var(--font-main); color: var(--light-slate); text-decoration: none; font-size: 16px; transition: color 0.3s ease; position: relative; padding-bottom: 5px; }
+        .main-nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--primary-blue); transition: width 0.3s ease; }
+        .main-nav a:hover, .main-nav a.active { color: var(--primary-blue); }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+        .mobile-nav-toggle { display: none; cursor: pointer; z-index: 1001; }
+        .mobile-nav-toggle .bar { display: block; width: 25px; height: 3px; margin: 5px auto; background-color: var(--white); transition: all 0.3s ease-in-out; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 0 60px; }
+        .booking-card { background: rgba(17, 34, 64, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px; border-radius: 8px; border: 1px solid var(--lightest-navy); width: 100%; max-width: 900px; box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); }
+        .hero h1 { color: var(--white); font-size: 3rem; text-align: center; margin-bottom: 30px; line-height: 1.2; }
+        .hero h1 span { color: var(--primary-blue); }
+        .flight-type { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .flight-type label { color: var(--light-slate); cursor: pointer; padding: 10px 15px; border: 1px solid var(--lightest-navy); border-radius: 4px; transition: all 0.3s; }
+        .flight-type input[type="radio"] { display: none; }
+        .flight-type input[type="radio"]:checked + label { background-color: var(--primary-blue); color: var(--dark-navy); border-color: var(--primary-blue); }
+        .booking-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { color: var(--light-slate); margin-bottom: 8px; font-size: 14px; font-family: var(--font-body); }
+        .form-group input, .form-group .select-selected { background: var(--dark-navy); border: 1px solid var(--lightest-navy); color: var(--white); padding: 12px 15px; border-radius: 4px; font-size: 16px; transition: border-color 0.3s ease; }
+        .form-group input { font-family: var(--font-body); }
+        .form-group input.error { border-color: var(--danger-red); }
+        .form-group input:focus, .form-group .select-selected:focus-within { outline: none; border-color: var(--primary-blue); }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        #flight-segments-container .flight-segment { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: flex-end; margin-bottom: 15px; }
+        #flight-segments-container .flight-segment:first-child .delete-segment-btn { display: none; }
+        .delete-segment-btn { background: transparent; border: 1px solid var(--lightest-navy); color: var(--slate); width: 45px; height: 45px; border-radius: 4px; cursor: pointer; font-size: 20px; font-weight: bold; line-height: 45px; text-align: center; transition: all 0.3s ease; }
+        .delete-segment-btn:hover { background-color: var(--danger-red); color: var(--white); border-color: var(--danger-red); }
+        #multi-city-controls { margin-top: 10px; }
+        .btn-secondary { background: transparent; color: var(--primary-blue); border: 1px solid var(--primary-blue); padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-secondary:hover { background: var(--primary-blue); color: var(--dark-navy); }
+        .search-btn-container { text-align: center; margin-top: 30px; }
+        .btn-primary { background-color: var(--primary-blue); color: var(--dark-navy); border: none; padding: 15px 40px; font-size: 18px; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-decoration: none; }
+        .btn-primary:hover { background-color: #33c1ff; transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0, 174, 255, 0.3); }
+        .custom-select-container { position: relative; font-family: var(--font-main); }
+        .custom-select-container select { display: none; }
+        .select-selected { position: relative; cursor: pointer; user-select: none; }
+        .select-selected.select-arrow-active { border-color: var(--primary-blue); border-radius: 4px 4px 0 0; }
+        .select-selected::after { content: ""; position: absolute; top: 50%; right: 15px; transform: translateY(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid var(--slate); transition: all 0.3s ease; }
+        .select-arrow-active::after { transform: translateY(-50%) rotate(180deg); border-top-color: var(--primary-blue); }
+        .select-items { position: absolute; background-color: rgba(17, 34, 64, 0.95); backdrop-filter: blur(10px); top: 100%; left: 0; right: 0; z-index: 99; border: 1px solid var(--lightest-navy); border-top: none; border-radius: 0 0 4px 4px; max-height: 250px; overflow-y: auto; }
+        .select-hide { display: none; }
+        .select-item { color: var(--light-slate); padding: 12px 15px; cursor: pointer; transition: all 0.2s ease; border-bottom: 1px solid var(--lightest-navy); }
+        .select-item:last-child { border-bottom: none; }
+        .select-item:hover, .same-as-selected { background-color: var(--lightest-navy); color: var(--white); }
+        .premium-option { display: flex; align-items: center; gap: 15px; font-weight: bold; color: var(--primary-blue); text-shadow: 0 0 8px rgba(0, 174, 255, 0.5); }
+        .premium-logo-placeholder { width: auto; height: 20px; display: flex; align-items: center; justify-content: center; }
+        .premium-logo-placeholder img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .page-section { padding: 80px 0; background-color: transparent; }
+        #why-us, #fleet { background-color: rgba(10, 25, 47, 0.5); }
+        .section-title { text-align: center; font-size: 2.5rem; color: var(--white); margin-bottom: 40px; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 3px; background-color: var(--primary-blue); margin: 10px auto 0; }
+        .features-grid, .destinations-grid { display: grid; gap: 30px; }
+        .features-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .destinations-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .feature-item, .dest-card { background-color: var(--light-navy); border-radius: 8px; border: 1px solid var(--lightest-navy); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .feature-item:hover, .dest-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); }
+        .feature-item { text-align: center; padding: 30px; }
+        .feature-icon { font-size: 3rem; color: var(--primary-blue); margin-bottom: 15px; }
+        .feature-item h3 { font-size: 1.25rem; color: var(--white); margin-bottom: 10px; }
+        .dest-card .img-placeholder { height: 200px; background-color: var(--lightest-navy); display: flex; align-items: center; justify-content: center; color: var(--slate); font-style: italic; border-radius: 8px 8px 0 0; }
+        .dest-card-content { padding: 20px; }
+        .dest-card h3 { font-size: 1.5rem; color: var(--white); margin-bottom: 10px; }
+        .dest-card p { margin-bottom: 20px; }
+        .dest-card a { color: var(--primary-blue); text-decoration: none; font-weight: bold; }
+        .dest-card a:hover { text-decoration: underline; }
+        .fleet-teaser { text-align: center; color: var(--light-slate); max-width: 600px; margin: -20px auto 30px auto; font-size: 1.1rem; }
+        .main-footer { background-color: var(--dark-navy); padding: 40px 0; border-top: 1px solid var(--lightest-navy); text-align: center; }
+        .footer-logo { width: 150px; height: 40px; margin: 0 auto 20px; }
+        .footer-links { list-style: none; display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--slate); text-decoration: none; transition: color 0.3s ease; font-family: var(--font-main); }
+        .footer-links a:hover { color: var(--primary-blue); }
+        .copyright { font-size: 14px; color: var(--slate); font-family: var(--font-body); }
+        @media (max-width: 768px) { .main-nav { display: none; position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--light-navy); flex-direction: column; justify-content: center; align-items: center; transition: right 0.5s ease-in-out; } .main-nav.active { display: flex; right: 0; } .main-nav ul { flex-direction: column; gap: 40px; text-align: center; } .main-nav a { font-size: 20px; } .mobile-nav-toggle { display: block; } .mobile-nav-toggle.active .bar:nth-child(2) { opacity: 0; } .mobile-nav-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } .mobile-nav-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } .hero h1 { font-size: 2.5rem; } .booking-form-grid, #flight-segments-container .flight-segment { grid-template-columns: 1fr; } .delete-segment-btn { width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-placeholder-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAB8lBMVEVHcExWi9pNg9lIYH5ChfJChfJIhexChfJMhedIhepFhvBIh+5BhfNGhu9HiOpChfNult+Yr79FhvBHh+9EhfFFhe9Ghe46b7hChfIYHMcSEd0QDeZDhfFFhfFBhfJGhu5Jhutfjt9YjOa1zNlFhfBFhu9ChfJcms5DhfFFhfBEhvE4gttPS05DhfJOiOs9lt9DbpZFiOgOAvx6p88OA/kRDeoTFsIPCO8QB/cPBfyXudSUyPOswtTT6PnS5fVDhfE2gNhIhelzmbdFhvBDhfFyt/Gi0feVoKS2ysfi7/kresMnlO8ylOQues8gi+VtuPYyjds+o/dIn+ditfkpTORNqvgjLK5BcsUeLuYlO+CXx+5tu/oPBvWRyvgWGtkOBPSlyeYRCvJ+wfdhruwPCPKSzPq52PPI2+rc5/C/xcPo7vO6zdy80uO12/skXuMYiukai+hKpfA4nPAml/Uol/I6n/Yjcd1crfBLqPZZn9dbsPYjUsJYpOMbTNw3nvOAwfdop9o1nvN+vvElQeZ9vPCAwfYbJ+mpx99apuacwd+vz+q9xchObt9AVNW02fiw1vbE4PjA3fbD4fqGq9dBhfMOAv5ChfNKrf44pP6Dx/+p2P6Z0f+74P7O6f/f8f5dtv9xvv8lm/1as/vw+f/u+P/s9//x8xRdAAAAlHRSTlMAEAwF9u4q2BUbqEb5UjP+AhuFZ89uPQ7nMleHuZ/8WiQFCEqOfuQnwZOzIQLfOmYIdfwx8K0Ttu//ONw+9+THN0sVYMnO8Awl9yjDjj6q61f3lvbK+yNO0KG9/dnud9iQ1eqv0/vep8Yg31l+/aa8kMnF5dfmi8znQ+lRcYDj707p1OnS7+1yhmShMJpu8un06vpcOkNPOQAAAu9JREFUSMfdlWdXGlEQhllg6SAdVASUIqII2Kl2sdeYYkmMxq7pvffeM4t00Jj/md3FCDnS9px8ynzandnn3jt35p2l0f6hNTAoI6fLKSMV5ykjla1UT8ZovdhGEWm71EE1mfIOVwXV7JtcldSK4qh0Ye2qBgrI8Jl2DFt4MEZhk9HbFzCs5dG4qmRE9PhyC4Y1nXs2WTJinz3VhGHY2anpEgEO7e3BC5zAXs+uMJDqEgh6N2NlPr3LTD/SqC8lEUWgP/yRzGV5uVYpKwExySSeVSdxY58WV70sHr0ogViE7oHoj3YXtnBmIPKOK1cWRfhq0fburoGofvOX2BK9z1gUqTNzd+LfDUSPDX6LrzN4bE4RgsvuU60nfAaikwf9iY2AVCssguiCvMDG4ZCB0Mug/9fWZm+wSlyQqOaBVLL1c8hAw1W56T8c8ioFtsKlYZmh94Mv4fPi2m+Q+BOJ7Xp1sHBpFMBUGnzxr15iwkjW4vEdlRysNYWaxQJq/ZtY7LObmGOStVjsvcMKqKgA0oiCnLMUiQy4iWkp8UQicwEjgKkAIgWw0uei0UU38dbjiUY9EgVAJ5K/7eUQrOt5Hg4/aSaRl+Hwq2a+AJj8vIhQAKConUilJkgE6U+l5p+yUHydfIS4KgiC7nszyeT9WhK5k0wePOSwAdjcPIjeBoCy7Ht7e3dJRHUNf5x2aAC0ujyIrAzAVm+fCoVupZHroVBolMEDAF5uPddY8ZjA2j05sn+jnqzSyP5Ne5cRxd1mVm4Fq4EwtG7MeYVEHONXuxRs0gmK3AqGI7M5u9L/lmGdpezIZ8mlZ6TzDwLBPh1evOpGHvPYhebSMz8Tx1Ny4t1jznKANJeCsz+Q4+nS8TJleTg5FJwVN5PH4Giy9z2pZ502E2b2Hgkue5mTepaix0GtSXw8oTLLaE6cDBHJeOz0DVRlLlRGerRmjYnPzTU1xFy+SWPWWrJ6sNqoRTuNQn0hKdfohX/1BiIUIbT/1n4DcnYCLJrsT2YAAAAASUVORK5CYII=" alt="Echo Air Icon" style="width:100%; height:100%; object-fit:contain;"></div>
+                <div class="logo-placeholder-text">ECHO AIR</div>
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="#hero" class="active">Book</a></li>
+                    <li><a href="fleet.html">Our Fleet</a></li>
+                    <li><a href="routes.html">Routes</a></li>
+                    <li><a href="#destinations">Destinations</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-nav-toggle" id="mobile-nav-toggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="booking-card">
+                    <h1>Your Journey, <span>Redefined.</span></h1>
+                    <form id="booking-form">
+                        <div class="flight-type">
+                            <div><input type="radio" id="round-trip" name="flight-type" value="round-trip" checked><label for="round-trip">Round-Trip</label></div>
+                            <div><input type="radio" id="one-way" name="flight-type" value="one-way"><label for="one-way">One-Way</label></div>
+                            <div><input type="radio" id="multi-city" name="flight-type" value="multi-city"><label for="multi-city">Multi-City</label></div>
+                        </div>
+                        <div class="booking-form-grid">
+                            <div id="flight-segments-container" class="full-width">
+                                <div class="flight-segment">
+                                    <div class="form-group"><label for="from-1">From</label><input type="text" id="from-1" name="from" placeholder="Origin (e.g., JFK)"></div>
+                                    <div class="form-group"><label for="to-1">To</label><input type="text" id="to-1" name="to" placeholder="Destination (e.g., LHR)"></div>
+                                    <div class="form-group"><label for="depart-1">Depart</label><input type="date" id="depart-1" name="date"></div>
+                                    <button type="button" class="delete-segment-btn" title="Delete Flight">×</button>
+                                </div>
+                            </div>
+                            <div id="return-date-group" class="form-group"><label for="return">Return</label><input type="date" id="return" name="returnDate"></div>
+                            <div class="form-group"><label for="passengers">Passengers</label><input type="text" id="passengers" name="pax" value="1 Adult"></div>
+                            <div class="form-group full-width" id="class-group">
+                                <label for="class">Class</label>
+                                <div class="custom-select-container">
+                                    <select id="class" name="class">
+                                        <option value="economy">Economy</option><option value="business">Business</option><option value="first">First</option>
+                                        <option value="shard">Shard</option><option value="longhaul+">LongHaul+</option>
+                                    </select>
+                                    <div class="select-selected">Economy</div>
+                                    <div class="select-items select-hide">
+                                        <div class="select-item" data-value="economy">Economy</div>
+                                        <div class="select-item" data-value="business">Business</div>
+                                        <div class="select-item" data-value="first">First</div>
+                                        <div class="select-item premium-option" data-value="shard"><div class="premium-logo-placeholder">SHARD</div></div>
+                                        <div class="select-item premium-option" data-value="longhaul+" id="longhaul-plus-option"><div class="premium-logo-placeholder">LongHaul+</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="multi-city-controls" class="full-width hidden"><button type="button" id="add-flight-btn" class="btn-secondary">+ Add Another Flight</button></div>
+                        </div>
+                        <div class="search-btn-container full-width"><button type="submit" class="btn-primary">Search Flights</button></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="why-us">
+            <div class="container">
+                <h2 class="section-title">Why Fly With Echo Air?</h2>
+                <div class="features-grid">
+                    <div class="feature-item"><div class="feature-icon">⚡</div><h3>Cutting-Edge Comfort</h3><p>Our fleet features state-of-the-art cabins designed for your ultimate comfort and relaxation.</p></div>
+                    <div class="feature-item"><div class="feature-icon"></div><h3>Seamless Booking</h3><p>A fast, intuitive, and secure booking experience from start to finish on any device.</p></div>
+                    <div class="feature-item"><div class="feature-icon">⏰</div><h3>On-Time Performance</h3><p>We pride ourselves on our punctuality, ensuring you get to your destination on schedule.</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="page-section" id="fleet">
+            <div class="container">
+                <h2 class="section-title">Our Modern Fleet</h2>
+                <p class="fleet-teaser">Echo Air operates one of the youngest and most technologically advanced fleets in the skies. From short-haul efficiency to ultra-long-range comfort, our aircraft are chosen to provide a superior travel experience.</p>
+                <div style="text-align: center;">
+                    <a href="fleet.html" class="btn-primary">Explore Our Fleet</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="destinations">
+            <div class="container">
+                <h2 class="section-title">Featured Destinations</h2>
+                <div class="destinations-grid">
+                    <div class="dest-card"><div class="img-placeholder">Cityscape Image</div><div class="dest-card-content"><h3>Tokyo, Japan</h3><p>Experience the vibrant blend of ancient tradition and futuristic technology.</p><a href="#" class="dest-link" data-from="JFK" data-to="HND">Explore Flights →</a></div></div>
+                    <div class="dest-card"><div class="img-placeholder">Landmark Image</div><div class="dest-card-content"><h3>Paris, France</h3><p>Discover the romance, art, and culinary delights of the City of Light.</p><a href="#" class="dest-link" data-from="IAD" data-to="CDG">Explore Flights →</a></div></div>
+                    <div class="dest-card"><div class="img-placeholder">Beach Image</div><div class="dest-card-content"><h3>Sydney, Australia</h3><p>Enjoy stunning beaches, iconic landmarks, and a laid-back atmosphere.</p><a href="#" class="dest-link" data-from="DFW" data-to="SYD">Explore Flights →</a></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-logo"><img src="https://i.imgur.com/2Yl5mP8.png" alt="Echo Air Text Logo" style="width:100%; height:100%; object-fit:contain;"></div>
+            <ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul>
+            <p class="copyright">© 2025 Echo Air. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('booking-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const flightType = form.querySelector('input[name="flight-type"]:checked').value;
+            if (flightType === 'multi-city') {
+                alert("Multi-city booking is a demonstration feature. Please use One-Way or Round-Trip to see flight results.");
+                return;
+            }
+            const fromInput = document.getElementById('from-1');
+            const toInput = document.getElementById('to-1');
+            const departInput = document.getElementById('depart-1');
+            let isValid = true;
+            [fromInput, toInput, departInput].forEach(input => {
+                input.classList.remove('error');
+                if (!input.value) { input.classList.add('error'); isValid = false; }
+            });
+            if (isValid) {
+                const from = fromInput.value;
+                const to = toInput.value;
+                const date = departInput.value;
+                const passengers = document.getElementById('passengers').value;
+                const selectedClass = document.getElementById('class').value;
+                window.location.href = `flights.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&pax=${encodeURIComponent(passengers)}&class=${selectedClass}`;
+            } else {
+                alert('Please fill in From, To, and Depart date.');
+            }
+        });
+        const today = new Date();
+        today.setDate(today.getDate() + 14);
+        const futureDate = today.toISOString().split('T')[0];
+        document.querySelectorAll('.dest-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const from = this.getAttribute('data-from');
+                const to = this.getAttribute('data-to');
+                window.location.href = `flights.html?from=${from}&to=${to}&date=${futureDate}&pax=1%20Adult&class=economy`;
+            });
+        });
+        const segmentsContainer = document.getElementById('flight-segments-container');
+        const returnDateGroup = document.getElementById('return-date-group');
+        const multiCityControls = document.getElementById('multi-city-controls');
+        const addFlightBtn = document.getElementById('add-flight-btn');
+        const passengerGroup = document.getElementById('passengers').parentElement;
+        const classGroup = document.getElementById('class-group');
+        const dateToday = new Date().toISOString().split('T')[0];
+        let flightSegmentCounter = 1;
+        function createFlightSegment() {
+            flightSegmentCounter++;
+            const newSegment = document.createElement('div');
+            newSegment.classList.add('flight-segment');
+            newSegment.innerHTML = `<div class="form-group"><label>From</label><input type="text" placeholder="Next Origin"></div><div class="form-group"><label>To</label><input type="text" placeholder="Next Destination"></div><div class="form-group"><label>Depart</label><input type="date" min="${dateToday}"></div><button type="button" class="delete-segment-btn" title="Delete Flight">×</button>`;
+            segmentsContainer.appendChild(newSegment);
+        }
+        function updateFormUI(mode) {
+            returnDateGroup.classList.add('hidden');
+            multiCityControls.classList.add('hidden');
+            passengerGroup.classList.remove('full-width');
+            classGroup.classList.remove('full-width');
+            const allSegments = segmentsContainer.querySelectorAll('.flight-segment');
+            allSegments.forEach((seg, index) => { if (index > 0) seg.remove(); });
+            if (mode === 'one-way') { classGroup.classList.add('full-width');
+            } else if (mode === 'multi-city') { multiCityControls.classList.remove('hidden'); passengerGroup.classList.add('full-width'); classGroup.classList.add('full-width'); if (allSegments.length < 2) createFlightSegment();
+            } else { returnDateGroup.classList.remove('hidden'); }
+        }
+        form.addEventListener('change', e => { if (e.target.name === 'flight-type') updateFormUI(e.target.value); });
+        addFlightBtn.addEventListener('click', createFlightSegment);
+        segmentsContainer.addEventListener('click', e => { if (e.target.classList.contains('delete-segment-btn')) e.target.closest('.flight-segment').remove(); });
+        document.getElementById('depart-1').setAttribute('min', dateToday);
+        document.getElementById('return').setAttribute('min', dateToday);
+        updateFormUI('round-trip');
+        document.querySelectorAll(".custom-select-container").forEach(container => {
+            const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
+            selectedDisplay.addEventListener("click", e => { e.stopPropagation(); closeAllSelects(selectedDisplay); itemsContainer.classList.toggle("select-hide"); selectedDisplay.classList.toggle("select-arrow-active"); });
+            options.forEach(option => {
+                option.addEventListener("click", function() {
+                    selectedDisplay.innerHTML = this.innerHTML;
+                    const value = this.getAttribute('data-value') || this.textContent.trim().toLowerCase();
+                    select.value = value;
+                    options.forEach(opt => opt.classList.remove("same-as-selected")); this.classList.add("same-as-selected");
+                    itemsContainer.classList.add("select-hide"); selectedDisplay.classList.remove("select-arrow-active");
+                });
+            });
+        });
+        function closeAllSelects(elmnt) { document.querySelectorAll(".select-items").forEach((items, index) => { const selected = document.querySelectorAll(".select-selected")[index]; if (selected !== elmnt) { items.classList.add("select-hide"); selected.classList.remove("select-arrow-active"); } }); }
+        document.addEventListener("click", closeAllSelects);
+
+        document.getElementById('longhaul-plus-option').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'longhaul+.html';
+        });
+    });
+    </script>
+</body>
+</html>

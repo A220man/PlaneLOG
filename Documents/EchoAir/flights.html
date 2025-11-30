@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Air</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prosto+One&family=Goldman:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #00aeff; --dark-navy: #0A192F; --light-navy: #112240;
+            --lightest-navy: #233554; --slate: #8892b0; --light-slate: #a8b2d1;
+            --white: #e6f1ff; --font-main: 'Prosto One', sans-serif; --font-body: 'Goldman', sans-serif;
+            --highlight-glow: #00aeff; --danger-red: #ff3b5f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); color: var(--slate); background-color: var(--dark-navy); line-height: 1.6; position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; background-image: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('https://www.kmeel.com/wp-content/uploads/2023/05/230513-Montaggi-35F-10-scaled.jpg'); background-size: cover; background-position: center center; }
+        h1, h2, h3, .logo-placeholder-text, .btn-primary, .select-selected { font-family: var(--font-main); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .main-header { padding: 20px 0; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--lightest-navy); }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-placeholder-icon { width: 50px; height: 50px; }
+        .logo-placeholder-text { font-size: 24px; color: var(--white); letter-spacing: 2px; margin-left: 15px; }
+        .main-nav ul { list-style: none; display: flex; gap: 30px; }
+        .main-nav a { font-family: var(--font-main); color: var(--light-slate); text-decoration: none; font-size: 16px; transition: color 0.3s ease; }
+        .main-nav a:hover { color: var(--primary-blue); }
+        .main-footer { background-color: var(--dark-navy); padding: 40px 0; border-top: 1px solid var(--lightest-navy); text-align: center; margin-top: 60px; }
+        .footer-logo { width: 150px; height: 40px; margin: 0 auto 20px; }
+        .footer-links { list-style: none; display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--slate); text-decoration: none; transition: color 0.3s ease; font-family: var(--font-main); }
+        .footer-links a:hover { color: var(--primary-blue); }
+        .copyright { font-size: 14px; color: var(--slate); font-family: var(--font-body); }
+        .btn-primary { background-color: var(--primary-blue); color: var(--dark-navy); border: none; padding: 12px 30px; font-size: 16px; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; display: inline-block; text-decoration: none; }
+        .btn-primary:hover { background-color: #33c1ff; transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0, 174, 255, 0.3); }
+        .flights-content { padding-top: 100px; padding-bottom: 60px; }
+        .search-summary-bar { background-color: var(--light-navy); padding: 20px 30px; border-radius: 8px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--lightest-navy); flex-wrap: wrap; gap: 20px; }
+        .search-summary-info h2 { font-size: 1.8rem; color: var(--white); margin-bottom: 5px; }
+        .search-summary-info span { color: var(--light-slate); font-size: 1rem; }
+        .flights-layout-grid { display: grid; grid-template-columns: 280px 1fr; gap: 30px; }
+        .filters-sidebar { background-color: var(--light-navy); padding: 25px; border-radius: 8px; border: 1px solid var(--lightest-navy); align-self: flex-start; }
+        .filter-group { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid var(--lightest-navy); }
+        .filter-group:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .filter-group h3 { font-family: var(--font-main); color: var(--white); font-size: 1.2rem; margin-bottom: 15px; }
+        .custom-select-container { position: relative; font-family: var(--font-body); }
+        .custom-select-container .select-selected { font-family: var(--font-main); }
+        .custom-select-container select { display: none; }
+        .select-selected { background-color: var(--dark-navy); color: var(--white); padding: 12px 15px; border: 1px solid var(--lightest-navy); border-radius: 4px; cursor: pointer; user-select: none; transition: border-color 0.3s ease; position: relative; }
+        .select-selected.select-arrow-active { border-color: var(--primary-blue); border-radius: 4px 4px 0 0; }
+        .select-selected::after { content: ""; position: absolute; top: 50%; right: 15px; transform: translateY(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid var(--slate); transition: all 0.3s ease; }
+        .select-arrow-active::after { transform: translateY(-50%) rotate(180deg); border-top-color: var(--primary-blue); }
+        .select-items { position: absolute; background-color: rgba(17, 34, 64, 0.95); backdrop-filter: blur(10px); top: 100%; left: 0; right: 0; z-index: 99; border: 1px solid var(--lightest-navy); border-top: none; border-radius: 0 0 4px 4px; }
+        .select-hide { display: none; }
+        .select-item { font-family: var(--font-main); color: var(--light-slate); padding: 12px 15px; cursor: pointer; transition: all 0.2s ease; border-bottom: 1px solid var(--lightest-navy); }
+        .select-item:last-child { border-bottom: none; }
+        .select-item:hover, .same-as-selected { background-color: var(--lightest-navy); color: var(--white); }
+        .checkbox-group label { display: block; margin-bottom: 12px; cursor: pointer; color: var(--light-slate); transition: color 0.2s; }
+        .checkbox-group label:hover { color: var(--white); }
+        .checkbox-group input { margin-right: 10px; accent-color: var(--primary-blue); }
+        .price-slider-group label { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        #price-value { color: var(--white); font-weight: 600; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: var(--lightest-navy); border-radius: 5px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--primary-blue); cursor: pointer; border-radius: 50%; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: var(--primary-blue); cursor: pointer; border-radius: 50%; }
+        .btn-outline { width: 100%; background: transparent; color: var(--primary-blue); border: 1px solid var(--primary-blue); padding: 10px; font-size: 1rem; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; font-family: var(--font-main); }
+        .btn-outline:hover { background: var(--primary-blue); color: var(--dark-navy); }
+        .flight-list-container { display: flex; flex-direction: column; gap: 20px; }
+        .flight-card { background-color: rgba(17, 34, 64, 0.75); backdrop-filter: blur(5px); border: 1px solid var(--lightest-navy); border-radius: 8px; padding: 25px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; align-items: center; gap: 20px; transition: all 0.3s ease; }
+        .flight-card.is-selected-class { border: 2px solid var(--highlight-glow); box-shadow: 0 0 15px rgba(0, 174, 255, 0.5); }
+        .flight-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px -10px rgba(2,12,27,0.7); border-color: var(--primary-blue); }
+        .flight-leg { text-align: center; }
+        .flight-leg .time { font-family: var(--font-main); font-size: 2rem; color: var(--white); display: block; }
+        .flight-leg .airport-code { font-size: 1.2rem; color: var(--slate); font-family: var(--font-main); }
+        .flight-path { text-align: center; }
+        .flight-path .class-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--light-slate); margin-bottom: 5px; display: block; }
+        .flight-path-line { display: flex; align-items: center; justify-content: center; margin-bottom: 5px; }
+        .flight-path-line::before, .flight-path-line::after { content: ''; display: block; width: 10px; height: 10px; background-color: var(--slate); border-radius: 50%; }
+        .flight-path-line .line { flex-grow: 1; height: 2px; background-color: var(--lightest-navy); margin: 0 10px; }
+        .flight-duration { font-size: 0.9rem; font-weight: 500; color: var(--primary-blue); }
+        .flight-pricing { text-align: right; }
+        .flight-pricing .price { font-family: var(--font-main); font-size: 2.2rem; color: var(--white); margin-bottom: 10px; }
+        .no-flights-message { display: none; text-align: center; padding: 50px; background-color: var(--light-navy); border-radius: 8px; color: var(--white); font-size: 1.2rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 25, 47, 0.9); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--light-navy); border: 1px solid var(--lightest-navy); border-radius: 8px; padding: 40px; text-align: center; width: 90%; max-width: 500px; transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h2 { color: var(--primary-blue); font-size: 2rem; margin-bottom: 15px; }
+        .modal-content p { color: var(--light-slate); margin-bottom: 30px; font-size: 1.1rem; }
+        @media(max-width: 992px) { .flights-layout-grid { grid-template-columns: 1fr; } .filters-sidebar { margin-bottom: 30px; } }
+        @media(max-width: 600px) { .flight-card { grid-template-columns: 1fr; text-align: center; } .flight-pricing { text-align: center; grid-row: 1; margin-bottom: 20px; } .flight-leg { display: flex; justify-content: space-around; align-items: center; } .flight-path { margin: 15px 0;} }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-placeholder-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAB8lBMVEVHcExWi9pNg9lIYH5ChfJChfJIhexChfJMhedIhepFhvBIh+5BhfNGhu9HiOpChfNult+Yr79FhvBHh+9EhfFFhe9Ghe46b7hChfIYHMcSEd0QDeZDhfFFhfFBhfJGhu5Jhutfjt9YjOa1zNlFhfBFhu9ChfJcms5DhfFFhfBEhvE4gttPS05DhfJOiOs9lt9DbpZFiOgOAvx6p88OA/kRDeoTFsIPCO8QB/cPBfyXudSUyPOswtTT6PnS5fVDhfE2gNhIhelzmbdFhvBDhfFyt/Gi0feVoKS2ysfi7/kresMnlO8ylOQues8gi+VtuPYyjds+o/dIn+ditfkpTORNqvgjLK5BcsUeLuYlO+CXx+5tu/oPBvWRyvgWGtkOBPSlyeYRCvJ+wfdhruwPCPKSzPq52PPI2+rc5/C/xcPo7vO6zdy80uO12/skXuMYiukai+hKpfA4nPAml/Uol/I6n/Yjcd1crfBLqPZZn9dbsPYjUsJYpOMbTNw3nvOAwfdop9o1nvN+vvElQeZ9vPCAwfYbJ+mpx99apuacwd+vz+q9xchObt9AVNW02fiw1vbE4PjA3fbD4fqGq9dBhfMOAv5ChfNKrf44pP6Dx/+p2P6Z0f+74P7O6f/f8f5dtv9xvv8lm/1as/vw+f/u+P/s9//x8xRdAAAAlHRSTlMAEAwF9u4q2BUbqEb5UjP+AhuFZ89uPQ7nMleHuZ/8WiQFCEqOfuQnwZOzIQLfOmYIdfwx8K0Ttu//ONw+9+THN0sVYMnO8Awl9yjDjj6q61f3lvbK+yNO0KG9/dnud9iQ1eqv0/vep8Yg31l+/aa8kMnF5dfmi8znQ+lRcYDj707p1OnS7+1yhmShMJpu8un06vpcOkNPOQAAAu9JREFUSMfdlWdXGlEQhllg6SAdVASUIqII2Kl2sdeYYkmMxq7pvffeM4t00Jj/md3FCDnS9px8ynzandnn3jt35p2l0f6hNTAoI6fLKSMV5ykjla1UT8ZovdhGEWm71EE1mfIOVwXV7JtcldSK4qh0Ye2qBgrI8Jl2DFt4MEZhk9HbFzCs5dG4qmRE9PhyC4Y1nXs2WTJinz3VhGHY2anpEgEO7e3BC5zAXs+uMJDqEgh6N2NlPr3LTD/SqC8lEUWgP/yRzGV5uVYpKwExySSeVSdxY58WV70sHr0ogViE7oHoj3YXtnBmIPKOK1cWRfhq0fburoGofvOX2BK9z1gUqTNzd+LfDUSPDX6LrzN4bE4RgsvuU60nfAaikwf9iY2AVCssguiCvMDG4ZCB0Mug/9fWZm+wSlyQqOaBVLL1c8hAw1W56T8c8ioFtsKlYZmh94Mv4fPi2m+Q+BOJ7Xp1sHBpFMBUGnzxr15iwkjW4vEdlRysNYWaxQJq/ZtY7LObmGOStVjsvcMKqKgA0oiCnLMUiQy4iWkp8UQicwEjgKkAIgWw0uei0UU38dbjiUY9EgVAJ5K/7eUQrOt5Hg4/aSaRl+Hwq2a+AJj8vIhQAKConUilJkgE6U+l5p+yUHydfIS4KgiC7nszyeT9WhK5k0wePOSwAdjcPIjeBoCy7Ht7e3dJRHUNf5x2aAC0ujyIrAzAVm+fCoVupZHroVBolMEDAF5uPddY8ZjA2j05sn+jnqzSyP5Ne5cRxd1mVm4Fq4EwtG7MeYVEHONXuxRs0gmK3AqGI7M5u9L/lmGdpezIZ8mlZ6TzDwLBPh1evOpGHvPYhebSMz8Tx1Ny4t1jznKANJeCsz+Q4+nS8TJleTg5FJwVN5PH4Giy9z2pZ502E2b2Hgkue5mTepaix0GtSXw8oTLLaE6cDBHJeOz0DVRlLlRGerRmjYnPzTU1xFy+SWPWWrJ6sNqoRTuNQn0hKdfohX/1BiIUIbT/1n4DcnYCLJrsT2YAAAAASUVORK5CYII=" alt="Echo Air Icon" style="width:100%; height:100%; object-fit:contain;"></div>
+                <div class="logo-placeholder-text">ECHO AIR</div>
+            </a>
+            <nav class="main-nav"><ul><li><a href="index.html">New Search</a></li><li><a href="#">My Trips</a></li></ul></nav>
+        </div>
+    </header>
+
+    <main class="flights-content">
+        <div class="container">
+            <div class="search-summary-bar">
+                <div class="search-summary-info">
+                    <h2 id="flight-route-title">Loading...</h2>
+                    <span id="flight-details-subtitle"></span>
+                </div>
+                <a href="index.html" class="btn-primary">Edit Search</a>
+            </div>
+
+            <div class="flights-layout-grid">
+                <aside class="filters-sidebar" id="filters-form">
+                    <div class="filter-group">
+                        <h3>Sort By</h3>
+                        <div class="custom-select-container">
+                            <select id="sort-by"><option value="recommended">Recommended</option><option value="price">Price (Low to High)</option><option value="duration">Duration (Shortest)</option></select>
+                            <div class="select-selected">Recommended</div>
+                            <div class="select-items select-hide"><div class="select-item" data-value="recommended">Recommended</div><div class="select-item" data-value="price">Price (Low to High)</div><div class="select-item" data-value="duration">Duration (Shortest)</div></div>
+                        </div>
+                    </div>
+                     <div class="filter-group">
+                        <h3>Class</h3>
+                        <div class="checkbox-group" id="class-filters">
+                            <label><input type="checkbox" value="economy"> Economy</label>
+                            <label><input type="checkbox" value="business"> Business</label>
+                            <label><input type="checkbox" value="first"> First</label>
+                            <label><input type="checkbox" value="shard"> Shard</label>
+                            <label><input type="checkbox" value="longhaul+"> LongHaul+</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Max Price</h3>
+                        <div class="price-slider-group">
+                            <label for="price-filter"><span>$100</span><span id="price-value">$15000</span></label>
+                            <input type="range" id="price-filter" min="100" max="15000" value="15000" step="50">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Departure Time</h3>
+                        <div class="checkbox-group" id="departure-time-filters">
+                            <label><input type="checkbox" value="morning"> Morning (06-12)</label>
+                            <label><input type="checkbox" value="afternoon"> Afternoon (12-17)</label>
+                            <label><input type="checkbox" value="evening"> Evening (17-21)</label>
+                            <label><input type="checkbox" value="night"> Night (21-06)</label>
+                        </div>
+                    </div>
+                    <button type="button" id="clear-filters-btn" class="btn-outline">Clear Filters</button>
+                </aside>
+
+                <div class="flight-list-container">
+                    <div id="flight-results-container"></div>
+                    <div class="no-flights-message" id="no-flights-message"><h3>No Flights Match Your Criteria</h3><p>Try adjusting your filters or search for a different route.</p></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="modal-overlay" id="route-error-modal">
+        <div class="modal-content">
+            <h2>Route Not Available</h2>
+            <p>Sorry, LongHaul+ service is not available for the selected route. Please try another destination or search for a different class.</p>
+            <button id="new-search-btn" class="btn-primary">New Search</button>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-logo"><img src="https://i.imgur.com/2Yl5mP8.png" alt="Echo Air Text Logo" style="width:100%; height:100%; object-fit:contain;"></div>
+            <ul class="footer-links"><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul>
+            <p class="copyright">© 2025 Echo Air. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const specificRouteDurations = {
+            'LAX-JFK': 5.25, 'JFK-LAX': 5.75, 'LAX-LGA': 5.25, 'LGA-LAX': 5.75, 'LAX-IAH': 3.67, 'IAH-LAX': 4.0, 'LAX-LAS': 1.17, 'LAS-LAX': 1.17, 'LAX-MIA': 4.83, 'MIA-LAX': 5.25, 'LAX-DFW': 3.75, 'DFW-LAX': 4.15, 'LAX-SEA': 2.75, 'SEA-LAX': 2.75, 'LAX-HNL': 5.75, 'HNL-LAX': 5.25, 'JFK-LHR': 7.0, 'LHR-JFK': 8.0, 'JFK-HEL': 8.5, 'HEL-JFK': 9.5, 'JFK-FRA': 7.75, 'FRA-JFK': 8.75, 'JFK-CDG': 7.25, 'CDG-JFK': 8.25, 'JFK-FCO': 8.5, 'FCO-JFK': 9.5, 'JFK-MAD': 8.0, 'MAD-JFK': 9.0, 'JFK-BCN': 8.25, 'BCN-JFK': 9.25, 'JFK-ATH': 10.0, 'ATH-JFK': 11.0, 'JFK-WAW': 9.0, 'WAW-JFK': 10.0, 'JFK-CPH': 8.0, 'CPH-JFK': 9.0, 'LAX-NRT': 11.5, 'NRT-LAX': 10.5, 'LAX-HND': 11.5, 'HND-LAX': 10.5, 'LAX-ICN': 13.5, 'ICN-LAX': 12.5, 'LAX-PEK': 12.75, 'PEK-LAX': 12.0, 'LAX-KIX': 12.0, 'KIX-LAX': 11.0, 'LAX-BKK': 17.5, 'BKK-LAX': 16.5, 'LAX-SGN': 17.5, 'SGN-LAX': 16.5, 'LAX-HAN': 17.5, 'HAN-LAX': 16.5, 'LAX-DXB': 16.0, 'DXB-LAX': 16.0, 'LAX-DOH': 15.75, 'DOH-LAX': 15.75, 'LAX-AUH': 15.5, 'AUH-LAX': 15.5, 'LAX-RUH': 15.75, 'RUH-LAX': 16.25, 'LAX-BAH': 16.0, 'BAH-LAX': 16.5, 'LAX-JED': 15.67, 'JED-LAX': 16.17, 'LAX-CAI': 15.83, 'CAI-LAX': 16.33,
+            'DFW-LHR': 9.0, 'LHR-DFW': 10.0, 'DFW-CDG': 9.2, 'CDG-DFW': 10.2, 'DFW-ICN': 13.5, 'ICN-DFW': 12.8, 'IAD-LHR': 7.5, 'LHR-IAD': 8.5, 'IAH-LHR': 9.5, 'LHR-IAH': 10.5, 'JFK-SIN': 18.8, 'SIN-JFK': 18.8, 'DFW-SYD': 17.0, 'SYD-DFW': 15.5
+        };
+        const exclusiveLongHaulRoutes = new Set([ 'JFK-SIN', 'SIN-JFK', 'LAX-SIN', 'SIN-LAX', 'LAX-DOH', 'DOH-LAX', 'LAX-DXB', 'DXB-LAX', 'LAX-JED', 'JED-LAX', 'LAX-MEL', 'MEL-LAX', 'AKL-DOH', 'DOH-AKL', 'LHR-PER', 'PER-LHR', 'AKL-DXB', 'DXB-AKL', 'DFW-MEL', 'MEL-DFW', 'IAH-SYD', 'SYD-IAH', 'DFW-SYD', 'SYD-DFW' ]);
+        const allFlights = [];
+        const padZero = num => String(num).padStart(2, '0');
+        const resultsContainer = document.getElementById('flight-results-container');
+        const noFlightsMessage = document.getElementById('no-flights-message');
+        const filtersForm = document.getElementById('filters-form');
+        const priceSlider = document.getElementById('price-filter');
+        const priceValue = document.getElementById('price-value');
+        const errorModal = document.getElementById('route-error-modal');
+        const newSearchBtn = document.getElementById('new-search-btn');
+        const params = new URLSearchParams(window.location.search);
+        const from = (params.get('from') || 'N/A').toUpperCase();
+        const to = (params.get('to') || 'N/A').toUpperCase();
+        const searchedClass = params.get('class') || 'all';
+        const routeKey = `${from}-${to}`;
+        const reverseRouteKey = `${to}-${from}`;
+        const isLongHaulSearch = searchedClass.toLowerCase().includes('longhaul');
+        const isRouteValidForLongHaul = exclusiveLongHaulRoutes.has(routeKey) || exclusiveLongHaulRoutes.has(reverseRouteKey);
+        if (isLongHaulSearch && !isRouteValidForLongHaul) {
+            document.querySelector('.search-summary-bar').style.display = 'none';
+            document.querySelector('.flights-layout-grid').style.display = 'none';
+            errorModal.classList.add('active');
+            newSearchBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+            return;
+        }
+        function generateFlightData() {
+            const date = params.get('date') || new Date().toISOString().split('T')[0];
+            const pax = params.get('pax') || '1 Adult';
+            document.getElementById('flight-route-title').textContent = `${from} → ${to}`;
+            document.getElementById('flight-details-subtitle').textContent = `For ${pax} on ${date}`;
+            let durationHours;
+            if (specificRouteDurations[routeKey]) { durationHours = specificRouteDurations[routeKey];
+            } else if (specificRouteDurations[reverseRouteKey]) { durationHours = specificRouteDurations[reverseRouteKey];
+            } else { durationHours = 2 + Math.random() * 14; }
+            const isAnExclusiveRoute = exclusiveLongHaulRoutes.has(routeKey) || exclusiveLongHaulRoutes.has(reverseRouteKey);
+            for (let i = 0; i < 15; i++) {
+                const departureHour = Math.floor(Math.random() * 24);
+                const departureMinute = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+                const departureTime = `${padZero(departureHour)}:${padZero(departureMinute)}`;
+                const basePrice = 250 + Math.floor(Math.random() * 500);
+                const classesToGenerate = ['Economy', 'Business', 'First', 'Shard'];
+                if (isAnExclusiveRoute) { classesToGenerate.push('LongHaul+'); }
+                classesToGenerate.forEach(className => {
+                    let finalPrice = basePrice;
+                    switch (className) {
+                        case 'Business': finalPrice *= 2.5; break;
+                        case 'First': finalPrice *= 4.5; break;
+                        case 'Shard': finalPrice *= 7; break;
+                        case 'LongHaul+': finalPrice *= 12; break;
+                    }
+                    finalPrice = Math.round(finalPrice / 10) * 10;
+                    const departureDate = new Date(`${date}T${departureTime}:00`);
+                    const arrivalDate = new Date(departureDate.getTime() + (durationHours * 60 * 60 * 1000));
+                    const arrivalTime = `${padZero(arrivalDate.getHours())}:${padZero(arrivalDate.getMinutes())}`;
+                    const arrivalDayInfo = arrivalDate.getDate() !== departureDate.getDate() ? ' <small>(+1)</small>' : '';
+                    const durHours = Math.floor(durationHours);
+                    const durMins = Math.round((durationHours - durHours) * 60);
+                    const durationString = `${durHours}h ${durMins}m`;
+                    const highlightClass = className.toLowerCase().replace(/\+/g, '') === searchedClass.toLowerCase().replace(/\+/g, '') ? 'is-selected-class' : '';
+                    const flightCardHTML = `<div class="flight-card ${highlightClass}" data-class="${className.toLowerCase()}" data-price="${finalPrice}" data-duration="${durationHours}" data-departure="${departureTime}"><div class="flight-leg"><span class="time">${departureTime}</span><span class="airport-code">${from}</span></div><div class="flight-path"><span class="class-name">${className.replace('+', ' Plus')}</span><div class="flight-path-line"><div class="line"></div></div><span class="flight-duration">${durationString}</span></div><div class="flight-leg"><span class="time">${arrivalTime}${arrivalDayInfo}</span><span class="airport-code">${to}</span></div><div class="flight-pricing"><div class="price">$${finalPrice}</div><a href="#" class="btn-primary">Select</a></div></div>`;
+                    allFlights.push({ id: Math.random(), price: finalPrice, durationHours, departureHour, className: className.toLowerCase(), html: flightCardHTML });
+                });
+            }
+        }
+        function applyFiltersAndSort() {
+            const sortBy = document.getElementById('sort-by').value;
+            const maxPrice = parseInt(priceSlider.value, 10);
+            const timeCheckboxes = document.querySelectorAll('#departure-time-filters input:checked');
+            const classCheckboxes = document.querySelectorAll('#class-filters input:checked');
+            const selectedTimes = Array.from(timeCheckboxes).map(cb => cb.value);
+            const selectedClasses = Array.from(classCheckboxes).map(cb => cb.value);
+            let filteredFlights = allFlights.filter(flight => {
+                const priceMatch = flight.price <= maxPrice;
+                const timeMatch = selectedTimes.length === 0 || selectedTimes.some(time => {
+                    const hour = flight.departureHour;
+                    if (time === 'morning') return hour >= 6 && hour < 12;
+                    if (time === 'afternoon') return hour >= 12 && hour < 17;
+                    if (time === 'evening') return hour >= 17 && hour < 21;
+                    if (time === 'night') return hour >= 21 || hour < 6;
+                    return false;
+                });
+                const classMatch = selectedClasses.length === 0 || selectedClasses.includes(flight.className);
+                return priceMatch && timeMatch && classMatch;
+            });
+            if (sortBy === 'price') { filteredFlights.sort((a, b) => a.price - b.price); } 
+            else if (sortBy === 'duration') { filteredFlights.sort((a, b) => a.durationHours - b.durationHours); } 
+            else { filteredFlights.sort((a, b) => a.id - b.id); }
+            resultsContainer.innerHTML = filteredFlights.map(flight => flight.html).join('');
+            noFlightsMessage.style.display = filteredFlights.length === 0 ? 'block' : 'none';
+        }
+        function clearFilters() {
+            const sortSelectContainer = document.querySelector('.custom-select-container');
+            sortSelectContainer.querySelector('.select-selected').innerHTML = 'Recommended';
+            sortSelectContainer.querySelector('select').value = 'recommended';
+            priceSlider.value = priceSlider.max;
+            priceValue.textContent = `$${priceSlider.max}`;
+            document.querySelectorAll('#departure-time-filters input:checked, #class-filters input:checked').forEach(cb => cb.checked = false);
+            applyFiltersAndSort();
+        }
+        filtersForm.addEventListener('input', e => { if (e.target.type === 'range' || e.target.type === 'checkbox') { applyFiltersAndSort(); }});
+        priceSlider.addEventListener('input', () => { priceValue.textContent = `$${priceSlider.value}`; });
+        document.getElementById('clear-filters-btn').addEventListener('click', clearFilters);
+        document.querySelectorAll(".custom-select-container").forEach(container => {
+            const select = container.querySelector("select"), selectedDisplay = container.querySelector(".select-selected"), itemsContainer = container.querySelector(".select-items"), options = container.querySelectorAll(".select-item");
+            selectedDisplay.addEventListener("click", e => { e.stopPropagation(); closeAllSelects(selectedDisplay); itemsContainer.classList.toggle("select-hide"); selectedDisplay.classList.toggle("select-arrow-active"); });
+            options.forEach(option => {
+                option.addEventListener("click", function() {
+                    selectedDisplay.innerHTML = this.innerHTML;
+                    select.value = this.getAttribute('data-value');
+                    applyFiltersAndSort();
+                    itemsContainer.classList.add("select-hide");
+                    selectedDisplay.classList.remove("select-arrow-active");
+                });
+            });
+        });
+        function closeAllSelects(elmnt) { document.querySelectorAll(".select-items").forEach((items, index) => { const selected = document.querySelectorAll(".select-selected")[index]; if (selected !== elmnt) { items.classList.add("select-hide"); selected.classList.remove("select-arrow-active"); } }); }
+        document.addEventListener("click", closeAllSelects);
+        generateFlightData();
+        if (isLongHaulSearch && isRouteValidForLongHaul) {
+            document.querySelector('#class-filters input[value="longhaul+"]').checked = true;
+        }
+        applyFiltersAndSort();
+    });
+    </script>
+</body>
+</html>
