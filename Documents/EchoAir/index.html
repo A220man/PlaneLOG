@@ -99,6 +99,19 @@
         .footer-links a { color: var(--slate); text-decoration: none; transition: color 0.3s ease; font-family: var(--font-main); }
         .footer-links a:hover { color: var(--primary-blue); }
         .copyright { font-size: 14px; color: var(--slate); font-family: var(--font-body); }
+        .passenger-dropdown-container { position: relative; }
+        .passenger-dropdown-container input { cursor: pointer; }
+        .passenger-dropdown-panel { display: none; position: absolute; background-color: var(--light-navy); border: 1px solid var(--lightest-navy); border-radius: 4px; padding: 15px; width: 100%; top: calc(100% + 5px); z-index: 100; }
+        .passenger-dropdown-panel.active { display: block; }
+        .passenger-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .passenger-row:last-child { margin-bottom: 0; }
+        .passenger-age { font-size: 12px; color: var(--slate); }
+        .passenger-controls { display: flex; align-items: center; gap: 10px; }
+        .passenger-controls .control-btn { background: var(--dark-navy); border: 1px solid var(--lightest-navy); color: var(--white); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 18px; line-height: 28px; text-align: center; transition: all 0.2s ease; }
+        .passenger-controls .control-btn:hover { background: var(--primary-blue); color: var(--dark-navy); }
+        .passenger-controls .control-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .passenger-count { font-weight: bold; color: var(--white); min-width: 20px; text-align: center; }
+
         @media (max-width: 768px) { .main-nav { display: none; position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: var(--light-navy); flex-direction: column; justify-content: center; align-items: center; transition: right 0.5s ease-in-out; } .main-nav.active { display: flex; right: 0; } .main-nav ul { flex-direction: column; gap: 40px; text-align: center; } .main-nav a { font-size: 20px; } .mobile-nav-toggle { display: block; } .mobile-nav-toggle.active .bar:nth-child(2) { opacity: 0; } .mobile-nav-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } .mobile-nav-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } .hero h1 { font-size: 2.5rem; } .booking-form-grid, #flight-segments-container .flight-segment { grid-template-columns: 1fr; } .delete-segment-btn { width: 100%; } }
     </style>
 </head>
@@ -144,7 +157,38 @@
                                 </div>
                             </div>
                             <div id="return-date-group" class="form-group"><label for="return">Return</label><input type="date" id="return" name="returnDate"></div>
-                            <div class="form-group"><label for="passengers">Passengers</label><input type="text" id="passengers" name="pax" value="1 Adult"></div>
+                            <div class="form-group">
+                                <label for="passengers-display">Passengers</label>
+                                <div class="passenger-dropdown-container">
+                                    <input type="text" id="passengers-display" name="pax" value="1 Adult" readonly>
+                                    <div class="passenger-dropdown-panel" id="passenger-panel">
+                                        <div class="passenger-row">
+                                            <label>Adults <span class="passenger-age">(12+)</span></label>
+                                            <div class="passenger-controls">
+                                                <button type="button" class="control-btn" data-type="adults" data-action="minus">-</button>
+                                                <span class="passenger-count" id="adults-count">1</span>
+                                                <button type="button" class="control-btn" data-type="adults" data-action="plus">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-row">
+                                            <label>Children <span class="passenger-age">(2-11)</span></label>
+                                            <div class="passenger-controls">
+                                                <button type="button" class="control-btn" data-type="children" data-action="minus">-</button>
+                                                <span class="passenger-count" id="children-count">0</span>
+                                                <button type="button" class="control-btn" data-type="children" data-action="plus">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-row">
+                                            <label>Infants <span class="passenger-age">(<2)</span></label>
+                                            <div class="passenger-controls">
+                                                <button type="button" class="control-btn" data-type="infants" data-action="minus">-</button>
+                                                <span class="passenger-count" id="infants-count">0</span>
+                                                <button type="button" class="control-btn" data-type="infants" data-action="plus">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group full-width" id="class-group">
                                 <label for="class">Class</label>
                                 <div class="custom-select-container">
@@ -233,7 +277,7 @@
                 const from = fromInput.value;
                 const to = toInput.value;
                 const date = departInput.value;
-                const passengers = document.getElementById('passengers').value;
+                const passengers = document.getElementById('passengers-display').value;
                 const selectedClass = document.getElementById('class').value;
                 window.location.href = `flights.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&pax=${encodeURIComponent(passengers)}&class=${selectedClass}`;
             } else {
@@ -255,7 +299,7 @@
         const returnDateGroup = document.getElementById('return-date-group');
         const multiCityControls = document.getElementById('multi-city-controls');
         const addFlightBtn = document.getElementById('add-flight-btn');
-        const passengerGroup = document.getElementById('passengers').parentElement;
+        const passengerGroup = document.getElementById('passengers-display').parentElement.parentElement;
         const classGroup = document.getElementById('class-group');
         const dateToday = new Date().toISOString().split('T')[0];
         let flightSegmentCounter = 1;
@@ -298,6 +342,64 @@
         });
         function closeAllSelects(elmnt) { document.querySelectorAll(".select-items").forEach((items, index) => { const selected = document.querySelectorAll(".select-selected")[index]; if (selected !== elmnt) { items.classList.add("select-hide"); selected.classList.remove("select-arrow-active"); } }); }
         document.addEventListener("click", closeAllSelects);
+
+        const passengerDisplay = document.getElementById('passengers-display');
+        const passengerPanel = document.getElementById('passenger-panel');
+        const adultsCountEl = document.getElementById('adults-count');
+        const childrenCountEl = document.getElementById('children-count');
+        const infantsCountEl = document.getElementById('infants-count');
+
+        let passengerCounts = { adults: 1, children: 0, infants: 0 };
+
+        passengerDisplay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            passengerPanel.classList.toggle('active');
+        });
+
+        passengerPanel.addEventListener('click', (e) => {
+            if (e.target.classList.contains('control-btn')) {
+                const type = e.target.dataset.type;
+                const action = e.target.dataset.action;
+                
+                if (action === 'plus') {
+                    passengerCounts[type]++;
+                } else if (action === 'minus') {
+                    if (type === 'adults' && passengerCounts.adults > 1) {
+                        passengerCounts.adults--;
+                    } else if (type !== 'adults' && passengerCounts[type] > 0) {
+                        passengerCounts[type]--;
+                    }
+                }
+                updatePassengerDisplay();
+            }
+        });
+
+        function updatePassengerDisplay() {
+            adultsCountEl.textContent = passengerCounts.adults;
+            childrenCountEl.textContent = passengerCounts.children;
+            infantsCountEl.textContent = passengerCounts.infants;
+
+            let displayText = `${passengerCounts.adults} Adult`;
+            if (passengerCounts.children > 0) {
+                displayText += `, ${passengerCounts.children} Children`;
+            }
+            if (passengerCounts.infants > 0) {
+                displayText += `, ${passengerCounts.infants} Infants`;
+            }
+            passengerDisplay.value = displayText;
+
+            document.querySelector('.control-btn[data-type="adults"][data-action="minus"]').disabled = passengerCounts.adults <= 1;
+            document.querySelector('.control-btn[data-type="children"][data-action="minus"]').disabled = passengerCounts.children <= 0;
+            document.querySelector('.control-btn[data-type="infants"][data-action="minus"]').disabled = passengerCounts.infants <= 0;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!passengerPanel.contains(e.target) && e.target !== passengerDisplay) {
+                passengerPanel.classList.remove('active');
+            }
+        });
+
+        updatePassengerDisplay();
 
         document.getElementById('longhaul-plus-option').addEventListener('click', function(e) {
             e.preventDefault();
