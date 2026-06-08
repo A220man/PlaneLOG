@@ -943,7 +943,7 @@ main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; 
 <div class="submit-overlay" id="submitOverlay" onclick="closeSubmit(event)">
   <div class="submit-box">
     <h2 id="submitTitle">Submit a livery</h2>
-    <p id="submitDesc">Add a livery to the archive. Community submissions are reviewed before publishing.</p>
+    <p id="submitDesc">Add a livery to your archive — saved locally in your browser.</p>
     <div class="form-grid">
       <div class="form-row">
         <label>Tail number</label>
@@ -1003,46 +1003,84 @@ main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; 
     </div>
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeSubmit()">Cancel</button>
-      <button class="btn-submit" id="submitBtn" onclick="submitLivery()">Submit for review</button>
+      <button class="btn-submit" id="submitBtn" onclick="submitLivery()">Add livery</button>
     </div>
   </div>
 </div>
 
 <script>
 const LIVERIES = [
-  {id:1,airline:'United Airlines',tail:'N14120',type:'Boeing 737',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'Standard livery introduced 2010. Retained United branding through Continental merger.',sightings:[]},
+  {id:1,airline:'United Airlines',tail:'N14120',type:'Boeing 757',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'United\'s current globe livery, introduced 2010 and kept through the Continental merger. N14120 is a Boeing 757-200.',sightings:[]},
   {id:2,airline:'United Airlines',tail:'N516UA',type:'Boeing 757',era:'1990s',livery:'Battleship (tulip)',colors:['#4A4E5A','#C6A84B','#FFFFFF'],tags:['retro','tulip','classic'],notes:'Nicknamed "Battleship" for its grey fuselage. Flew 1993–2004, one of the most distinctive US carrier schemes.',sightings:[]},
   {id:3,airline:'American Airlines',tail:'N335AA',type:'Boeing 767',era:'1980s',livery:'Polished metal',colors:['#C0C0C0','#CC0000','#003087'],tags:['classic','bare metal','iconic'],notes:'Iconic unpainted aluminium fuselage with red and blue cheatline. No base coat — actual polished bare metal.',sightings:[]},
-  {id:4,airline:'American Airlines',tail:'N102NN',type:'Boeing 737',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'Launched January 2013. Contemporary take on the flag motif, introduced alongside the US Airways merger.',sightings:[]},
+  {id:4,airline:'American Airlines',tail:'N102NN',type:'Airbus A321',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'American\'s livery launched January 2013, around the US Airways merger. N102NN is an Airbus A321.',sightings:[]},
   {id:5,airline:'Delta Air Lines',tail:'N668DN',type:'Boeing 757',era:'2000s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta\'s widget tail design. Scheme introduced 2000, refreshed with brighter red in 2007.',sightings:[]},
-  {id:6,airline:'Southwest Airlines',tail:'N8504X',type:'Boeing 737',era:'2020s',livery:'Heart One',colors:['#E31837','#F9B612','#304CB2'],tags:['special','heart','50th anniversary'],notes:'One-of-a-kind special livery celebrating Southwest\'s 50th anniversary. Never replicated.',sightings:[]},
-  {id:7,airline:'British Airways',tail:'G-BOAC',type:'Boeing 747',era:'1990s',livery:'Landor (speedbird)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['retro','Landor','speedbird'],notes:'The beloved Landor scheme ran 1984–1997. Widely regarded as one of the most elegant airline liveries ever designed.',sightings:[]},
-  {id:8,airline:'Pan Am',tail:'N747PA',type:'Boeing 747',era:'1970s',livery:'Globe (blue/white)',colors:['#003591','#FFFFFF','#A0B8D8'],tags:['historic','globe','defunct'],notes:'Pan Am\'s iconic blue globe tail. This registration was the first 747 ever delivered to Pan Am in 1970.',sightings:[]},
+  {id:6,airline:'Southwest Airlines',tail:'N500WR',type:'Boeing 737-800',era:'2020s',livery:'Freedom One',colors:['#B22234','#FFFFFF','#3C3B6E'],tags:['special','flag','50th anniversary'],notes:'US-flag livery unveiled June 2021 for Southwest\'s 50th anniversary, honouring the US military. The first Boeing 737-800 to wear one of Southwest\'s special schemes.',sightings:[]},
+  {id:7,airline:'British Airways',tail:'G-BOAC',type:'Concorde',era:'1980s',livery:'Landor (speedbird)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['retro','Landor','Concorde'],notes:'Flagship of BA\'s Concorde fleet — its registration even spells out BOAC. Painted in the elegant Landor scheme from 1984; retired October 2003 and now preserved under a glass canopy at Manchester Airport.',sightings:[]},
+  {id:8,airline:'Pan Am',tail:'N747PA',type:'Boeing 747',era:'1970s',livery:'Globe (blue/white)',colors:['#003591','#FFFFFF','#A0B8D8'],tags:['historic','globe','defunct'],notes:'Pan Am\'s iconic blue-globe livery. N747PA was the second 747 ever built — used by Boeing for flight testing, then delivered to Pan Am in October 1970 as "Clipper America", later renamed "Clipper Juan T. Trippe".',sightings:[]},
   // ── Military aircraft (rare catches) ──
   {id:101,category:'military',airline:'U.S. Air Force',tail:'04-4070',type:'F-22 Raptor',era:'2010s',livery:'Air dominance grey',colors:['#5A6470','#3E4651','#8A95A3'],tags:['fighter','stealth','rare'],notes:'Fifth-generation air-superiority fighter. The Raptor\'s low-observable grey is rarely seen outside air shows.',sightings:[]},
   {id:102,category:'military',airline:'U.S. Navy',tail:'168912',type:'F/A-18 Super Hornet',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['fighter','carrier','navy'],notes:'Carrier-based multirole fighter in standard tactical paint.',sightings:[]},
-  {id:103,category:'military',airline:'U.S. Navy',tail:'161520',type:'F/A-18 Hornet',era:'2020s',livery:'Blue Angels',colors:['#0033A0','#FFD200','#FFFFFF'],tags:['display','rare','iconic'],notes:'U.S. Navy flight demonstration squadron — the blue-and-gold Hornets are a prized airshow catch.',sightings:[]},
-  {id:104,category:'military',airline:'U.S. Air Force',tail:'92-3888',type:'F-16 Fighting Falcon',era:'2020s',livery:'Thunderbirds',colors:['#C8102E','#0A2472','#FFFFFF'],tags:['display','rare','iconic'],notes:'USAF Air Demonstration Squadron. The red-white-blue Thunderbirds scheme is a rare-catch favourite.',sightings:[]},
+  {id:103,category:'military',airline:'U.S. Navy',tail:'165664',type:'F/A-18 Super Hornet',era:'2020s',livery:'Blue Angels',colors:['#002F6C','#FFC72C','#FFFFFF'],tags:['display','rare','iconic'],notes:'U.S. Navy flight demonstration squadron. The Blue Angels switched to the blue-and-gold F/A-18E/F Super Hornet in 2021 — a prized airshow catch.',sightings:[]},
+  {id:104,category:'military',airline:'U.S. Air Force',tail:'87-0293',type:'F-16 Fighting Falcon',era:'2020s',livery:'Thunderbirds',colors:['#C8102E','#0A2472','#FFFFFF'],tags:['display','rare','iconic'],notes:'USAF Air Demonstration Squadron. The red-white-and-blue Thunderbirds F-16C is a rare-catch airshow favourite.',sightings:[]},
   {id:105,category:'military',airline:'Royal Air Force',tail:'ZK308',type:'Eurofighter Typhoon',era:'2010s',livery:'Air-defence grey',colors:['#5C6670','#3A424C','#8993A0'],tags:['fighter','RAF','europe'],notes:'RAF multirole fighter in standard air-defence grey.',sightings:[]},
-  {id:106,category:'military',airline:'U.S. Air Force',tail:'82-1066',type:'B-2 Spirit',era:'1990s',livery:'Stealth black',colors:['#2A2D33','#1A1C20','#3E424A'],tags:['bomber','stealth','very rare'],notes:'Stealth strategic bomber — only 20 were ever built, making a B-2 the rarest of finds.',sightings:[]},
+  {id:106,category:'military',airline:'U.S. Air Force',tail:'82-1066',type:'B-2 Spirit',era:'1990s',livery:'Stealth black',colors:['#2A2D33','#1A1C20','#3E424A'],tags:['bomber','stealth','very rare'],notes:'Stealth strategic bomber — only 21 were ever built, making a B-2 the rarest of finds. 82-1066 "Spirit of America" was the very first B-2.',sightings:[]},
 ];
 
-let db = JSON.parse(localStorage.getItem('liveryarc_db') || 'null');
+// Pre-resolved planespotters photos for the curated fleet (keyed by id) so card images
+// load directly as <img>, even when the page is opened from file:// (where the photo-API
+// fetch is blocked by the browser). Submitted liveries still hydrate via the API by tail.
+const SEED_PHOTOS = {
+  1:'https://t.plnspttrs.net/21872/1900709_cfa75ea865_280.jpg',
+  2:'https://t.plnspttrs.net/25779/573631_3b3f0d02ec_280.jpg',
+  3:'https://t.plnspttrs.net/49241/190143_99c6ea5dec_280.jpg',
+  4:'https://t.plnspttrs.net/15705/1578075_1752071fb5_280.jpg',
+  5:'https://t.plnspttrs.net/21752/1838422_e33999b8a6_280.jpg',
+  6:'https://t.plnspttrs.net/24902/1874544_c8afc1016b_280.jpg',
+  7:'https://t.plnspttrs.net/43526/1706067_b10473464e_280.jpg',
+  8:'https://t.plnspttrs.net/30369/1880889_73fdbb3667_280.jpg',
+  101:'https://t.plnspttrs.net/20918/1207577_c638087cfe_280.jpg',
+  102:'https://t.plnspttrs.net/47357/1864967_98faa3e249_280.jpg',
+  103:'https://t.plnspttrs.net/02396/1819014_828e7063f9_280.jpg',
+  104:'https://t.plnspttrs.net/29269/1770704_82253b4421_280.jpg',
+  105:'https://t.plnspttrs.net/46959/1682957_9daac724c2_280.jpg',
+  106:'https://t.plnspttrs.net/25553/1295755_d2c5876905_280.jpg',
+};
+for (const l of LIVERIES) if (SEED_PHOTOS[l.id]) l.photo = SEED_PHOTOS[l.id];
+
+// One-time migration from the old liveryarc_* storage keys to planelog_*.
+for (const k of ['db', 'sightings', 'collection']) {
+  const oldKey = 'liveryarc_' + k, newKey = 'planelog_' + k;
+  if (localStorage.getItem(newKey) === null && localStorage.getItem(oldKey) !== null) {
+    localStorage.setItem(newKey, localStorage.getItem(oldKey));
+  }
+}
+
+let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
+// Bump SEED_VERSION whenever the curated LIVERIES data changes, so saved copies refresh.
+const SEED_VERSION = 3;
+const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
+} else if (storedSeedVersion < SEED_VERSION) {
+  // Refresh the curated seed entries to the latest data, keeping any liveries you've added.
+  const seedIds = new Set(LIVERIES.map(l => l.id));
+  db = LIVERIES.concat(db.filter(l => !seedIds.has(l.id)));
 } else {
   // Merge in any new seed liveries (e.g. military) added since the data was last saved.
   const have = new Set(db.map(l => l.id));
   for (const l of LIVERIES) if (!have.has(l.id)) db.push(l);
 }
-let sightings = JSON.parse(localStorage.getItem('liveryarc_sightings') || '{}');
-let collection = new Set(JSON.parse(localStorage.getItem('liveryarc_collection') || '[]'));
+localStorage.setItem('planelog_db', JSON.stringify(db));
+localStorage.setItem('planelog_seed_version', String(SEED_VERSION));
+let sightings = JSON.parse(localStorage.getItem('planelog_sightings') || '{}');
+let collection = new Set(JSON.parse(localStorage.getItem('planelog_collection') || '[]'));
 
 function inCollection(id) { return collection.has(id); }
 function toggleCollect(id, ev) {
   if (ev) ev.stopPropagation();
   if (collection.has(id)) collection.delete(id); else collection.add(id);
-  localStorage.setItem('liveryarc_collection', JSON.stringify([...collection]));
+  localStorage.setItem('planelog_collection', JSON.stringify([...collection]));
   applyFilters();
   const dbtn = document.querySelector('#detailBox .collect-btn');
   if (dbtn && selectedId === id) {
@@ -1060,8 +1098,8 @@ let editingId = null;
 
 function save() {
   try {
-    localStorage.setItem('liveryarc_db', JSON.stringify(db));
-    localStorage.setItem('liveryarc_sightings', JSON.stringify(sightings));
+    localStorage.setItem('planelog_db', JSON.stringify(db));
+    localStorage.setItem('planelog_sightings', JSON.stringify(sightings));
   } catch (e) {
     alert('Could not save — local storage is full. Your uploaded photo may be too large; try a smaller image.');
   }
@@ -1388,8 +1426,8 @@ function setForm(l) {
 function openSubmit() {
   editingId = null;
   document.getElementById('submitTitle').textContent = 'Submit a livery';
-  document.getElementById('submitDesc').textContent = 'Add a livery to the archive. Community submissions are reviewed before publishing.';
-  document.getElementById('submitBtn').textContent = 'Submit for review';
+  document.getElementById('submitDesc').textContent = 'Add a livery to your archive — saved locally in your browser.';
+  document.getElementById('submitBtn').textContent = 'Add livery';
   setForm({ colors: DEFAULT_COLORS });
   document.getElementById('submitOverlay').classList.add('open');
 }
