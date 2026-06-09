@@ -4,795 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Collection — PlaneLOG</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 <style>
-:root {
-  --bg: #0e0e0f;
-  --bg2: #161618;
-  --bg3: #1e1e21;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #f0ede8;
-  --text2: #9a9790;
-  --text3: #5a5855;
-  --accent: #0a84e0;
-  --accent2: #38a8f2;
-  --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  --display: 'Syne', sans-serif;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { font-size: 15px; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  min-height: 100vh;
-  line-height: 1.6;
-}
-
-/* ── HOME / LANDING ── */
-.home-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: var(--bg);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
-.home-screen.hidden { opacity: 0; pointer-events: none; }
-.home-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(10,132,224,0.16), transparent 70%),
-    radial-gradient(ellipse 50% 40% at 85% 110%, rgba(10,132,224,0.08), transparent 70%);
-  pointer-events: none;
-}
-.home-inner {
-  position: relative;
-  width: 100%;
-  max-width: 920px;
-  padding: 8vh 24px 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.home-eyebrow {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 18px;
-}
-.home-wordmark {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(48px, 9vw, 92px);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--text);
-}
-.home-wordmark em { color: var(--accent); font-style: normal; }
-.home-tagline {
-  max-width: 540px;
-  margin-top: 22px;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--text2);
-}
-.home-search {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  margin-top: 34px;
-}
-.home-search input {
-  width: 100%;
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 14px 16px 14px 44px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.home-search input::placeholder { color: var(--text3); }
-.home-search input:focus { border-color: var(--accent); }
-.home-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-.home-stats {
-  display: flex;
-  gap: 48px;
-  margin-top: 38px;
-}
-.home-stat-n { font-family: var(--display); font-size: 34px; font-weight: 800; color: var(--accent); line-height: 1; }
-.home-stat-l { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-top: 6px; }
-.home-cta {
-  margin-top: 40px;
-  background: var(--accent);
-  color: #0e0e0f;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 28px;
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
-}
-.home-cta:hover { background: var(--accent2); }
-.home-cta:active { transform: scale(0.98); }
-.home-featured-label {
-  font-family: var(--display);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-top: 72px;
-  margin-bottom: 18px;
-}
-.home-featured {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  width: 100%;
-}
-.home-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s;
-  text-align: left;
-}
-.home-card:hover { border-color: var(--border2); transform: translateY(-3px); }
-.home-card .card-swatch { height: 84px; border-radius: 0; }
-.home-card-body { padding: 10px 12px 12px; }
-.home-card-airline { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); }
-.home-card-livery { font-size: 11px; color: var(--accent); margin-top: 1px; }
-@media (max-width: 720px) {
-  .home-featured { grid-template-columns: repeat(2, 1fr); }
-  .home-stats { gap: 32px; }
-}
-
-/* ── LAYOUT ── */
-.shell {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  grid-template-rows: 72px 1fr;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* ── NAV ── */
-nav {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  gap: 32px;
-  z-index: 10;
-}
-
-.wordmark {
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text);
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-}
-.wordmark em { color: var(--accent); font-style: normal; }
-.brand-logo { height: 56px; width: auto; object-fit: contain; display: block; }
-
-.nav-search {
-  flex: 1;
-  max-width: 360px;
-  position: relative;
-}
-.nav-search input {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 7px 12px 7px 34px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.nav-search input::placeholder { color: var(--text3); }
-.nav-search input:focus { border-color: var(--accent); }
-.nav-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-
-.nav-stats {
-  margin-left: auto;
-  display: flex;
-  gap: 24px;
-}
-.nav-stat { text-align: right; }
-.nav-stat-n { font-family: var(--display); font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1; }
-.nav-stat-l { font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
-
-.nav-btn {
-  background: var(--accent);
-  color: #0e0e0f;
-  border: none;
-  border-radius: 7px;
-  padding: 7px 14px;
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: background 0.15s, transform 0.1s;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  text-decoration: none;
-}
-.nav-btn:hover { background: var(--accent2); }
-.nav-btn:active { transform: scale(0.97); }
-.nav-btn-ghost {
-  background: var(--bg3);
-  color: var(--text);
-  border: 1px solid var(--border2);
-}
-.nav-btn-ghost:hover { background: var(--bg2); border-color: var(--accent); color: var(--accent); }
-.nav-btn-logo { width: 16px; height: 16px; object-fit: contain; border-radius: 3px; }
-.page-tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 3px 8px;
-}
-
-/* ── SIDEBAR ── */
-aside {
-  border-right: 1px solid var(--border);
-  background: var(--bg2);
-  overflow-y: auto;
-  padding: 20px 0;
-}
-aside::-webkit-scrollbar { width: 4px; }
-aside::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-.sidebar-section { margin-bottom: 28px; }
-.sidebar-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-  padding: 0 20px;
-  margin-bottom: 8px;
-  font-family: var(--display);
-}
-
-.filter-group { padding: 0 12px; }
-.filter-chip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
-  color: var(--text2);
-  transition: background 0.12s, color 0.12s;
-  user-select: none;
-}
-.filter-chip:hover { background: var(--bg3); color: var(--text); }
-.filter-chip.active { background: rgba(10,132,224,0.12); color: var(--accent); }
-.filter-chip .count {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-.filter-chip.active .count { color: var(--accent); opacity: 0.7; }
-
-.era-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px; }
-.era-chip {
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 4px 9px;
-  border-radius: 5px;
-  border: 1px solid var(--border2);
-  cursor: pointer;
-  color: var(--text3);
-  transition: all 0.12s;
-  user-select: none;
-}
-.era-chip:hover { border-color: var(--accent); color: var(--accent); }
-.era-chip.active { background: var(--accent); border-color: var(--accent); color: #0e0e0f; font-weight: 500; }
-
-.tag-cloud { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 12px; }
-.tag-pill {
-  font-size: 11px;
-  padding: 3px 9px;
-  border-radius: 100px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  color: var(--text3);
-  transition: all 0.12s;
-  user-select: none;
-}
-.tag-pill:hover { border-color: var(--text2); color: var(--text2); }
-.tag-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(10,132,224,0.1); }
-
-/* ── MAIN ── */
-main {
-  overflow-y: auto;
-  background: var(--bg);
-}
-main::-webkit-scrollbar { width: 4px; }
-main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-.main-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 5;
-}
-
-.result-count { font-size: 13px; color: var(--text3); font-family: var(--mono); }
-.result-count strong { color: var(--text2); }
-
-.sort-row { display: flex; align-items: center; gap: 8px; }
-.sort-label { font-size: 12px; color: var(--text3); }
-.sort-btn {
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: var(--text2);
-  cursor: pointer;
-  font-family: var(--sans);
-  transition: all 0.12s;
-}
-.sort-btn:hover, .sort-btn.active { border-color: var(--accent); color: var(--accent); }
-
-.view-btns { display: flex; gap: 4px; margin-left: 12px; }
-.view-btn {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 8px;
-  cursor: pointer;
-  color: var(--text3);
-  line-height: 1;
-  transition: all 0.12s;
-}
-.view-btn.active, .view-btn:hover { border-color: var(--border2); color: var(--text2); background: var(--bg3); }
-
-/* ── GRID ── */
-.livery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border-top: none;
-}
-.livery-grid.list-view {
-  grid-template-columns: 1fr;
-}
-
-.livery-card {
-  background: var(--bg);
-  cursor: pointer;
-  transition: background 0.12s;
-  position: relative;
-  overflow: hidden;
-}
-.livery-card:hover { background: var(--bg2); }
-.livery-card.selected { background: var(--bg2); }
-.livery-card.selected::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--accent);
-}
-
-.card-swatch {
-  height: 156px;
-  position: relative;
-  overflow: hidden;
-}
-.swatch-plane {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.swatch-plane svg {
-  width: 70%;
-  max-width: 130px;
-  opacity: 0.2;
-  filter: saturate(0) brightness(3);
-}
-.swatch-tail {
-  position: absolute;
-  bottom: 8px;
-  left: 10px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  padding: 2px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.06em;
-}
-.swatch-era {
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: rgba(255,255,255,0.6);
-}
-
-.card-body { padding: 12px 14px 14px; }
-.card-airline { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--text); }
-.card-livery { font-size: 12px; color: var(--accent); margin-top: 1px; }
-.card-type { font-size: 12px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
-.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-.card-tag {
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 100px;
-  border: 1px solid var(--border2);
-  color: var(--text3);
-  font-family: var(--mono);
-}
-
-/* list view */
-.list-view .livery-card {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-}
-.list-view .card-swatch { height: 104px; }
-.list-view .card-body { display: flex; align-items: center; gap: 32px; padding: 0 20px; }
-.list-view .card-tags { margin-top: 0; }
-
-/* ── DETAIL PANEL ── */
-.detail-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: rgba(0,0,0,0.6);
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-.detail-overlay.open { display: flex; }
-
-.detail-box {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 620px;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: slideUp 0.2s ease;
-}
-@keyframes slideUp {
-  from { transform: translateY(16px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.detail-box::-webkit-scrollbar { width: 4px; }
-.detail-box::-webkit-scrollbar-thumb { background: var(--border2); }
-
-.detail-swatch-full {
-  height: 210px;
-  border-radius: 16px 16px 0 0;
-  position: relative;
-  overflow: hidden;
-}
-.detail-swatch-full .swatch-plane svg {
-  width: 50%;
-  max-width: 200px;
-  opacity: 0.25;
-}
-.detail-close {
-  position: absolute;
-  top: 14px; right: 14px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 50%;
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: #fff;
-  font-size: 18px;
-  line-height: 1;
-  transition: background 0.12s;
-}
-.detail-close:hover { background: rgba(0,0,0,0.7); }
-
-.detail-content { padding: 24px; }
-.detail-title { font-family: var(--display); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-.detail-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
-.detail-tail { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-top: 4px; }
-
-.detail-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 20px;
-}
-.df { background: var(--bg3); border-radius: 10px; padding: 12px 14px; }
-.df label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); font-family: var(--display); font-weight: 600; display: block; margin-bottom: 6px; }
-.df p { font-size: 13px; color: var(--text); line-height: 1.5; }
-.df.full { grid-column: 1 / -1; }
-.df.colors p { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.color-swatch-sm {
-  display: flex; align-items: center; gap: 6px;
-}
-.color-dot { width: 18px; height: 18px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
-.color-hex { font-family: var(--mono); font-size: 11px; color: var(--text3); }
-
-/* ── SPOTTER LOG ── */
-.spotter-section { margin-top: 20px; }
-.spotter-section h3 {
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
-}
-.log-add {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.log-add input {
-  flex: 1;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.log-add input::placeholder { color: var(--text3); }
-.log-add input:focus { border-color: var(--accent); }
-.log-add button {
-  background: var(--accent);
-  color: #0e0e0f;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: var(--display);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.12s;
-}
-.log-add button:hover { background: var(--accent2); }
-
-.log-entries { display: flex; flex-direction: column; gap: 6px; }
-.log-entry {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg3);
-  border-radius: 7px;
-  padding: 8px 12px;
-  font-size: 12px;
-}
-.log-entry-loc { color: var(--text); font-family: var(--mono); }
-.log-entry-date { color: var(--text3); }
-.log-entry-rm {
-  background: none;
-  border: none;
-  color: var(--text3);
-  cursor: pointer;
-  font-size: 15px;
-  line-height: 1;
-  padding: 0 2px;
-  margin-left: 8px;
-  transition: color 0.12s;
-}
-.log-entry-rm:hover { color: #e05858; }
-.log-empty { font-size: 12px; color: var(--text3); text-align: center; padding: 16px; font-style: italic; }
-
-/* ── SUBMIT MODAL ── */
-.submit-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0,0,0,0.7);
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-.submit-overlay.open { display: flex; }
-.submit-box {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 500px;
-  padding: 28px;
-  animation: slideUp 0.2s ease;
-}
-.submit-box h2 { font-family: var(--display); font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.submit-box p { font-size: 13px; color: var(--text3); margin-bottom: 20px; }
-.form-row { margin-bottom: 14px; }
-.form-row label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); font-family: var(--display); font-weight: 600; margin-bottom: 6px; }
-.form-row input, .form-row select, .form-row textarea {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 9px 12px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.form-row input::placeholder, .form-row textarea::placeholder { color: var(--text3); }
-.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--accent); }
-.form-row select option { background: var(--bg3); }
-.form-row textarea { height: 80px; resize: vertical; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.btn-cancel {
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 9px 18px;
-  font-size: 13px;
-  color: var(--text2);
-  cursor: pointer;
-  font-family: var(--sans);
-  transition: all 0.12s;
-}
-.btn-cancel:hover { border-color: var(--text2); }
-.btn-submit {
-  background: var(--accent);
-  border: none;
-  border-radius: 8px;
-  padding: 9px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: var(--display);
-  color: #0e0e0f;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.btn-submit:hover { background: var(--accent2); }
-
-/* ── EMPTY ── */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 24px;
-  text-align: center;
-  color: var(--text3);
-  gap: 8px;
-}
-.empty-state svg { opacity: 0.3; margin-bottom: 8px; }
-.empty-state h3 { font-family: var(--display); font-size: 16px; color: var(--text2); }
-.empty-state p { font-size: 13px; }
-
-/* ── PHOTOS ── */
-.swatch-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 1;
-}
-.swatch-photo.loaded { opacity: 1; }
-.card-swatch .swatch-tail,
-.card-swatch .swatch-era,
-.detail-swatch-full .detail-close { z-index: 3; }
-.photo-credit {
-  position: absolute;
-  bottom: 8px;
-  left: 12px;
-  z-index: 3;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: rgba(255,255,255,0.78);
-  background: rgba(0,0,0,0.55);
-  padding: 3px 8px;
-  border-radius: 5px;
-  text-decoration: none;
-}
-.photo-credit:hover { color: #fff; }
-
-/* ── DETAIL ACTIONS ── */
-.detail-actions { display: flex; gap: 8px; margin-top: 18px; }
-.detail-action-btn {
-  flex: 1;
-  border-radius: 8px;
-  padding: 9px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: var(--display);
-  cursor: pointer;
-  transition: all 0.12s;
-  border: 1px solid var(--border2);
-  background: var(--bg3);
-  color: var(--text2);
-}
-.detail-action-btn:hover { border-color: var(--text2); color: var(--text); }
-.detail-action-btn.danger:hover { border-color: #e05858; color: #e05858; background: rgba(224,88,88,0.08); }
-.detail-action-btn.collect-btn.on { background: var(--accent); border-color: var(--accent); color: #0e0e0f; }
-.detail-action-btn.collect-btn.on:hover { background: var(--accent2); color: #0e0e0f; }
-
-/* ── COLLECT STAR ── */
-.collect-star {
-  position: absolute;
-  top: 8px; right: 10px;
-  z-index: 3;
-  width: 28px; height: 28px;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.5);
-  color: rgba(255,255,255,0.7);
-  font-size: 15px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.12s;
-}
-.collect-star:hover { color: #fff; border-color: var(--accent); transform: scale(1.08); }
-.collect-star.on { background: var(--accent); border-color: var(--accent); color: #0e0e0f; }
-
-/* ── COLLECTION CATALOG ── */
+/* ── COLLECTION CATALOG (page-specific layout) ── */
 .shell { grid-template-columns: 1fr; }
 aside { display: none; }
 .cat-toolbar { gap: 18px; }
@@ -835,6 +55,7 @@ aside { display: none; }
   letter-spacing: 0.04em;
   padding: 0;
 }
+.cat-logo.emblem { width: 56px; padding: 5px; }
 .cat-group-meta { min-width: 150px; }
 .cat-group-name { font-family: var(--display); font-size: 18px; font-weight: 700; }
 .cat-group-sub { font-size: 12px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
@@ -842,6 +63,7 @@ aside { display: none; }
 .cat-group-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
 .cat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
 .cat-card {
+  position: relative;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -849,65 +71,45 @@ aside { display: none; }
 }
 .cat-card.caught { border-color: rgba(10,132,224,0.45); }
 .cat-card .livery-card { background: transparent; }
-.cat-card.uncaught .card-swatch { filter: grayscale(0.9) brightness(0.5); }
+
+/* Locked (not yet spotted): muted gradient silhouette, photo hidden, lock badge. */
+.cat-card.uncaught .card-swatch { filter: grayscale(0.7) brightness(0.5); }
+.cat-card.uncaught .swatch-photo { display: none; }
 .cat-card.uncaught .card-airline,
 .cat-card.uncaught .card-livery,
 .cat-card.uncaught .card-type,
 .cat-card.uncaught .card-tags { opacity: 0.5; }
 
-/* ── COLOR INPUTS ── */
-.color-inputs { display: flex; gap: 10px; }
-.color-inputs input[type="color"] {
-  width: 52px;
-  height: 38px;
-  padding: 2px;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  background: var(--bg3);
-  cursor: pointer;
+.cat-lock {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 156px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.92);
+  pointer-events: none;
+  z-index: 2;
 }
+.cat-lock svg { filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7)); }
 
-/* ── PHOTO UPLOAD ── */
-.photo-upload { display: flex; align-items: center; gap: 12px; }
-.photo-preview {
-  width: 104px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  background: var(--bg3);
-}
-.photo-upload-btn {
-  display: inline-block;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 9px 14px;
-  font-size: 13px;
-  color: var(--text2);
+/* Unlocked (spotted): quick "add your own photo" button. */
+.cat-upload {
+  position: absolute;
+  top: 8px; left: 10px;
+  z-index: 3;
+  width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.5);
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
-  font-family: var(--sans);
   transition: all 0.12s;
 }
-.photo-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
-.photo-clear {
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 9px 12px;
-  font-size: 13px;
-  color: var(--text3);
-  cursor: pointer;
-  font-family: var(--sans);
-  transition: all 0.12s;
-}
-.photo-clear:hover { border-color: #e05858; color: #e05858; }
-.photo-hint { font-size: 11px; color: var(--text3); margin-top: 8px; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.cat-upload:hover { border-color: var(--accent); color: #fff; transform: scale(1.08); }
 </style>
 </head>
 <body>
@@ -978,12 +180,12 @@ aside { display: none; }
 
 <!-- DETAIL OVERLAY -->
 <div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
-  <div class="detail-box" id="detailBox"></div>
+  <div class="detail-box" id="detailBox" role="dialog" aria-modal="true" aria-label="Livery details"></div>
 </div>
 
 <!-- SUBMIT OVERLAY -->
 <div class="submit-overlay" id="submitOverlay" onclick="closeSubmit(event)">
-  <div class="submit-box">
+  <div class="submit-box" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
     <h2 id="submitTitle">Submit a livery</h2>
     <p id="submitDesc">Add a livery to your archive — saved locally in your browser.</p>
     <div class="form-grid">
@@ -1050,189 +252,11 @@ aside { display: none; }
   </div>
 </div>
 
+<script src="app.js"></script>
 <script>
-const LIVERIES = [
-  {id:1,airline:'United Airlines',tail:'N14120',type:'Boeing 757',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'United\'s current globe livery, introduced 2010 and kept through the Continental merger. N14120 is a Boeing 757-200.',sightings:[]},
-  {id:2,airline:'United Airlines',tail:'N516UA',type:'Boeing 757',era:'1990s',livery:'Battleship (tulip)',colors:['#4A4E5A','#C6A84B','#FFFFFF'],tags:['retro','tulip','classic'],notes:'Nicknamed "Battleship" for its grey fuselage. Flew 1993–2004, one of the most distinctive US carrier schemes.',sightings:[]},
-  {id:3,airline:'American Airlines',tail:'N335AA',type:'Boeing 767',era:'1980s',livery:'Polished metal',colors:['#C0C0C0','#CC0000','#003087'],tags:['classic','bare metal','iconic'],notes:'Iconic unpainted aluminium fuselage with red and blue cheatline. No base coat — actual polished bare metal.',sightings:[]},
-  {id:4,airline:'American Airlines',tail:'N102NN',type:'Airbus A321',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'American\'s livery launched January 2013, around the US Airways merger. N102NN is an Airbus A321.',sightings:[]},
-  {id:5,airline:'Delta Air Lines',tail:'N668DN',type:'Boeing 757',era:'2000s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta\'s widget tail design. Scheme introduced 2000, refreshed with brighter red in 2007.',sightings:[]},
-  {id:6,airline:'Southwest Airlines',tail:'N500WR',type:'Boeing 737-800',era:'2020s',livery:'Freedom One',colors:['#B22234','#FFFFFF','#3C3B6E'],tags:['special','flag','50th anniversary'],notes:'US-flag livery unveiled June 2021 for Southwest\'s 50th anniversary, honouring the US military. The first Boeing 737-800 to wear one of Southwest\'s special schemes.',sightings:[]},
-  {id:7,airline:'British Airways',tail:'G-BOAC',type:'Concorde',era:'1980s',livery:'Landor (speedbird)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['retro','Landor','Concorde'],notes:'Flagship of BA\'s Concorde fleet — its registration even spells out BOAC. Painted in the elegant Landor scheme from 1984; retired October 2003 and now preserved under a glass canopy at Manchester Airport.',sightings:[]},
-  {id:8,airline:'Pan Am',tail:'N747PA',type:'Boeing 747',era:'1970s',livery:'Globe (blue/white)',colors:['#003591','#FFFFFF','#A0B8D8'],tags:['historic','globe','defunct'],notes:'Pan Am\'s iconic blue-globe livery. N747PA was the second 747 ever built — used by Boeing for flight testing, then delivered to Pan Am in October 1970 as "Clipper America", later renamed "Clipper Juan T. Trippe".',sightings:[]},
-  // ── Military aircraft (rare catches) ──
-  {id:101,category:'military',airline:'U.S. Air Force',tail:'04-4070',type:'F-22 Raptor',era:'2010s',livery:'Air dominance grey',colors:['#5A6470','#3E4651','#8A95A3'],tags:['fighter','stealth','rare'],notes:'Fifth-generation air-superiority fighter. The Raptor\'s low-observable grey is rarely seen outside air shows.',sightings:[]},
-  {id:102,category:'military',airline:'U.S. Navy',tail:'168912',type:'F/A-18 Super Hornet',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['fighter','carrier','navy'],notes:'Carrier-based multirole fighter in standard tactical paint.',sightings:[]},
-  {id:103,category:'military',airline:'U.S. Navy',tail:'165664',type:'F/A-18 Super Hornet',era:'2020s',livery:'Blue Angels',colors:['#002F6C','#FFC72C','#FFFFFF'],tags:['display','rare','iconic'],notes:'U.S. Navy flight demonstration squadron. The Blue Angels switched to the blue-and-gold F/A-18E/F Super Hornet in 2021 — a prized airshow catch.',sightings:[]},
-  {id:104,category:'military',airline:'U.S. Air Force',tail:'87-0293',type:'F-16 Fighting Falcon',era:'2020s',livery:'Thunderbirds',colors:['#C8102E','#0A2472','#FFFFFF'],tags:['display','rare','iconic'],notes:'USAF Air Demonstration Squadron. The red-white-and-blue Thunderbirds F-16C is a rare-catch airshow favourite.',sightings:[]},
-  {id:105,category:'military',airline:'Royal Air Force',tail:'ZK308',type:'Eurofighter Typhoon',era:'2010s',livery:'Air-defence grey',colors:['#5C6670','#3A424C','#8993A0'],tags:['fighter','RAF','europe'],notes:'RAF multirole fighter in standard air-defence grey.',sightings:[]},
-  {id:106,category:'military',airline:'U.S. Air Force',tail:'82-1066',type:'B-2 Spirit',era:'1990s',livery:'Stealth black',colors:['#2A2D33','#1A1C20','#3E424A'],tags:['bomber','stealth','very rare'],notes:'Stealth strategic bomber — only 21 were ever built, making a B-2 the rarest of finds. 82-1066 "Spirit of America" was the very first B-2.',sightings:[]},
-];
+// ── COLLECTION PAGE (grouped catalog of caught vs. still-to-catch) ──
+function buildSidebar() { renderSidebar(db.filter(l => inCollection(l.id))); }
 
-// Pre-resolved planespotters photos for the curated fleet (keyed by id) so card images
-// load directly as <img>, even when the page is opened from file:// (where the photo-API
-// fetch is blocked by the browser). Submitted liveries still hydrate via the API by tail.
-const SEED_PHOTOS = {
-  1:'https://t.plnspttrs.net/21872/1900709_cfa75ea865_280.jpg',
-  2:'https://t.plnspttrs.net/25779/573631_3b3f0d02ec_280.jpg',
-  3:'https://t.plnspttrs.net/49241/190143_99c6ea5dec_280.jpg',
-  4:'https://t.plnspttrs.net/15705/1578075_1752071fb5_280.jpg',
-  5:'https://t.plnspttrs.net/21752/1838422_e33999b8a6_280.jpg',
-  6:'https://t.plnspttrs.net/24902/1874544_c8afc1016b_280.jpg',
-  7:'https://t.plnspttrs.net/43526/1706067_b10473464e_280.jpg',
-  8:'https://t.plnspttrs.net/30369/1880889_73fdbb3667_280.jpg',
-  101:'https://t.plnspttrs.net/20918/1207577_c638087cfe_280.jpg',
-  102:'https://t.plnspttrs.net/47357/1864967_98faa3e249_280.jpg',
-  103:'https://t.plnspttrs.net/02396/1819014_828e7063f9_280.jpg',
-  104:'https://t.plnspttrs.net/29269/1770704_82253b4421_280.jpg',
-  105:'https://t.plnspttrs.net/46959/1682957_9daac724c2_280.jpg',
-  106:'https://t.plnspttrs.net/25553/1295755_d2c5876905_280.jpg',
-};
-for (const l of LIVERIES) if (SEED_PHOTOS[l.id]) l.photo = SEED_PHOTOS[l.id];
-
-// One-time migration from the old liveryarc_* storage keys to planelog_*.
-for (const k of ['db', 'sightings', 'collection']) {
-  const oldKey = 'liveryarc_' + k, newKey = 'planelog_' + k;
-  if (localStorage.getItem(newKey) === null && localStorage.getItem(oldKey) !== null) {
-    localStorage.setItem(newKey, localStorage.getItem(oldKey));
-  }
-}
-
-let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
-// Bump SEED_VERSION whenever the curated LIVERIES data changes, so saved copies refresh.
-const SEED_VERSION = 3;
-const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
-if (!Array.isArray(db)) {
-  db = LIVERIES.slice();
-} else if (storedSeedVersion < SEED_VERSION) {
-  // Refresh the curated seed entries to the latest data, keeping any liveries you've added.
-  const seedIds = new Set(LIVERIES.map(l => l.id));
-  db = LIVERIES.concat(db.filter(l => !seedIds.has(l.id)));
-} else {
-  // Merge in any new seed liveries (e.g. military) added since the data was last saved.
-  const have = new Set(db.map(l => l.id));
-  for (const l of LIVERIES) if (!have.has(l.id)) db.push(l);
-}
-localStorage.setItem('planelog_db', JSON.stringify(db));
-localStorage.setItem('planelog_seed_version', String(SEED_VERSION));
-let sightings = JSON.parse(localStorage.getItem('planelog_sightings') || '{}');
-let collection = new Set(JSON.parse(localStorage.getItem('planelog_collection') || '[]'));
-
-function inCollection(id) { return collection.has(id); }
-function toggleCollect(id, ev) {
-  if (ev) ev.stopPropagation();
-  if (collection.has(id)) collection.delete(id); else collection.add(id);
-  localStorage.setItem('planelog_collection', JSON.stringify([...collection]));
-  applyFilters();
-  const dbtn = document.querySelector('#detailBox .collect-btn');
-  if (dbtn && selectedId === id) {
-    const on = inCollection(id);
-    dbtn.classList.toggle('on', on);
-    dbtn.textContent = on ? '★ In collection' : '☆ Add to collection';
-  }
-}
-
-let activeFilters = { airline: new Set(), type: new Set(), era: new Set(), tag: new Set() };
-let sortKey = 'airline';
-let viewMode = 'grid';
-let selectedId = null;
-let editingId = null;
-
-// A livery is "yours" if you submitted it (flagged) or it isn't part of the seed archive.
-const SEED_IDS = new Set(LIVERIES.map(l => l.id));
-function isMine(l) { return l.submitted === true || !SEED_IDS.has(l.id); }
-
-function save() {
-  try {
-    localStorage.setItem('planelog_db', JSON.stringify(db));
-    localStorage.setItem('planelog_sightings', JSON.stringify(sightings));
-  } catch (e) {
-    alert('Could not save — local storage is full. Your uploaded photo may be too large; try a smaller image.');
-  }
-}
-
-// ── REAL PHOTOS (planespotters.net public photo API) ──
-// reg -> { state: 'pending'|'done'|'none'|'error', photo? }
-const photoCache = {};
-
-async function getPhoto(reg) {
-  if (!reg) return { state: 'none' };
-  if (photoCache[reg]) return photoCache[reg];
-  photoCache[reg] = { state: 'pending' };
-  try {
-    const res = await fetch(`https://api.planespotters.net/pub/photos/reg/${encodeURIComponent(reg)}`);
-    const json = await res.json();
-    const p = json.photos && json.photos[0];
-    if (p) {
-      photoCache[reg] = { state: 'done', photo: {
-        src: (p.thumbnail_large && p.thumbnail_large.src) || (p.thumbnail && p.thumbnail.src),
-        link: p.link,
-        photographer: p.photographer || 'Unknown'
-      }};
-    } else {
-      photoCache[reg] = { state: 'none' };
-    }
-  } catch (e) {
-    photoCache[reg] = { state: 'error' };
-  }
-  return photoCache[reg];
-}
-
-// Lazily load real photos into any rendered swatches that have a [data-reg].
-function hydratePhotos(root) {
-  (root || document).querySelectorAll('.card-swatch[data-reg]').forEach(async sw => {
-    if (sw.dataset.hydrated) return;
-    sw.dataset.hydrated = '1';
-    const res = await getPhoto(sw.dataset.reg);
-    if (res.state === 'done') {
-      const img = sw.querySelector('.swatch-photo');
-      if (!img) return;
-      img.onload = () => img.classList.add('loaded');
-      img.src = res.photo.src;
-    }
-  });
-}
-
-// ── FILTER BUILDING ──
-function buildSidebar() {
-  const mine = db.filter(l => inCollection(l.id));
-  const airlines = [...new Set(mine.map(l => l.airline))].sort();
-  const types = [...new Set(mine.map(l => l.type))].sort();
-  const eras = [...new Set(mine.map(l => l.era))].sort();
-  const tags = [...new Set(mine.flatMap(l => l.tags))].sort();
-
-  document.getElementById('airlineFilters').innerHTML = airlines.map(a =>
-    `<div class="filter-chip${activeFilters.airline.has(a)?' active':''}" onclick="toggleFilter('airline','${a}')">
-      <span>${a}</span>
-      <span class="count">${mine.filter(l=>l.airline===a).length}</span>
-    </div>`
-  ).join('');
-
-  document.getElementById('typeFilters').innerHTML = types.map(t =>
-    `<div class="filter-chip${activeFilters.type.has(t)?' active':''}" onclick="toggleFilter('type','${CSS.escape(t)}')">
-      <span>${t}</span>
-      <span class="count">${mine.filter(l=>l.type===t).length}</span>
-    </div>`
-  ).join('');
-
-  document.getElementById('eraFilters').innerHTML = eras.map(e =>
-    `<div class="era-chip${activeFilters.era.has(e)?' active':''}" onclick="toggleFilter('era','${e}')">${e}</div>`
-  ).join('');
-
-  document.getElementById('tagFilters').innerHTML = tags.map(t =>
-    `<div class="tag-pill${activeFilters.tag.has(t)?' active':''}" onclick="toggleFilter('tag','${t}')">${t}</div>`
-  ).join('');
-}
-
-function toggleFilter(type, val) {
-  val = val.replace(/\\+/g,' ');
-  if (activeFilters[type].has(val)) activeFilters[type].delete(val);
-  else activeFilters[type].add(val);
-  buildSidebar();
-  applyFilters();
-}
-
-// ── COLLECTION CATALOG ──
 const AIRLINE_IATA = {
   'United Airlines': 'UA',
   'American Airlines': 'AA',
@@ -1247,12 +271,24 @@ function monogram(name) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 }
 
+// Bundled logos for carriers the generic logo API gets wrong (Southwest, Pan Am) or
+// can't supply (military branches have no IATA code).
+const LOGO_OVERRIDES = {
+  'Southwest Airlines': { src: 'logos/southwest.svg', emblem: true },
+  'Pan Am':            { src: 'logos/panam.png',     emblem: true },
+  'Royal Air Force':   { src: 'logos/raf.svg',       emblem: true },
+  'U.S. Air Force':    { src: 'logos/usaf.svg',      emblem: false },
+  'U.S. Navy':         { src: 'logos/usnavy.png',    emblem: true },
+};
+
 function logoHTML(group) {
-  const mono = `<div class="cat-logo mono">${monogram(group.airline)}</div>`;
+  const monoFallback = `this.replaceWith(Object.assign(document.createElement('div'),{className:'cat-logo mono',textContent:'${esc(monogram(group.airline))}'}))`;
+  const ov = LOGO_OVERRIDES[group.airline];
+  if (ov) return `<img class="cat-logo${ov.emblem ? ' emblem' : ''}" src="${ov.src}" alt="${esc(group.airline)}" onerror="${monoFallback}">`;
   const iata = AIRLINE_IATA[group.airline];
-  if (group.category === 'military' || !iata) return mono;
+  if (group.category === 'military' || !iata) return `<div class="cat-logo mono">${monogram(group.airline)}</div>`;
   const url = `https://images.daisycon.io/airline/?width=240&height=80&iata=${iata}`;
-  return `<img class="cat-logo" src="${url}" alt="${group.airline}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'cat-logo mono',textContent:'${monogram(group.airline)}'}))">`;
+  return `<img class="cat-logo" src="${url}" alt="${esc(group.airline)}" onerror="${monoFallback}">`;
 }
 
 function setCatFilter(v, el) {
@@ -1260,6 +296,22 @@ function setCatFilter(v, el) {
   document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
   applyFilters();
+}
+
+// Quick "add your own photo" for a spotted (unlocked) livery — replaces the card image
+// with the shot you took. Clears any seed-photo credit since it's now your photo.
+function catUploadPhoto(id, e) {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  readImageFile(file, dataUrl => {
+    const l = db.find(x => x.id === id);
+    if (!l) return;
+    l.photo = dataUrl;
+    delete l.credit;
+    save();
+    applyFilters();
+  });
 }
 
 // Renders the grouped collection catalog. (Named applyFilters so shared detail/collect code refreshes it.)
@@ -1302,13 +354,24 @@ function applyFilters() {
     const items = g.items.slice().sort((a, b) => a.livery.localeCompare(b.livery));
     const caughtN = items.filter(l => inCollection(l.id)).length;
     const pct = Math.round(caughtN / items.length * 100);
-    const cards = items.map(l => `<div class="cat-card ${inCollection(l.id) ? 'caught' : 'uncaught'}">${cardHTML(l)}</div>`).join('');
+    const cards = items.map(l => {
+      const caught = inCollection(l.id);
+      const overlay = caught
+        ? `<label class="cat-upload" title="Add a photo you took" onclick="event.stopPropagation()">
+             <input type="file" accept="image/*" onchange="catUploadPhoto(${l.id}, event)" hidden>
+             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+           </label>`
+        : `<div class="cat-lock" title="Not yet spotted — tap the ☆ when you catch it">
+             <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+           </div>`;
+      return `<div class="cat-card ${caught ? 'caught' : 'uncaught'}">${cardHTML(l)}${overlay}</div>`;
+    }).join('');
     return `
       <section class="cat-group">
         <div class="cat-group-head">
           ${logoHTML(g)}
           <div class="cat-group-meta">
-            <div class="cat-group-name">${g.airline}</div>
+            <div class="cat-group-name">${esc(g.airline)}</div>
             <div class="cat-group-sub">${g.category === 'military' ? 'Military' : 'Airline'} · ${caughtN}/${items.length} caught</div>
           </div>
           <div class="cat-group-bar"><div class="cat-group-bar-fill" style="width:${pct}%"></div></div>
@@ -1319,310 +382,9 @@ function applyFilters() {
   hydratePhotos(container);
 }
 
-function cardHTML(l) {
-  const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1] || l.colors[0]} 40% 70%, ${l.colors[2] || l.colors[1] || l.colors[0]} 70%)`;
-  const isSelected = l.id === selectedId;
-  const regAttr = l.photo ? '' : ` data-reg="${l.tail}"`;
-  const photoImg = l.photo ? `<img class="swatch-photo loaded" src="${l.photo}" alt="">` : `<img class="swatch-photo" alt="">`;
-  const on = inCollection(l.id);
-  const star = `<button class="collect-star${on?' on':''}" onclick="toggleCollect(${l.id}, event)" title="${on?'In your collection':'Add to collection'}">${on?'★':'☆'}</button>`;
-  return `
-    <div class="livery-card${isSelected?' selected':''}" onclick="openDetail(${l.id})">
-      <div class="card-swatch"${regAttr} style="${bg}">
-        <div class="swatch-plane">${planeSVG()}</div>
-        ${photoImg}
-        ${star}
-        <span class="swatch-tail">${l.tail}</span>
-        <span class="swatch-era">${l.era}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-airline">${l.airline}</div>
-        <div class="card-livery">${l.livery}</div>
-        <div class="card-type">${l.type}</div>
-        <div class="card-tags">${l.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>`;
-}
-
-function planeSVG() {
-  return `<svg viewBox="0 0 100 40" fill="white" xmlns="http://www.w3.org/2000/svg">
-    <path d="M95 18 L60 18 L40 4 L35 4 L45 18 L20 18 L12 12 L7 12 L12 20 L7 28 L12 28 L20 22 L45 22 L35 36 L40 36 L60 22 L95 22 Q100 20 95 18Z"/>
-  </svg>`;
-}
-
-// ── DETAIL ──
-function openDetail(id) {
-  selectedId = id;
-  applyFilters();
-  const l = db.find(x => x.id === id);
-  if (!l) return;
-  if (!sightings[id]) sightings[id] = [];
-  const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1]||l.colors[0]} 40% 70%, ${l.colors[2]||l.colors[1]||l.colors[0]} 70%)`;
-
-  document.getElementById('detailBox').innerHTML = `
-    <div class="detail-swatch-full card-swatch"${l.photo ? '' : ` data-reg="${l.tail}"`} style="${bg}">
-      <div class="swatch-plane">${planeSVG()}</div>
-      ${l.photo ? `<img class="swatch-photo loaded" src="${l.photo}" alt="">` : `<img class="swatch-photo" alt="">`}
-      <button class="detail-close" onclick="closeDetail(null,true)">×</button>
-    </div>
-    <div class="detail-content">
-      <div class="detail-title">${l.livery}</div>
-      <div class="detail-sub">${l.airline} · ${l.type}</div>
-      <div class="detail-tail">${l.tail}</div>
-      <div class="detail-actions">
-        <button class="detail-action-btn collect-btn${inCollection(l.id)?' on':''}" onclick="toggleCollect(${l.id})">${inCollection(l.id)?'★ In collection':'☆ Add to collection'}</button>
-        <button class="detail-action-btn" onclick="editLivery(${l.id})">Edit</button>
-        <button class="detail-action-btn danger" onclick="deleteLivery(${l.id})">Delete</button>
-      </div>
-      <div class="detail-fields">
-        <div class="df"><label>Era</label><p>${l.era}</p></div>
-        <div class="df"><label>Tags</label><p>${l.tags.join(', ')}</p></div>
-        <div class="df full"><label>Notes</label><p>${l.notes}</p></div>
-        <div class="df full colors"><label>Color palette</label><p>${l.colors.map(c=>`
-          <span class="color-swatch-sm">
-            <span class="color-dot" style="background:${c}"></span>
-            <span class="color-hex">${c}</span>
-          </span>`).join('')}</p>
-        </div>
-      </div>
-      <div class="spotter-section">
-        <h3>My sightings (${(sightings[id]||[]).length})</h3>
-        <div class="log-add">
-          <input type="text" id="log-loc-${id}" placeholder="Airport or location (e.g. KLAX, gate 42B)">
-          <input type="text" id="log-date-${id}" placeholder="Date (e.g. Jun 2024)" style="max-width:140px">
-          <button onclick="addSighting(${id})">Log</button>
-        </div>
-        <div class="log-entries" id="log-entries-${id}">${renderSightings(id)}</div>
-      </div>
-    </div>
-  `;
-  document.getElementById('detailOverlay').classList.add('open');
-
-  // Load the real photo (if any) into the detail swatch, with attribution.
-  const swatch = document.querySelector('#detailBox .detail-swatch-full');
-  if (swatch && !l.photo) {
-    swatch.dataset.hydrated = '1';
-    getPhoto(l.tail).then(res => {
-      if (selectedId !== id || res.state !== 'done') return;
-      const img = swatch.querySelector('.swatch-photo');
-      img.onload = () => img.classList.add('loaded');
-      img.src = res.photo.src;
-      const credit = document.createElement('a');
-      credit.className = 'photo-credit';
-      credit.href = res.photo.link;
-      credit.target = '_blank';
-      credit.rel = 'noopener';
-      credit.textContent = `© ${res.photo.photographer} · Planespotters`;
-      swatch.appendChild(credit);
-    });
-  }
-}
-
-function renderSightings(id) {
-  const entries = sightings[id] || [];
-  if (!entries.length) return '<div class="log-empty">No sightings logged yet — be the first!</div>';
-  return entries.map((e, i) => `
-    <div class="log-entry">
-      <span class="log-entry-loc">${e.loc}</span>
-      <span class="log-entry-date">${e.date}</span>
-      <button class="log-entry-rm" onclick="removeSighting(${id},${i})" title="Remove">×</button>
-    </div>`).join('');
-}
-
-function addSighting(id) {
-  const loc = document.getElementById('log-loc-'+id).value.trim();
-  const date = document.getElementById('log-date-'+id).value.trim();
-  if (!loc) return;
-  if (!sightings[id]) sightings[id] = [];
-  sightings[id].unshift({ loc, date: date || '—' });
-  save();
-  document.getElementById('log-entries-'+id).innerHTML = renderSightings(id);
-  document.getElementById('log-loc-'+id).value = '';
-  document.getElementById('log-date-'+id).value = '';
-  // update count
-  document.querySelector('.spotter-section h3').textContent = `My sightings (${sightings[id].length})`;
-}
-
-function removeSighting(id, idx) {
-  sightings[id].splice(idx, 1);
-  save();
-  document.getElementById('log-entries-'+id).innerHTML = renderSightings(id);
-  document.querySelector('.spotter-section h3').textContent = `My sightings (${sightings[id].length})`;
-}
-
-function closeDetail(e, force) {
-  if (force || (e && e.target === document.getElementById('detailOverlay'))) {
-    document.getElementById('detailOverlay').classList.remove('open');
-    selectedId = null;
-    applyFilters();
-  }
-}
-
-// ── SUBMIT / EDIT / DELETE ──
-const ERAS = ['1950s','1960s','1970s','1980s','1990s','2000s','2010s','2020s'];
-const DEFAULT_COLORS = ['#004B87','#FFFFFF','#A2AAAD'];
-
-function hexOrDefault(c, fallback) {
-  return (typeof c === 'string' && /^#[0-9a-fA-F]{6}$/.test(c)) ? c : fallback;
-}
-
-// Photo currently staged in the submit/edit form (data URL).
-let formPhoto = '';
-
-// Read an image file, downscale it (to keep localStorage small), return a JPEG data URL.
-function readImageFile(file, cb) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      const max = 1100;
-      let w = img.width, h = img.height;
-      if (w > max || h > max) { const s = max / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      cb(c.toDataURL('image/jpeg', 0.82));
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function onPhotoPick(e) {
-  const file = e.target.files && e.target.files[0];
-  if (!file) return;
-  readImageFile(file, dataUrl => { formPhoto = dataUrl; showPhotoPreview(); });
-}
-
-function showPhotoPreview() {
-  const prev = document.getElementById('sub-photo-preview');
-  const clr = document.getElementById('sub-photo-clear');
-  if (formPhoto) {
-    prev.src = formPhoto; prev.style.display = 'block'; clr.style.display = 'inline-block';
-  } else {
-    prev.removeAttribute('src'); prev.style.display = 'none'; clr.style.display = 'none';
-  }
-}
-
-function clearPhoto() {
-  formPhoto = '';
-  document.getElementById('sub-photo').value = '';
-  showPhotoPreview();
-}
-
-function setForm(l) {
-  document.getElementById('sub-tail').value = l.tail || '';
-  document.getElementById('sub-livery').value = l.livery || '';
-  document.getElementById('sub-airline').value = l.airline || '';
-  document.getElementById('sub-type').value = (l.type && l.type !== 'Unknown') ? l.type : '';
-  document.getElementById('sub-era').value = ERAS.includes(l.era) ? l.era : '';
-  document.getElementById('sub-notes').value = l.notes || '';
-  document.getElementById('sub-tags').value = (l.tags || []).join(', ');
-  const colors = l.colors || DEFAULT_COLORS;
-  document.getElementById('sub-c1').value = hexOrDefault(colors[0], DEFAULT_COLORS[0]);
-  document.getElementById('sub-c2').value = hexOrDefault(colors[1], DEFAULT_COLORS[1]);
-  document.getElementById('sub-c3').value = hexOrDefault(colors[2], DEFAULT_COLORS[2]);
-  formPhoto = l.photo || '';
-  document.getElementById('sub-photo').value = '';
-  showPhotoPreview();
-}
-
-function openSubmit() {
-  editingId = null;
-  document.getElementById('submitTitle').textContent = 'Submit a livery';
-  document.getElementById('submitDesc').textContent = 'Add a livery to your archive — saved locally in your browser.';
-  document.getElementById('submitBtn').textContent = 'Add livery';
-  setForm({ colors: DEFAULT_COLORS });
-  document.getElementById('submitOverlay').classList.add('open');
-}
-
-function editLivery(id) {
-  const l = db.find(x => x.id === id);
-  if (!l) return;
-  editingId = id;
-  document.getElementById('submitTitle').textContent = 'Edit livery';
-  document.getElementById('submitDesc').textContent = 'Update the details for this livery.';
-  document.getElementById('submitBtn').textContent = 'Save changes';
-  setForm(l);
-  closeDetail(null, true);
-  document.getElementById('submitOverlay').classList.add('open');
-}
-
-function closeSubmit(e) {
-  if (!e || e.target === document.getElementById('submitOverlay')) {
-    document.getElementById('submitOverlay').classList.remove('open');
-    editingId = null;
-  }
-}
-
-function submitLivery() {
-  const tail = document.getElementById('sub-tail').value.trim();
-  const livery = document.getElementById('sub-livery').value.trim();
-  const airline = document.getElementById('sub-airline').value.trim();
-  const type = document.getElementById('sub-type').value.trim();
-  const era = document.getElementById('sub-era').value;
-  const notes = document.getElementById('sub-notes').value.trim();
-  const tags = document.getElementById('sub-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-  const colors = [
-    document.getElementById('sub-c1').value,
-    document.getElementById('sub-c2').value,
-    document.getElementById('sub-c3').value
-  ];
-  if (!tail || !livery || !airline) { alert('Please fill in at least tail number, livery name, and airline.'); return; }
-
-  if (editingId) {
-    const l = db.find(x => x.id === editingId);
-    if (l) {
-      const oldTail = l.tail;
-      Object.assign(l, { airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto });
-      if (oldTail !== l.tail) delete photoCache[l.tail]; // re-fetch photo for the new registration
-    }
-  } else {
-    db.push({ id: Date.now(), airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto, sightings: [], submitted: true });
-  }
-
-  save();
-  buildSidebar();
-  applyFilters();
-  closeSubmit();
-}
-
-function deleteLivery(id) {
-  const l = db.find(x => x.id === id);
-  if (!l) return;
-  if (!confirm(`Delete "${l.livery}" — ${l.airline} ${l.tail}?\nThis also removes its sightings and cannot be undone.`)) return;
-  db = db.filter(x => x.id !== id);
-  delete sightings[id];
-  save();
-  buildSidebar();
-  closeDetail(null, true);
-}
-
-// ── SORT / VIEW ──
-function setSort(key, el) {
-  sortKey = key;
-  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
-}
-function setView(mode, el) {
-  viewMode = mode;
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
-}
-
 // ── INIT ──
 buildSidebar();
 applyFilters();
-
-// keyboard close
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeDetail(null, true);
-    closeSubmit();
-  }
-});
 </script>
 </body>
 </html>

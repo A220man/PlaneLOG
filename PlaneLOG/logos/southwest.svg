@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <clipPath id="swHeart">
+      <path d="M50 84 C14 58 14 26 35 26 C45 26 50 33 50 39 C50 33 55 26 65 26 C86 26 86 58 50 84 Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#swHeart)">
+    <rect x="0" y="0" width="34" height="100" fill="#304CB2"/>
+    <rect x="34" y="0" width="32" height="100" fill="#E4002B"/>
+    <rect x="66" y="0" width="34" height="100" fill="#F9B612"/>
+  </g>
+</svg>
