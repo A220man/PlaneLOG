@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 760" role="img" aria-label="Cathay Pacific">
+  <g fill="none" stroke="#016E6B" stroke-linecap="round">
+    <path stroke-width="6" d="M300 448 C275 400 258 362 250 330"/>
+    <path stroke-width="7" d="M305 452 C285 402 272 358 270 312"/>
+    <path stroke-width="8" d="M311 452 C298 400 292 352 292 300"/>
+    <path stroke-width="7" d="M318 450 C314 398 316 348 322 302"/>
+    <path stroke-width="6" d="M326 452 C330 402 338 352 348 316"/>
+  </g>
+  <path fill="#016E6B" d="M300 430
+    C266 502 260 592 286 658
+    C302 640 432 586 562 544
+    C470 580 360 562 322 518
+    C312 489 305 459 300 430 Z"/>
+</svg>
