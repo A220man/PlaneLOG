@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PlaneLOG — Spot · Log · Collect Aircraft</title>
+<meta name="description" content="Spot, log, and collect aircraft liveries — airliners and military alike. Upload your own photos, build a collection of liveries you've caught, and hunt down the rare ones.">
+<!-- Social preview. For best Facebook support, set og:image/og:url to your absolute Vercel URL (e.g. https://your-app.vercel.app/apple-touch-icon.png). -->
+<meta property="og:title" content="PlaneLOG — Spot · Log · Collect Aircraft">
+<meta property="og:description" content="Log every aircraft you spot and build a collection of the liveries you've caught.">
+<meta property="og:image" content="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PlaneLOG — Spot · Log · Collect Aircraft">
+<meta name="twitter:description" content="Log every aircraft you spot and build a collection of the liveries you've caught.">
+<meta name="twitter:image" content="apple-touch-icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,9 +41,9 @@
       <input type="text" id="homeSearch" placeholder="Search a tail, airline, or livery…" onkeydown="if(event.key==='Enter')enterArchive(this.value)">
     </div>
     <div class="home-stats">
-      <div class="home-stat"><div class="home-stat-n" id="homeStatLiveries">8</div><div class="home-stat-l">liveries</div></div>
-      <div class="home-stat"><div class="home-stat-n" id="homeStatAirlines">6</div><div class="home-stat-l">airlines</div></div>
-      <div class="home-stat"><div class="home-stat-n" id="homeStatDecades">6</div><div class="home-stat-l">decades</div></div>
+      <div class="home-stat"><div class="home-stat-n" id="homeStatLiveries">—</div><div class="home-stat-l">liveries</div></div>
+      <div class="home-stat"><div class="home-stat-n" id="homeStatAirlines">—</div><div class="home-stat-l">airlines</div></div>
+      <div class="home-stat"><div class="home-stat-n" id="homeStatDecades">—</div><div class="home-stat-l">decades</div></div>
     </div>
     <div class="home-cta-row">
       <button class="home-cta" onclick="enterArchive()">Enter the archive →</button>
@@ -68,15 +78,15 @@
     </div>
     <div class="nav-stats">
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statLiveries">8</div>
+        <div class="nav-stat-n" id="statLiveries">—</div>
         <div class="nav-stat-l">liveries</div>
       </div>
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statAirlines">6</div>
+        <div class="nav-stat-n" id="statAirlines">—</div>
         <div class="nav-stat-l">airlines</div>
       </div>
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statDecades">6</div>
+        <div class="nav-stat-n" id="statDecades">—</div>
         <div class="nav-stat-l">decades</div>
       </div>
     </div>
@@ -118,7 +128,7 @@
   <!-- MAIN -->
   <main>
     <div class="main-toolbar">
-      <div class="result-count" id="resultCount"><strong>8</strong> liveries</div>
+      <div class="result-count" id="resultCount"><strong>—</strong> liveries</div>
       <div class="sort-row">
         <span class="sort-label">Sort:</span>
         <button class="sort-btn active" onclick="setSort('airline',this)">Airline</button>

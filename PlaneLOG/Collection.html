@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Collection — PlaneLOG</title>
+<meta name="description" content="The PlaneLOG catalog — see which aircraft liveries you've caught and which rare ones are still on your list.">
+<meta property="og:title" content="Your Collection — PlaneLOG">
+<meta property="og:description" content="See which aircraft liveries you've caught and which rare ones are still on your list.">
+<meta property="og:image" content="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -126,15 +132,15 @@ aside { display: none; }
     </div>
     <div class="nav-stats">
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statLiveries">0</div>
+        <div class="nav-stat-n" id="statLiveries">—</div>
         <div class="nav-stat-l">caught</div>
       </div>
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statAirlines">0</div>
+        <div class="nav-stat-n" id="statAirlines">—</div>
         <div class="nav-stat-l">airlines</div>
       </div>
       <div class="nav-stat">
-        <div class="nav-stat-n" id="statDecades">0</div>
+        <div class="nav-stat-n" id="statDecades">—</div>
         <div class="nav-stat-l">military</div>
       </div>
     </div>
@@ -264,6 +270,59 @@ const AIRLINE_IATA = {
   'Southwest Airlines': 'WN',
   'British Airways': 'BA',
   'Pan Am': 'PA',
+  'Lufthansa': 'LH',
+  'Air France': 'AF',
+  'KLM': 'KL',
+  'Emirates': 'EK',
+  'Qantas': 'QF',
+  'Singapore Airlines': 'SQ',
+  'Cathay Pacific': 'CX',
+  'Japan Airlines': 'JL',
+  'Virgin Atlantic': 'VS',
+  'JetBlue': 'B6',
+  'Alaska Airlines': 'AS',
+  'Air Canada': 'AC',
+  'Aer Lingus': 'EI',
+  'Ryanair': 'FR',
+  'Etihad Airways': 'EY',
+  'Qatar Airways': 'QR',
+  'Turkish Airlines': 'TK',
+  'Finnair': 'AY',
+  'All Nippon Airways': 'NH',
+  'Korean Air': 'KE',
+  'Asiana Airlines': 'OZ',
+  'China Airlines': 'CI',
+  'EVA Air': 'BR',
+  'Thai Airways': 'TG',
+  'Malaysia Airlines': 'MH',
+  'Air India': 'AI',
+  'Saudia': 'SV',
+  'Air New Zealand': 'NZ',
+  'LATAM': 'LA',
+  'Avianca': 'AV',
+  'Aeroméxico': 'AM',
+  'Iberia': 'IB',
+  'Swiss': 'LX',
+  'Austrian Airlines': 'OS',
+  'TAP Air Portugal': 'TP',
+  'SAS Scandinavian Airlines': 'SK',
+  'El Al': 'LY',
+  'Hawaiian Airlines': 'HA',
+  'Frontier Airlines': 'F9',
+  'Vietnam Airlines': 'VN',
+  'Philippine Airlines': 'PR',
+  'Garuda Indonesia': 'GA',
+  'Air China': 'CA',
+  'China Southern': 'CZ',
+  'Ethiopian Airlines': 'ET',
+  'Icelandair': 'FI',
+  'Aegean Airlines': 'A3',
+  'easyJet': 'U2',
+  'Wizz Air': 'W6',
+  'Virgin Australia': 'VA',
+  'Oman Air': 'WY',
+  'Royal Air Maroc': 'AT',
+  'SriLankan Airlines': 'UL',
 };
 let catFilter = 'all';
 
