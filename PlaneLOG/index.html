@@ -49,6 +49,24 @@
       <button class="home-cta" onclick="enterArchive()">Enter the archive →</button>
       <button class="home-cta secondary" onclick="enterArchive(); openSubmit()">✈ Log a plane</button>
     </div>
+    <div class="home-featured-label">Rare planes near you<span class="home-live-dot">● LIVE</span></div>
+    <div class="live-panel" id="livePanel">
+      <div class="live-controls">
+        <button class="live-loc-btn" onclick="liveUseLocation()">📍 Use my location</button>
+        <div class="live-ap-search">
+          <input type="text" id="liveAirportSearch" placeholder="…or search an airport (JFK, Heathrow, LAX)" oninput="liveAirportSuggest(this.value)" autocomplete="off">
+          <div class="live-ap-results" id="liveAirportResults" style="display:none"></div>
+        </div>
+        <select id="liveRadius" aria-label="Scan radius">
+          <option value="45">45 nm</option>
+          <option value="90" selected>90 nm</option>
+          <option value="150">150 nm</option>
+          <option value="250">250 nm</option>
+        </select>
+      </div>
+      <div class="live-status" id="liveStatus">Catalog liveries airborne near you, right now — live ADS-B positions, mapped. Share your location or search an airport to scan.</div>
+      <div class="live-grid" id="liveResults"></div>
+    </div>
     <div class="home-featured-label">Top photos</div>
     <div class="home-range" id="homeRange">
       <button type="button" data-range="day" onclick="setTopRange('day',this)">24 hours</button>

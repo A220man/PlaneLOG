@@ -4,264 +4,264 @@
 // the shared helpers below: renderSidebar(), filterPool() and renderGrid().
 
 const LIVERIES = [
-  {id:1,airline:'United Airlines',tail:'N14120',type:'Boeing 757-200',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'United\'s current globe livery, introduced 2010 and kept through the Continental merger. N14120 is a Boeing 757-200.',sightings:[]},
+  {id:1,airline:'United Airlines',tail:'N14120',icao24:'A0A91E',type:'Boeing 757-200',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'United\'s current globe livery, introduced 2010 and kept through the Continental merger. N14120 is a Boeing 757-200.',sightings:[]},
   {id:2,airline:'United Airlines',tail:'N516UA',type:'Boeing 757-200',era:'1990s',livery:'Battleship (tulip)',colors:['#4A4E5A','#C6A84B','#FFFFFF'],tags:['retro','tulip','classic'],notes:'Nicknamed "Battleship" for its grey fuselage. Flew 1993–2004, one of the most distinctive US carrier schemes.',sightings:[]},
   {id:3,airline:'American Airlines',tail:'N335AA',type:'Boeing 767-200',era:'1980s',livery:'Polished metal',colors:['#C0C0C0','#CC0000','#003087'],tags:['classic','bare metal','iconic'],notes:'Iconic unpainted aluminium fuselage with red and blue cheatline. No base coat — actual polished bare metal.',sightings:[]},
-  {id:4,airline:'American Airlines',tail:'N102NN',type:'Airbus A321',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'American\'s livery launched January 2013, around the US Airways merger. N102NN is an Airbus A321.',sightings:[]},
-  {id:5,airline:'Delta Air Lines',tail:'N668DN',type:'Boeing 757-200',era:'2000s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta\'s widget tail design. Scheme introduced 2000, refreshed with brighter red in 2007.',sightings:[]},
-  {id:6,airline:'Southwest Airlines',tail:'N500WR',type:'Boeing 737-800',era:'2020s',livery:'Freedom One',colors:['#B22234','#FFFFFF','#3C3B6E'],tags:['special','flag','50th anniversary'],notes:'US-flag livery unveiled June 2021 for Southwest\'s 50th anniversary, honouring the US military. The first Boeing 737-800 to wear one of Southwest\'s special schemes.',sightings:[]},
+  {id:4,airline:'American Airlines',tail:'N102NN',icao24:'A00D5B',type:'Airbus A321',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'American\'s livery launched January 2013, around the US Airways merger. N102NN is an Airbus A321.',sightings:[]},
+  {id:5,airline:'Delta Air Lines',tail:'N668DN',icao24:'A8D249',type:'Boeing 757-200',era:'2000s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta\'s widget tail design. Scheme introduced 2000, refreshed with brighter red in 2007.',sightings:[]},
+  {id:6,airline:'Southwest Airlines',tail:'N500WR',icao24:'A63BF4',type:'Boeing 737-800',era:'2020s',livery:'Freedom One',colors:['#B22234','#FFFFFF','#3C3B6E'],tags:['special','flag','50th anniversary'],notes:'US-flag livery unveiled June 2021 for Southwest\'s 50th anniversary, honouring the US military. The first Boeing 737-800 to wear one of Southwest\'s special schemes.',sightings:[]},
   {id:7,airline:'British Airways',tail:'G-BOAG',type:'Concorde',era:'2000s',livery:'Speedbird (Concorde)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['retro','Concorde','supersonic'],notes:'British Airways Concorde G-BOAG "Alpha Golf". On its retirement in November 2003 it set a New York–Seattle speed record while being delivered to The Museum of Flight in Seattle, where it is preserved today.',sightings:[]},
   {id:8,airline:'Pan Am',tail:'N734PA',type:'Boeing 747-100',era:'1970s',livery:'Globe (blue/white)',colors:['#003591','#FFFFFF','#A0B8D8'],tags:['historic','globe','defunct'],notes:'Pan Am\'s iconic blue-globe livery on a Boeing 747-121 — the type that opened the Jumbo Jet age for the airline. Pan Am was the 747\'s launch customer, flying its first commercial service in January 1970.',sightings:[]},
   // ── More airliners ──
-  {id:9,airline:'United Airlines',tail:'N2333U',type:'Boeing 777-300ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline','widebody'],notes:'United\'s largest twinjet — the Boeing 777-300ER — in the current blue-globe livery, flown on high-capacity long-haul routes.',sightings:[]},
-  {id:10,airline:'United Airlines',tail:'N24976',type:'Boeing 787-9',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','dreamliner','widebody'],notes:'A United Boeing 787-9 Dreamliner in the current globe livery, used to open long, thin international routes.',sightings:[]},
-  {id:11,airline:'American Airlines',tail:'N753AN',type:'Boeing 777-200ER',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','flag','widebody'],notes:'An American 777-200ER wearing the 2013 "New American" livery with the silver Flight Symbol tail.',sightings:[]},
-  {id:12,airline:'American Airlines',tail:'N800AN',type:'Boeing 787-8',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'N800AN was American\'s first Boeing 787-8 Dreamliner, delivered in 2015 in the current livery.',sightings:[]},
-  {id:13,airline:'Delta Air Lines',tail:'N171DZ',type:'Boeing 767-300ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'A Delta 767-300ER in the current widget livery — a long-serving transatlantic workhorse.',sightings:[]},
-  {id:14,airline:'Delta Air Lines',tail:'N502DN',type:'Airbus A350-900',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'Delta\'s flagship Airbus A350-900, leading its long-haul fleet across the Pacific and Atlantic.',sightings:[]},
-  {id:15,airline:'Southwest Airlines',tail:'N8645A',type:'Boeing 737-800',era:'2010s',livery:'Heart (current)',colors:['#304CB2','#E4002B','#F9B612'],tags:['current','heart'],notes:'Southwest\'s current "Heart" livery, introduced in 2014, on a Boeing 737-800.',sightings:[]},
+  {id:9,airline:'United Airlines',tail:'N2333U',icao24:'A21679',type:'Boeing 777-300ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline','widebody'],notes:'United\'s largest twinjet — the Boeing 777-300ER — in the current blue-globe livery, flown on high-capacity long-haul routes.',sightings:[]},
+  {id:10,airline:'United Airlines',tail:'N24976',icao24:'A254DA',type:'Boeing 787-9',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','dreamliner','widebody'],notes:'A United Boeing 787-9 Dreamliner in the current globe livery, used to open long, thin international routes.',sightings:[]},
+  {id:11,airline:'American Airlines',tail:'N753AN',icao24:'AA253B',type:'Boeing 777-200ER',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','flag','widebody'],notes:'An American 777-200ER wearing the 2013 "New American" livery with the silver Flight Symbol tail.',sightings:[]},
+  {id:12,airline:'American Airlines',tail:'N800AN',icao24:'AAE1EA',type:'Boeing 787-8',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'N800AN was American\'s first Boeing 787-8 Dreamliner, delivered in 2015 in the current livery.',sightings:[]},
+  {id:13,airline:'Delta Air Lines',tail:'N171DZ',icao24:'A11D47',type:'Boeing 767-300ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'A Delta 767-300ER in the current widget livery — a long-serving transatlantic workhorse.',sightings:[]},
+  {id:14,airline:'Delta Air Lines',tail:'N502DN',icao24:'A641B6',type:'Airbus A350-900',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'Delta\'s flagship Airbus A350-900, leading its long-haul fleet across the Pacific and Atlantic.',sightings:[]},
+  {id:15,airline:'Southwest Airlines',tail:'N8645A',icao24:'ABE0BB',type:'Boeing 737-800',era:'2010s',livery:'Heart (current)',colors:['#304CB2','#E4002B','#F9B612'],tags:['current','heart'],notes:'Southwest\'s current "Heart" livery, introduced in 2014, on a Boeing 737-800.',sightings:[]},
   {id:16,airline:'British Airways',tail:'G-CIVB',type:'Boeing 747-400',era:'2010s',livery:'BOAC retro',colors:['#00247D','#FFFFFF','#D4AF37'],tags:['retro','BOAC','jumbo'],notes:'For BA\'s centenary in 2019, Boeing 747-400 G-CIVB was repainted into the classic BOAC blue-and-gold livery. Retired in 2020 and now preserved at Cotswold Airport.',sightings:[]},
-  {id:17,airline:'British Airways',tail:'G-XLEA',type:'Airbus A380',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','superjumbo','flag'],notes:'G-XLEA was British Airways\' first Airbus A380, wearing the current Chatham Dockyard livery with the Union-flag tail.',sightings:[]},
-  {id:18,airline:'Lufthansa',tail:'D-ABYA',type:'Boeing 747-8',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','jumbo','star alliance'],notes:'Lufthansa\'s Boeing 747-8 Intercontinental in the navy-and-yellow crane livery — the flagship of its long-haul fleet and the only Western passenger 747-8 operator.',sightings:[]},
-  {id:19,airline:'Lufthansa',tail:'D-AIMA',type:'Airbus A380',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','superjumbo'],notes:'D-AIMA was Lufthansa\'s first Airbus A380, named "Frankfurt am Main".',sightings:[]},
+  {id:17,airline:'British Airways',tail:'G-XLEA',icao24:'40688B',type:'Airbus A380',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','superjumbo','flag'],notes:'G-XLEA was British Airways\' first Airbus A380, wearing the current Chatham Dockyard livery with the Union-flag tail.',sightings:[]},
+  {id:18,airline:'Lufthansa',tail:'D-ABYA',icao24:'3C4B21',type:'Boeing 747-8',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','jumbo','star alliance'],notes:'Lufthansa\'s Boeing 747-8 Intercontinental in the navy-and-yellow crane livery — the flagship of its long-haul fleet and the only Western passenger 747-8 operator.',sightings:[]},
+  {id:19,airline:'Lufthansa',tail:'D-AIMA',icao24:'3C65A1',type:'Airbus A380',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','superjumbo'],notes:'D-AIMA was Lufthansa\'s first Airbus A380, named "Frankfurt am Main".',sightings:[]},
   {id:20,airline:'Air France',tail:'F-HPJA',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['retired','superjumbo','rare'],notes:'F-HPJA was Air France\'s first Airbus A380, in the carrier\'s blue, white and red livery. Air France retired its entire A380 fleet in 2020, so this is now a historical catch.',sightings:[]},
-  {id:21,airline:'Air France',tail:'F-GZNT',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','widebody'],notes:'An Air France Boeing 777-300ER, the backbone of the airline\'s long-haul fleet.',sightings:[]},
-  {id:23,airline:'KLM',tail:'PH-BVA',type:'Boeing 777-300ER',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','widebody'],notes:'KLM Royal Dutch Airlines\' sky-blue livery on a Boeing 777-300ER. KLM is the world\'s oldest airline still flying under its original name.',sightings:[]},
-  {id:24,airline:'Qantas',tail:'VH-OQA',type:'Airbus A380',era:'2000s',livery:'Flying Roo (Nancy Bird Walton)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['flag','superjumbo','roo'],notes:'VH-OQA "Nancy Bird Walton" was the first Airbus A380 delivered to Qantas, wearing the red Flying Kangaroo on the tail.',sightings:[]},
+  {id:21,airline:'Air France',tail:'F-GZNT',icao24:'3965B3',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','widebody'],notes:'An Air France Boeing 777-300ER, the backbone of the airline\'s long-haul fleet.',sightings:[]},
+  {id:23,airline:'KLM',tail:'PH-BVA',icao24:'48455E',type:'Boeing 777-300ER',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','widebody'],notes:'KLM Royal Dutch Airlines\' sky-blue livery on a Boeing 777-300ER. KLM is the world\'s oldest airline still flying under its original name.',sightings:[]},
+  {id:24,airline:'Qantas',tail:'VH-OQA',icao24:'7C4920',type:'Airbus A380',era:'2000s',livery:'Flying Roo (Nancy Bird Walton)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['flag','superjumbo','roo'],notes:'VH-OQA "Nancy Bird Walton" was the first Airbus A380 delivered to Qantas, wearing the red Flying Kangaroo on the tail.',sightings:[]},
   {id:25,airline:'Singapore Airlines',tail:'9V-SKA',type:'Airbus A380',era:'2000s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['flag','superjumbo'],notes:'9V-SKA operated the world\'s first commercial Airbus A380 flight, Singapore to Sydney, in October 2007.',sightings:[]},
   {id:26,airline:'Cathay Pacific',tail:'B-KPB',type:'Boeing 777-300ER',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','widebody','brushwing'],notes:'Cathay Pacific\'s green "brushwing" livery on a Boeing 777-300ER.',sightings:[]},
-  {id:27,airline:'Japan Airlines',tail:'JA743J',type:'Boeing 777-300ER',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'Japan Airlines\' red "Tsurumaru" crane emblem on a Boeing 777-300ER.',sightings:[]},
+  {id:27,airline:'Japan Airlines',tail:'JA743J',icao24:'868340',type:'Boeing 777-300ER',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'Japan Airlines\' red "Tsurumaru" crane emblem on a Boeing 777-300ER.',sightings:[]},
   {id:28,airline:'Virgin Atlantic',tail:'G-VLIP',type:'Boeing 747-400',era:'2000s',livery:'Hot Lips',colors:['#E10A0A','#FFFFFF','#4B0082'],tags:['jumbo','flying lady'],notes:'Virgin Atlantic Boeing 747-400 G-VLIP, named "Hot Lips", in the red Virgin livery with a Flying Lady on the nose.',sightings:[]},
-  {id:29,airline:'JetBlue',tail:'N709JB',type:'Airbus A320',era:'2010s',livery:'Stripes',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current','tailfin'],notes:'A JetBlue Airbus A320 wearing one of the airline\'s patterned tailfin designs.',sightings:[]},
-  {id:30,airline:'Alaska Airlines',tail:'N559AS',type:'Boeing 737-800',era:'2020s',livery:'Xáat Kwáani (Salmon People)',colors:['#0B2A5B','#1E6FB0','#E6649B'],tags:['special','salmon','indigenous','rare'],notes:'N559AS ‘Xáat Kwáani’ (Salmon People) — a 2023 Alaska Airlines 737-800 livery by Tlingit artist Crystal Worl, depicting a salmon in Northwest Coast formline art. The first US airliner named in an Alaska Native language.',sightings:[]},
-  {id:31,airline:'Air Canada',tail:'C-FRTG',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'Air Canada\'s bold red-and-black livery on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:32,airline:'Aer Lingus',tail:'EI-DEO',type:'Airbus A320',era:'2010s',livery:'Shamrock (current)',colors:['#006272','#FFFFFF','#9CA299'],tags:['current','shamrock'],notes:'Aer Lingus\' teal shamrock livery on an Airbus A320.',sightings:[]},
-  {id:33,airline:'Ryanair',tail:'EI-DCL',type:'Boeing 737-800',era:'2010s',livery:'Current (blue/yellow)',colors:['#073590','#F1C933','#FFFFFF'],tags:['current','low-cost'],notes:'Europe\'s largest low-cost carrier — a Ryanair Boeing 737-800 in blue and yellow.',sightings:[]},
-  {id:34,airline:'Etihad Airways',tail:'A6-BLA',type:'Boeing 787-9',era:'2010s',livery:'Facets (current)',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','dreamliner'],notes:'Etihad Airways\' "Facets" livery on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:35,airline:'Qatar Airways',tail:'A7-BCA',type:'Boeing 787-8',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','dreamliner','oryx'],notes:'Qatar Airways\' maroon Oryx livery on a Boeing 787-8 Dreamliner.',sightings:[]},
-  {id:36,airline:'Turkish Airlines',tail:'TC-JJE',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','widebody'],notes:'Turkish Airlines\' red-and-white livery on a Boeing 777-300ER.',sightings:[]},
-  {id:37,airline:'Finnair',tail:'OH-LWA',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#0B1560','#FFFFFF','#A0A0A0'],tags:['current','widebody'],notes:'OH-LWA was Finnair\'s first Airbus A350-900, the flagship of its long-haul network to Asia.',sightings:[]},
-  {id:38,airline:'Emirates',tail:'A6-EUF',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','superjumbo'],notes:'Emirates flies the world\'s largest Airbus A380 fleet. A6-EUF wears the current livery with the UAE flag on the tail.',sightings:[]},
+  {id:29,airline:'JetBlue',tail:'N709JB',icao24:'A976C7',type:'Airbus A320',era:'2010s',livery:'Stripes',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current','tailfin'],notes:'A JetBlue Airbus A320 wearing one of the airline\'s patterned tailfin designs.',sightings:[]},
+  {id:30,airline:'Alaska Airlines',tail:'N559AS',icao24:'A720EB',type:'Boeing 737-800',era:'2020s',livery:'Xáat Kwáani (Salmon People)',colors:['#0B2A5B','#1E6FB0','#E6649B'],tags:['special','salmon','indigenous','rare'],notes:'N559AS ‘Xáat Kwáani’ (Salmon People) — a 2023 Alaska Airlines 737-800 livery by Tlingit artist Crystal Worl, depicting a salmon in Northwest Coast formline art. The first US airliner named in an Alaska Native language.',sightings:[]},
+  {id:31,airline:'Air Canada',tail:'C-FRTG',icao24:'C02ED9',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'Air Canada\'s bold red-and-black livery on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:32,airline:'Aer Lingus',tail:'EI-DEO',icao24:'4CA295',type:'Airbus A320',era:'2010s',livery:'Shamrock (current)',colors:['#006272','#FFFFFF','#9CA299'],tags:['current','shamrock'],notes:'Aer Lingus\' teal shamrock livery on an Airbus A320.',sightings:[]},
+  {id:33,airline:'Ryanair',tail:'EI-DCL',icao24:'4CA242',type:'Boeing 737-800',era:'2010s',livery:'Current (blue/yellow)',colors:['#073590','#F1C933','#FFFFFF'],tags:['current','low-cost'],notes:'Europe\'s largest low-cost carrier — a Ryanair Boeing 737-800 in blue and yellow.',sightings:[]},
+  {id:34,airline:'Etihad Airways',tail:'A6-BLA',icao24:'8963CE',type:'Boeing 787-9',era:'2010s',livery:'Facets (current)',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','dreamliner'],notes:'Etihad Airways\' "Facets" livery on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:35,airline:'Qatar Airways',tail:'A7-BCA',icao24:'06A0A5',type:'Boeing 787-8',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','dreamliner','oryx'],notes:'Qatar Airways\' maroon Oryx livery on a Boeing 787-8 Dreamliner.',sightings:[]},
+  {id:36,airline:'Turkish Airlines',tail:'TC-JJE',icao24:'4BA945',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','widebody'],notes:'Turkish Airlines\' red-and-white livery on a Boeing 777-300ER.',sightings:[]},
+  {id:37,airline:'Finnair',tail:'OH-LWA',icao24:'461F48',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#0B1560','#FFFFFF','#A0A0A0'],tags:['current','widebody'],notes:'OH-LWA was Finnair\'s first Airbus A350-900, the flagship of its long-haul network to Asia.',sightings:[]},
+  {id:38,airline:'Emirates',tail:'A6-EUF',icao24:'89645B',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','superjumbo'],notes:'Emirates flies the world\'s largest Airbus A380 fleet. A6-EUF wears the current livery with the UAE flag on the tail.',sightings:[]},
   // ── World airlines & special liveries ──
-  {id:39,airline:'All Nippon Airways',tail:'JA791A',type:'Boeing 777-300ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','widebody'],notes:'All Nippon Airways (ANA), Japan\'s largest carrier, in the current blue Triton livery on a Boeing 777-300ER.',sightings:[]},
-  {id:40,airline:'Korean Air',tail:'HL7644',type:'Boeing 747-8',era:'2010s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current','jumbo'],notes:'Korean Air\'s sky-blue livery on a Boeing 747-8 Intercontinental — among the last passenger 747s ever built.',sightings:[]},
-  {id:41,airline:'Asiana Airlines',tail:'HL8359',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#CF112A','#6E6F72','#FFFFFF'],tags:['current','widebody'],notes:'Asiana Airlines of South Korea in the current livery on an Airbus A350-900.',sightings:[]},
-  {id:42,airline:'China Airlines',tail:'B-18053',type:'Boeing 777-300ER',era:'2010s',livery:'Plum blossom (current)',colors:['#C8102E','#E8E0CF','#1A3C6E'],tags:['current','widebody'],notes:'Taiwan\'s China Airlines in the "plum blossom" livery on a Boeing 777-300ER.',sightings:[]},
-  {id:43,airline:'EVA Air',tail:'B-16708',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#005E3C','#F0A800','#FFFFFF'],tags:['current','widebody'],notes:'EVA Air of Taiwan in its green-and-orange livery on a Boeing 777-300ER.',sightings:[]},
-  {id:44,airline:'Thai Airways',tail:'HS-TUD',type:'Airbus A380',era:'2010s',livery:'Royal Orchid',colors:['#4B186C','#D4A017','#E5007E'],tags:['retired','superjumbo','rare'],notes:'Thai Airways International in the purple-and-gold "Royal Orchid" livery on an Airbus A380. Thai parked its six A380s in 2020 and has since retired the type.',sightings:[]},
+  {id:39,airline:'All Nippon Airways',tail:'JA791A',icao24:'8694D8',type:'Boeing 777-300ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','widebody'],notes:'All Nippon Airways (ANA), Japan\'s largest carrier, in the current blue Triton livery on a Boeing 777-300ER.',sightings:[]},
+  {id:40,airline:'Korean Air',tail:'HL7644',icao24:'71BE44',type:'Boeing 747-8',era:'2010s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current','jumbo'],notes:'Korean Air\'s sky-blue livery on a Boeing 747-8 Intercontinental — among the last passenger 747s ever built.',sightings:[]},
+  {id:41,airline:'Asiana Airlines',tail:'HL8359',icao24:'71C359',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#CF112A','#6E6F72','#FFFFFF'],tags:['current','widebody'],notes:'Asiana Airlines of South Korea in the current livery on an Airbus A350-900.',sightings:[]},
+  {id:42,airline:'China Airlines',tail:'B-18053',icao24:'899019',type:'Boeing 777-300ER',era:'2010s',livery:'Plum blossom (current)',colors:['#C8102E','#E8E0CF','#1A3C6E'],tags:['current','widebody'],notes:'Taiwan\'s China Airlines in the "plum blossom" livery on a Boeing 777-300ER.',sightings:[]},
+  {id:43,airline:'EVA Air',tail:'B-16708',icao24:'8990D7',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#005E3C','#F0A800','#FFFFFF'],tags:['current','widebody'],notes:'EVA Air of Taiwan in its green-and-orange livery on a Boeing 777-300ER.',sightings:[]},
+  {id:44,airline:'Thai Airways',tail:'HS-TUD',icao24:'8852A4',type:'Airbus A380',era:'2010s',livery:'Royal Orchid',colors:['#4B186C','#D4A017','#E5007E'],tags:['retired','superjumbo','rare'],notes:'Thai Airways International in the purple-and-gold "Royal Orchid" livery on an Airbus A380. Thai parked its six A380s in 2020 and has since retired the type.',sightings:[]},
   {id:45,airline:'Malaysia Airlines',tail:'9M-MNB',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#C8102E','#003B7A','#FFFFFF'],tags:['retired','superjumbo','rare'],notes:'Malaysia Airlines flew six Airbus A380s, retiring the whole fleet by 2022 — making this a historical catch.',sightings:[]},
-  {id:46,airline:'Air India',tail:'VT-ANP',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','dreamliner'],notes:'Air India on a Boeing 787-8 Dreamliner.',sightings:[]},
-  {id:47,airline:'Saudia',tail:'HZ-AK28',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','widebody'],notes:'Saudia (Saudi Arabian Airlines) in the green livery on a Boeing 777-300ER.',sightings:[]},
-  {id:48,airline:'Air New Zealand',tail:'ZK-OKQ',type:'Boeing 777-300ER',era:'2010s',livery:'All Blacks (black)',colors:['#0E0E0E','#1A1A1A','#FFFFFF'],tags:['special','all blacks','rare'],notes:'Air New Zealand\'s striking all-black "All Blacks" livery, honouring the national rugby team, on a Boeing 777-300ER.',sightings:[]},
+  {id:46,airline:'Air India',tail:'VT-ANP',icao24:'800736',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','dreamliner'],notes:'Air India on a Boeing 787-8 Dreamliner.',sightings:[]},
+  {id:47,airline:'Saudia',tail:'HZ-AK28',icao24:'710106',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','widebody'],notes:'Saudia (Saudi Arabian Airlines) in the green livery on a Boeing 777-300ER.',sightings:[]},
+  {id:48,airline:'Air New Zealand',tail:'ZK-OKQ',icao24:'C81E22',type:'Boeing 777-300ER',era:'2010s',livery:'All Blacks (black)',colors:['#0E0E0E','#1A1A1A','#FFFFFF'],tags:['special','all blacks','rare'],notes:'Air New Zealand\'s striking all-black "All Blacks" livery, honouring the national rugby team, on a Boeing 777-300ER.',sightings:[]},
   {id:49,airline:'LATAM',tail:'CC-BGO',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','dreamliner'],notes:'LATAM, South America\'s largest airline group, in the indigo-and-coral livery on a Boeing 787-9 Dreamliner.',sightings:[]},
   {id:50,airline:'Avianca',tail:'N697AV',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D5121E','#FFFFFF','#A6A6A6'],tags:['current'],notes:'Avianca of Colombia, one of the world\'s oldest airlines, in the current red livery on an Airbus A321.',sightings:[]},
-  {id:51,airline:'Aeroméxico',tail:'XA-ADL',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','dreamliner'],notes:'Aeroméxico in the current livery — the tail carries a stylised Aztec eagle-knight — on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:52,airline:'Iberia',tail:'EC-MXV',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','widebody'],notes:'Spain\'s flag carrier Iberia in the red-and-yellow livery on an Airbus A350-900.',sightings:[]},
-  {id:53,airline:'Swiss',tail:'HB-JNA',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D8232A','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'SWISS, the flag carrier of Switzerland, in the red livery with the Swiss cross on a Boeing 777-300ER.',sightings:[]},
-  {id:54,airline:'Austrian Airlines',tail:'OE-LPF',type:'Boeing 777-200ER',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'Austrian Airlines in the red-and-white livery on a Boeing 777-200ER.',sightings:[]},
-  {id:55,airline:'TAP Air Portugal',tail:'CS-TUA',type:'Airbus A330-900',era:'2010s',livery:'Current',colors:['#00A04A','#E4002B','#FFFFFF'],tags:['current','widebody'],notes:'TAP Air Portugal in the current green-and-red livery on an Airbus A330-900neo.',sightings:[]},
-  {id:56,airline:'SAS Scandinavian Airlines',tail:'LN-RKT',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#003D87','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'SAS Scandinavian Airlines in the blue livery on an Airbus A330-300.',sightings:[]},
-  {id:57,airline:'El Al',tail:'4X-EDA',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#003DA5','#FFFFFF','#A6A6A6'],tags:['current','dreamliner'],notes:'El Al Israel Airlines in the blue livery on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:58,airline:'Hawaiian Airlines',tail:'N380HA',type:'Airbus A330-200',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current','widebody'],notes:'Hawaiian Airlines, with the "Pualani" island-girl tail, on an Airbus A330-200.',sightings:[]},
-  {id:59,airline:'Frontier Airlines',tail:'N705FR',type:'Airbus A321',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'Frontier Airlines, famous for the wild-animal portraits on each tail, on an Airbus A321.',sightings:[]},
-  {id:60,airline:'Vietnam Airlines',tail:'VN-A868',type:'Boeing 787-9',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','dreamliner'],notes:'Vietnam Airlines, with the golden-lotus emblem, on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:61,airline:'Philippine Airlines',tail:'RP-C7779',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#00308F','#CE1126','#FCD116'],tags:['current','widebody'],notes:'Philippine Airlines, Asia\'s first commercial airline, on a Boeing 777-300ER.',sightings:[]},
-  {id:62,airline:'Garuda Indonesia',tail:'PK-GIG',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#1A6AAE','#0E8A3C','#FFFFFF'],tags:['current','widebody'],notes:'Garuda Indonesia in the current livery on a Boeing 777-300ER.',sightings:[]},
-  {id:63,airline:'Air China',tail:'B-2485',type:'Boeing 747-8',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','jumbo'],notes:'Air China in the red livery with the gold phoenix logo on a Boeing 747-8 Intercontinental.',sightings:[]},
+  {id:51,airline:'Aeroméxico',tail:'XA-ADL',icao24:'0D09D0',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','dreamliner'],notes:'Aeroméxico in the current livery — the tail carries a stylised Aztec eagle-knight — on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:52,airline:'Iberia',tail:'EC-MXV',icao24:'34604E',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','widebody'],notes:'Spain\'s flag carrier Iberia in the red-and-yellow livery on an Airbus A350-900.',sightings:[]},
+  {id:53,airline:'Swiss',tail:'HB-JNA',icao24:'4B1916',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D8232A','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'SWISS, the flag carrier of Switzerland, in the red livery with the Swiss cross on a Boeing 777-300ER.',sightings:[]},
+  {id:54,airline:'Austrian Airlines',tail:'OE-LPF',icao24:'4408FB',type:'Boeing 777-200ER',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'Austrian Airlines in the red-and-white livery on a Boeing 777-200ER.',sightings:[]},
+  {id:55,airline:'TAP Air Portugal',tail:'CS-TUA',icao24:'4952A1',type:'Airbus A330-900',era:'2010s',livery:'Current',colors:['#00A04A','#E4002B','#FFFFFF'],tags:['current','widebody'],notes:'TAP Air Portugal in the current green-and-red livery on an Airbus A330-900neo.',sightings:[]},
+  {id:56,airline:'SAS Scandinavian Airlines',tail:'LN-RKT',icao24:'47880D',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#003D87','#FFFFFF','#A6A6A6'],tags:['current','widebody'],notes:'SAS Scandinavian Airlines in the blue livery on an Airbus A330-300.',sightings:[]},
+  {id:57,airline:'El Al',tail:'4X-EDA',icao24:'7380C0',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#003DA5','#FFFFFF','#A6A6A6'],tags:['current','dreamliner'],notes:'El Al Israel Airlines in the blue livery on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:58,airline:'Hawaiian Airlines',tail:'N380HA',icao24:'A45BFA',type:'Airbus A330-200',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current','widebody'],notes:'Hawaiian Airlines, with the "Pualani" island-girl tail, on an Airbus A330-200.',sightings:[]},
+  {id:59,airline:'Frontier Airlines',tail:'N705FR',icao24:'A967AE',type:'Airbus A321',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'Frontier Airlines, famous for the wild-animal portraits on each tail, on an Airbus A321.',sightings:[]},
+  {id:60,airline:'Vietnam Airlines',tail:'VN-A868',icao24:'8880F8',type:'Boeing 787-9',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','dreamliner'],notes:'Vietnam Airlines, with the golden-lotus emblem, on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:61,airline:'Philippine Airlines',tail:'RP-C7779',icao24:'7583EC',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#00308F','#CE1126','#FCD116'],tags:['current','widebody'],notes:'Philippine Airlines, Asia\'s first commercial airline, on a Boeing 777-300ER.',sightings:[]},
+  {id:62,airline:'Garuda Indonesia',tail:'PK-GIG',icao24:'8A0452',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#1A6AAE','#0E8A3C','#FFFFFF'],tags:['current','widebody'],notes:'Garuda Indonesia in the current livery on a Boeing 777-300ER.',sightings:[]},
+  {id:63,airline:'Air China',tail:'B-2485',icao24:'780CB6',type:'Boeing 747-8',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','jumbo'],notes:'Air China in the red livery with the gold phoenix logo on a Boeing 747-8 Intercontinental.',sightings:[]},
   {id:64,airline:'China Southern',tail:'B-6137',type:'Airbus A380',era:'2010s',livery:'Kapok',colors:['#0066B3','#E4002B','#FFFFFF'],tags:['retired','superjumbo','rare'],notes:'China Southern, with the red kapok-flower logo, on an Airbus A380 — it was China\'s only A380 operator, retiring all five in 2022.',sightings:[]},
-  {id:65,airline:'Ethiopian Airlines',tail:'ET-AUO',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','dreamliner'],notes:'Ethiopian Airlines, Africa\'s largest carrier, in the green-yellow-red livery on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:66,airline:'Icelandair',tail:'TF-FIA',type:'Boeing 757-200',era:'2010s',livery:'Current',colors:['#0A2240','#00B5E2','#FFFFFF'],tags:['current'],notes:'Icelandair, a longtime 757 operator, in the dark-blue livery suited to its North Atlantic network.',sightings:[]},
+  {id:65,airline:'Ethiopian Airlines',tail:'ET-AUO',icao24:'040140',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','dreamliner'],notes:'Ethiopian Airlines, Africa\'s largest carrier, in the green-yellow-red livery on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:66,airline:'Icelandair',tail:'TF-FIA',icao24:'4CC269',type:'Boeing 757-200',era:'2010s',livery:'Current',colors:['#0A2240','#00B5E2','#FFFFFF'],tags:['current'],notes:'Icelandair, a longtime 757 operator, in the dark-blue livery suited to its North Atlantic network.',sightings:[]},
   {id:67,airline:'Aegean Airlines',tail:'SX-DVO',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#003B7A','#0091D2','#FFFFFF'],tags:['current'],notes:'Aegean Airlines, the flag carrier of Greece, in the blue livery on an Airbus A321.',sightings:[]},
-  {id:68,airline:'easyJet',tail:'G-EZWA',type:'Airbus A320',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'easyJet, a major European low-cost carrier, in its bright-orange livery on an Airbus A320.',sightings:[]},
-  {id:69,airline:'Wizz Air',tail:'HA-LXA',type:'Airbus A321',era:'2010s',livery:'Current (magenta)',colors:['#C6007E','#5A2D81','#FFFFFF'],tags:['current','low-cost'],notes:'Wizz Air, the ultra-low-cost carrier of Central Europe, in magenta and purple on an Airbus A321.',sightings:[]},
+  {id:68,airline:'easyJet',tail:'G-EZWA',icao24:'406752',type:'Airbus A320',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'easyJet, a major European low-cost carrier, in its bright-orange livery on an Airbus A320.',sightings:[]},
+  {id:69,airline:'Wizz Air',tail:'HA-LXA',icao24:'471F62',type:'Airbus A321',era:'2010s',livery:'Current (magenta)',colors:['#C6007E','#5A2D81','#FFFFFF'],tags:['current','low-cost'],notes:'Wizz Air, the ultra-low-cost carrier of Central Europe, in magenta and purple on an Airbus A321.',sightings:[]},
   {id:70,airline:'Virgin Australia',tail:'VH-VOZ',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#C8102E','#5A2D81','#FFFFFF'],tags:['retired','widebody','rare'],notes:'Virgin Australia flew five Boeing 777-300ERs to Los Angeles until it retired its widebody fleet in 2020 to focus on a domestic 737 network.',sightings:[]},
-  {id:71,airline:'Oman Air',tail:'A4O-SC',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#6E2639','#C8A04B','#FFFFFF'],tags:['current','dreamliner'],notes:'Oman Air, the flag carrier of the Sultanate of Oman, on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:72,airline:'Royal Air Maroc',tail:'CN-RGV',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#C8102E','#0A7D4B','#FFFFFF'],tags:['current'],notes:'Royal Air Maroc, the flag carrier of Morocco, in red and green on a Boeing 737-800.',sightings:[]},
-  {id:73,airline:'SriLankan Airlines',tail:'4R-ALR',type:'Airbus A330-300',era:'2010s',livery:'Peacock (current)',colors:['#16284C','#C8A04B','#1E8A8A'],tags:['current','widebody'],notes:'SriLankan Airlines, with the stylised peacock on the tail, on an Airbus A330-300.',sightings:[]},
-  {id:74,airline:'American Airlines',tail:'N905NN',type:'Boeing 737-800',era:'2010s',livery:'AstroJet retro',colors:['#C0C0C0','#E4002B','#0078D2'],tags:['retro','heritage','astrojet'],notes:'A heritage "AstroJet" retrojet — American 737-800 N905NN wears the polished-silver scheme with red lightning stripe from American\'s 1960s jet age.',sightings:[]},
-  {id:79,airline:'United Airlines',tail:'N218UA',type:'Boeing 777-200ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'United 777-200ER N218UA in the Star Alliance livery, marking United\'s membership in the global airline alliance.',sightings:[]},
-  {id:82,airline:'Alaska Airlines',tail:'N265AK',type:'Boeing 737-900ER',era:'2010s',livery:'Honoring Those Who Serve',colors:['#01426A','#C8102E','#FFFFFF'],tags:['special','tribute','rare'],notes:'Alaska Airlines\' "Honoring Those Who Serve" livery, dedicated to the U.S. military, on a Boeing 737-900ER.',sightings:[]},
-  {id:83,airline:'Southwest Airlines',tail:'N214WN',type:'Boeing 737-700',era:'2010s',livery:'Maryland One',colors:['#000000','#E4002B','#F9B612'],tags:['special','state','heart'],notes:'"Maryland One" — Southwest 737-700 N214WN painted in the Maryland state flag, one of the airline\'s state-pride specials.',sightings:[]},
-  {id:84,airline:'Southwest Airlines',tail:'N945WN',type:'Boeing 737-700',era:'2010s',livery:'Florida One',colors:['#F9A01B','#0067A0','#E4002B'],tags:['special','state','heart'],notes:'"Florida One" — a Southwest 737-700 wearing a sunshine-state design, complete with an orange-juice nose.',sightings:[]},
-  {id:87,airline:'Qantas',tail:'VH-XZJ',type:'Boeing 737-800',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','roo'],notes:'A Qantas Boeing 737-800 in the current red "Flying Kangaroo" livery — the workhorse of its domestic fleet.',sightings:[]},
-  {id:88,airline:'Qantas',tail:'VH-XZP',type:'Boeing 737-800',era:'2010s',livery:'Retro Roo II',colors:['#D86A1E','#E4A400','#C8102E'],tags:['retro','heritage','roo'],notes:'"Retro Roo II" — a Qantas 737-800 painted in the ochre-and-orange 1971 livery, a tribute to the airline\'s jet-age past.',sightings:[]},
-  {id:89,airline:'British Airways',tail:'G-EUPJ',type:'Airbus A319',era:'2010s',livery:'BEA retro',colors:['#C8102E','#1A1A1A','#FFFFFF'],tags:['retro','heritage','BEA'],notes:'For BA\'s centenary in 2019, Airbus A319 G-EUPJ was painted in the red-and-black livery of British European Airways (BEA), a BA predecessor.',sightings:[]},
+  {id:71,airline:'Oman Air',tail:'A4O-SC',icao24:'70C0EE',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#6E2639','#C8A04B','#FFFFFF'],tags:['current','dreamliner'],notes:'Oman Air, the flag carrier of the Sultanate of Oman, on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:72,airline:'Royal Air Maroc',tail:'CN-RGV',icao24:'02012C',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#C8102E','#0A7D4B','#FFFFFF'],tags:['current'],notes:'Royal Air Maroc, the flag carrier of Morocco, in red and green on a Boeing 737-800.',sightings:[]},
+  {id:73,airline:'SriLankan Airlines',tail:'4R-ALR',icao24:'770592',type:'Airbus A330-300',era:'2010s',livery:'Peacock (current)',colors:['#16284C','#C8A04B','#1E8A8A'],tags:['current','widebody'],notes:'SriLankan Airlines, with the stylised peacock on the tail, on an Airbus A330-300.',sightings:[]},
+  {id:74,airline:'American Airlines',tail:'N905NN',icao24:'AC82F8',type:'Boeing 737-800',era:'2010s',livery:'AstroJet retro',colors:['#C0C0C0','#E4002B','#0078D2'],tags:['retro','heritage','astrojet'],notes:'A heritage "AstroJet" retrojet — American 737-800 N905NN wears the polished-silver scheme with red lightning stripe from American\'s 1960s jet age.',sightings:[]},
+  {id:79,airline:'United Airlines',tail:'N218UA',icao24:'A1D8FD',type:'Boeing 777-200ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'United 777-200ER N218UA in the Star Alliance livery, marking United\'s membership in the global airline alliance.',sightings:[]},
+  {id:82,airline:'Alaska Airlines',tail:'N265AK',icao24:'A2919A',type:'Boeing 737-900ER',era:'2010s',livery:'Honoring Those Who Serve',colors:['#01426A','#C8102E','#FFFFFF'],tags:['special','tribute','rare'],notes:'Alaska Airlines\' "Honoring Those Who Serve" livery, dedicated to the U.S. military, on a Boeing 737-900ER.',sightings:[]},
+  {id:83,airline:'Southwest Airlines',tail:'N214WN',icao24:'A1CA5F',type:'Boeing 737-700',era:'2010s',livery:'Maryland One',colors:['#000000','#E4002B','#F9B612'],tags:['special','state','heart'],notes:'"Maryland One" — Southwest 737-700 N214WN painted in the Maryland state flag, one of the airline\'s state-pride specials.',sightings:[]},
+  {id:84,airline:'Southwest Airlines',tail:'N945WN',icao24:'AD21BC',type:'Boeing 737-700',era:'2010s',livery:'Florida One',colors:['#F9A01B','#0067A0','#E4002B'],tags:['special','state','heart'],notes:'"Florida One" — a Southwest 737-700 wearing a sunshine-state design, complete with an orange-juice nose.',sightings:[]},
+  {id:87,airline:'Qantas',tail:'VH-XZJ',icao24:'7C77FD',type:'Boeing 737-800',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','roo'],notes:'A Qantas Boeing 737-800 in the current red "Flying Kangaroo" livery — the workhorse of its domestic fleet.',sightings:[]},
+  {id:88,airline:'Qantas',tail:'VH-XZP',icao24:'7C7803',type:'Boeing 737-800',era:'2010s',livery:'Retro Roo II',colors:['#D86A1E','#E4A400','#C8102E'],tags:['retro','heritage','roo'],notes:'"Retro Roo II" — a Qantas 737-800 painted in the ochre-and-orange 1971 livery, a tribute to the airline\'s jet-age past.',sightings:[]},
+  {id:89,airline:'British Airways',tail:'G-EUPJ',icao24:'400879',type:'Airbus A319',era:'2010s',livery:'BEA retro',colors:['#C8102E','#1A1A1A','#FFFFFF'],tags:['retro','heritage','BEA'],notes:'For BA\'s centenary in 2019, Airbus A319 G-EUPJ was painted in the red-and-black livery of British European Airways (BEA), a BA predecessor.',sightings:[]},
   // ── Fleet depth: more types & liveries per airline ──
-  {id:200,airline:'Air France',tail:'F-HRBA',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','dreamliner'],notes:'Air France\'s Boeing 787-9 Dreamliner in the blue-white-and-red livery.',sightings:[]},
-  {id:201,airline:'Air France',tail:'F-GSPZ',type:'Boeing 777-200ER',era:'2000s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','widebody'],notes:'An Air France Boeing 777-200ER, a long-haul mainstay.',sightings:[]},
-  {id:202,airline:'Air France',tail:'F-HZUA',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current'],notes:'Air France\'s Airbus A220-300, the modern backbone of its short-haul fleet.',sightings:[]},
+  {id:200,airline:'Air France',tail:'F-HRBA',icao24:'39C420',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','dreamliner'],notes:'Air France\'s Boeing 787-9 Dreamliner in the blue-white-and-red livery.',sightings:[]},
+  {id:201,airline:'Air France',tail:'F-GSPZ',icao24:'3949F9',type:'Boeing 777-200ER',era:'2000s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','widebody'],notes:'An Air France Boeing 777-200ER, a long-haul mainstay.',sightings:[]},
+  {id:202,airline:'Air France',tail:'F-HZUA',icao24:'39E680',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current'],notes:'Air France\'s Airbus A220-300, the modern backbone of its short-haul fleet.',sightings:[]},
   {id:203,airline:'Aer Lingus',tail:'EI-EDY',type:'Airbus A330-300',era:'2010s',livery:'Shamrock (current)',colors:['#006272','#FFFFFF','#9CA299'],tags:['current','shamrock','widebody'],notes:'An Aer Lingus Airbus A330-300 on the transatlantic run, with the teal shamrock tail.',sightings:[]},
-  {id:204,airline:'Aer Lingus',tail:'EI-LRA',type:'Airbus A321neo LR',era:'2020s',livery:'Shamrock (current)',colors:['#006272','#FFFFFF','#9CA299'],tags:['current','shamrock'],notes:'Aer Lingus uses the long-range Airbus A321neo LR to fly narrowbody transatlantic routes.',sightings:[]},
-  {id:205,airline:'Air India',tail:'VT-EXF',type:'Airbus A320neo',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current'],notes:'An Air India Airbus A320neo on domestic and regional routes.',sightings:[]},
-  {id:206,airline:'Air New Zealand',tail:'ZK-NZE',type:'Boeing 787-9',era:'2010s',livery:'Black (current)',colors:['#0E0E0E','#1A1A1A','#FFFFFF'],tags:['current','dreamliner'],notes:'Air New Zealand\'s sleek all-black livery on a Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:208,airline:'Alaska Airlines',tail:'N932AK',type:'Boeing 737 MAX 9',era:'2020s',livery:'Eskimo (current)',colors:['#01426A','#00467F','#76858F'],tags:['current','eskimo'],notes:'Alaska Airlines\' newest narrowbody, the Boeing 737-9 MAX, with the Eskimo tail.',sightings:[]},
-  {id:209,airline:'All Nippon Airways',tail:'JA381A',type:'Airbus A380',era:'2020s',livery:'Flying Honu (blue)',colors:['#0A4DA0','#00A1E0','#FFFFFF'],tags:['special','superjumbo','honu','rare'],notes:'ANA\'s "Flying Honu" Airbus A380, painted as a Hawaiian green sea turtle, on the Tokyo–Honolulu route. JA381A is the blue "Lani" jet.',sightings:[]},
-  {id:210,airline:'All Nippon Airways',tail:'JA882A',type:'Boeing 787-9',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','dreamliner'],notes:'An ANA Boeing 787-9 in the blue Triton livery — ANA is the largest 787 operator in the world.',sightings:[]},
-  {id:211,airline:'American Airlines',tail:'N791AN',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'American 777-300ER N791AN in the grey "oneworld" alliance livery.',sightings:[]},
-  {id:212,airline:'Asiana Airlines',tail:'HL7775',type:'Boeing 777-200ER',era:'2010s',livery:'Current',colors:['#CF112A','#6E6F72','#FFFFFF'],tags:['current','widebody'],notes:'An Asiana Airlines Boeing 777-200ER.',sightings:[]},
-  {id:213,airline:'Austrian Airlines',tail:'OE-LWP',type:'Embraer 195',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current','regional'],notes:'An Austrian Airlines Embraer 195 on European regional routes.',sightings:[]},
-  {id:214,airline:'Austrian Airlines',tail:'OE-LBP',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current'],notes:'An Austrian Airlines Airbus A320 in the red-and-white livery.',sightings:[]},
-  {id:215,airline:'British Airways',tail:'G-ZBKA',type:'Boeing 787-9',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','dreamliner'],notes:'A British Airways Boeing 787-9 Dreamliner in the current Chatham Dockyard livery.',sightings:[]},
-  {id:216,airline:'British Airways',tail:'G-XWBA',type:'Airbus A350-1000',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','widebody'],notes:'G-XWBA was British Airways\' first Airbus A350-1000, the flagship of its modern long-haul fleet.',sightings:[]},
-  {id:217,airline:'British Airways',tail:'G-STBA',type:'Boeing 777-300ER',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','widebody'],notes:'A British Airways Boeing 777-300ER in the current livery.',sightings:[]},
-  {id:218,airline:'Cathay Pacific',tail:'B-LRA',type:'Airbus A350-900',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','widebody','brushwing'],notes:'A Cathay Pacific Airbus A350-900 in the green brushwing livery.',sightings:[]},
-  {id:219,airline:'China Airlines',tail:'B-18917',type:'Airbus A350-900',era:'2010s',livery:'Plum blossom (current)',colors:['#C8102E','#E8E0CF','#1A3C6E'],tags:['current','widebody'],notes:'A China Airlines Airbus A350-900 in the plum-blossom livery.',sightings:[]},
+  {id:204,airline:'Aer Lingus',tail:'EI-LRA',icao24:'4CA9BA',type:'Airbus A321neo LR',era:'2020s',livery:'Shamrock (current)',colors:['#006272','#FFFFFF','#9CA299'],tags:['current','shamrock'],notes:'Aer Lingus uses the long-range Airbus A321neo LR to fly narrowbody transatlantic routes.',sightings:[]},
+  {id:205,airline:'Air India',tail:'VT-EXF',icao24:'800BD4',type:'Airbus A320neo',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current'],notes:'An Air India Airbus A320neo on domestic and regional routes.',sightings:[]},
+  {id:206,airline:'Air New Zealand',tail:'ZK-NZE',icao24:'C820D1',type:'Boeing 787-9',era:'2010s',livery:'Black (current)',colors:['#0E0E0E','#1A1A1A','#FFFFFF'],tags:['current','dreamliner'],notes:'Air New Zealand\'s sleek all-black livery on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:208,airline:'Alaska Airlines',tail:'N932AK',icao24:'ACED21',type:'Boeing 737 MAX 9',era:'2020s',livery:'Eskimo (current)',colors:['#01426A','#00467F','#76858F'],tags:['current','eskimo'],notes:'Alaska Airlines\' newest narrowbody, the Boeing 737-9 MAX, with the Eskimo tail.',sightings:[]},
+  {id:209,airline:'All Nippon Airways',tail:'JA381A',icao24:'852A24',type:'Airbus A380',era:'2020s',livery:'Flying Honu (blue)',colors:['#0A4DA0','#00A1E0','#FFFFFF'],tags:['special','superjumbo','honu','rare'],notes:'ANA\'s "Flying Honu" Airbus A380, painted as a Hawaiian green sea turtle, on the Tokyo–Honolulu route. JA381A is the blue "Lani" jet.',sightings:[]},
+  {id:210,airline:'All Nippon Airways',tail:'JA882A',icao24:'86EB2E',type:'Boeing 787-9',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','dreamliner'],notes:'An ANA Boeing 787-9 in the blue Triton livery — ANA is the largest 787 operator in the world.',sightings:[]},
+  {id:211,airline:'American Airlines',tail:'N791AN',icao24:'AABBC9',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'American 777-300ER N791AN in the grey "oneworld" alliance livery.',sightings:[]},
+  {id:212,airline:'Asiana Airlines',tail:'HL7775',icao24:'71BF75',type:'Boeing 777-200ER',era:'2010s',livery:'Current',colors:['#CF112A','#6E6F72','#FFFFFF'],tags:['current','widebody'],notes:'An Asiana Airlines Boeing 777-200ER.',sightings:[]},
+  {id:213,airline:'Austrian Airlines',tail:'OE-LWP',icao24:'44082C',type:'Embraer 195',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current','regional'],notes:'An Austrian Airlines Embraer 195 on European regional routes.',sightings:[]},
+  {id:214,airline:'Austrian Airlines',tail:'OE-LBP',icao24:'44001C',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D80B16','#FFFFFF','#A6A6A6'],tags:['current'],notes:'An Austrian Airlines Airbus A320 in the red-and-white livery.',sightings:[]},
+  {id:215,airline:'British Airways',tail:'G-ZBKA',icao24:'406D77',type:'Boeing 787-9',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','dreamliner'],notes:'A British Airways Boeing 787-9 Dreamliner in the current Chatham Dockyard livery.',sightings:[]},
+  {id:216,airline:'British Airways',tail:'G-XWBA',icao24:'4076E8',type:'Airbus A350-1000',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','widebody'],notes:'G-XWBA was British Airways\' first Airbus A350-1000, the flagship of its modern long-haul fleet.',sightings:[]},
+  {id:217,airline:'British Airways',tail:'G-STBA',icao24:'40621B',type:'Boeing 777-300ER',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','widebody'],notes:'A British Airways Boeing 777-300ER in the current livery.',sightings:[]},
+  {id:218,airline:'Cathay Pacific',tail:'B-LRA',icao24:'780A9B',type:'Airbus A350-900',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','widebody','brushwing'],notes:'A Cathay Pacific Airbus A350-900 in the green brushwing livery.',sightings:[]},
+  {id:219,airline:'China Airlines',tail:'B-18917',icao24:'8990EC',type:'Airbus A350-900',era:'2010s',livery:'Plum blossom (current)',colors:['#C8102E','#E8E0CF','#1A3C6E'],tags:['current','widebody'],notes:'A China Airlines Airbus A350-900 in the plum-blossom livery.',sightings:[]},
   {id:220,airline:'China Airlines',tail:'B-18206',type:'Boeing 747-400',era:'2000s',livery:'Plum blossom (current)',colors:['#C8102E','#E8E0CF','#1A3C6E'],tags:['jumbo','widebody'],notes:'A China Airlines Boeing 747-400 — the carrier flew the passenger 747-400 until retiring the type in 2021.',sightings:[]},
-  {id:221,airline:'China Southern',tail:'B-2725',type:'Boeing 787-8',era:'2010s',livery:'Kapok (current)',colors:['#0066B3','#E4002B','#FFFFFF'],tags:['current','dreamliner'],notes:'A China Southern Boeing 787-8 Dreamliner with the red kapok-flower logo.',sightings:[]},
-  {id:222,airline:'Delta Air Lines',tail:'N401DZ',type:'Airbus A330-900',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'A Delta Airbus A330-900neo in the current widget livery.',sightings:[]},
-  {id:223,airline:'Delta Air Lines',tail:'N935AT',type:'Boeing 717-200',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta operates the largest Boeing 717 fleet in the world on short domestic hops.',sightings:[]},
-  {id:224,airline:'Delta Air Lines',tail:'N101DU',type:'Airbus A220-100',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'N101DU was Delta\'s first Airbus A220-100.',sightings:[]},
-  {id:225,airline:'easyJet',tail:'G-UZHA',type:'Airbus A320neo',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'An easyJet Airbus A320neo in the bright-orange livery.',sightings:[]},
-  {id:226,airline:'easyJet',tail:'G-EZBT',type:'Airbus A319',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'An easyJet Airbus A319, long the mainstay of its fleet.',sightings:[]},
-  {id:227,airline:'El Al',tail:'4X-EKU',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#003DA5','#FFFFFF','#A6A6A6'],tags:['current'],notes:'An El Al Boeing 737-800 on short- and medium-haul routes.',sightings:[]},
-  {id:229,airline:'Emirates',tail:'A6-ENV',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','widebody'],notes:'Emirates flies the world\'s largest Boeing 777 fleet; A6-ENV is a 777-300ER.',sightings:[]},
-  {id:230,airline:'Ethiopian Airlines',tail:'ET-ASK',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','widebody'],notes:'An Ethiopian Airlines Boeing 777-300ER.',sightings:[]},
-  {id:231,airline:'Ethiopian Airlines',tail:'ET-AVC',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','widebody'],notes:'An Ethiopian Airlines Airbus A350-900, the flagship of Africa\'s largest carrier.',sightings:[]},
-  {id:232,airline:'Etihad Airways',tail:'A6-BMI',type:'Boeing 787-10',era:'2010s',livery:'Current',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','dreamliner'],notes:'Etihad Airways\' Boeing 787-10 Dreamliner, the largest of the 787 family.',sightings:[]},
-  {id:233,airline:'Etihad Airways',tail:'A6-API',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','superjumbo'],notes:'An Etihad Airways Airbus A380 — home to "The Residence", a three-room suite.',sightings:[]},
-  {id:234,airline:'EVA Air',tail:'B-16722',type:'Boeing 777-300ER',era:'2010s',livery:'Hello Kitty',colors:['#E89AC7','#005E3C','#FFFFFF'],tags:['special','hello kitty','rare'],notes:'EVA Air\'s famous Hello Kitty jet — a Boeing 777-300ER covered in Sanrio characters inside and out.',sightings:[]},
-  {id:235,airline:'EVA Air',tail:'B-17881',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#005E3C','#F0A800','#FFFFFF'],tags:['current','dreamliner'],notes:'An EVA Air Boeing 787-9 in the green-and-orange livery.',sightings:[]},
-  {id:236,airline:'Finnair',tail:'OH-LTO',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#0B1560','#FFFFFF','#A0A0A0'],tags:['current','widebody'],notes:'A Finnair Airbus A330-300 on long-haul routes to Asia.',sightings:[]},
-  {id:237,airline:'Finnair',tail:'OH-LWL',type:'Airbus A350-900',era:'2010s',livery:'Marimekko (Kivet)',colors:['#0B1560','#3A6FB0','#FFFFFF'],tags:['special','marimekko'],notes:'A Finnair Airbus A350 wearing the Marimekko "Kivet" (stones) pattern — a collaboration with the Finnish design house.',sightings:[]},
-  {id:238,airline:'Frontier Airlines',tail:'N701FR',type:'Airbus A321',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'A Frontier Airbus A321; each Frontier jet carries a different wild-animal portrait on its tail.',sightings:[]},
-  {id:239,airline:'Frontier Airlines',tail:'N230FR',type:'Airbus A320',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'A Frontier Airbus A320 with one of the airline\'s signature animal tails.',sightings:[]},
-  {id:240,airline:'Garuda Indonesia',tail:'PK-GPA',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#1A6AAE','#0E8A3C','#FFFFFF'],tags:['current','widebody'],notes:'A Garuda Indonesia Airbus A330-300.',sightings:[]},
-  {id:241,airline:'Hawaiian Airlines',tail:'N202HA',type:'Airbus A321neo',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current'],notes:'A Hawaiian Airlines Airbus A321neo, used on US-mainland routes.',sightings:[]},
-  {id:242,airline:'Hawaiian Airlines',tail:'N480HA',type:'Boeing 717-200',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current'],notes:'Hawaiian flies Boeing 717s on short inter-island hops across the Hawaiian islands.',sightings:[]},
-  {id:243,airline:'Iberia',tail:'EC-MAA',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','widebody'],notes:'An Iberia Airbus A330-300 in the red-and-yellow livery.',sightings:[]},
-  {id:244,airline:'Lufthansa',tail:'D-AIXD',type:'Airbus A350-900',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','widebody'],notes:'A Lufthansa Airbus A350-900 in the navy-and-yellow crane livery.',sightings:[]},
-  {id:245,airline:'Lufthansa',tail:'D-ABVM',type:'Boeing 747-400',era:'2000s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['jumbo','widebody'],notes:'A Lufthansa Boeing 747-400 — Lufthansa was the largest operator of the passenger 747-400.',sightings:[]},
-  {id:246,airline:'KLM',tail:'PH-BHA',type:'Boeing 787-9',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','dreamliner'],notes:'PH-BHA was KLM\'s first Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:221,airline:'China Southern',tail:'B-2725',icao24:'780708',type:'Boeing 787-8',era:'2010s',livery:'Kapok (current)',colors:['#0066B3','#E4002B','#FFFFFF'],tags:['current','dreamliner'],notes:'A China Southern Boeing 787-8 Dreamliner with the red kapok-flower logo.',sightings:[]},
+  {id:222,airline:'Delta Air Lines',tail:'N401DZ',icao24:'A4B0BB',type:'Airbus A330-900',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'A Delta Airbus A330-900neo in the current widget livery.',sightings:[]},
+  {id:223,airline:'Delta Air Lines',tail:'N935AT',icao24:'ACF84E',type:'Boeing 717-200',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta operates the largest Boeing 717 fleet in the world on short domestic hops.',sightings:[]},
+  {id:224,airline:'Delta Air Lines',tail:'N101DU',icao24:'A008C9',type:'Airbus A220-100',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'N101DU was Delta\'s first Airbus A220-100.',sightings:[]},
+  {id:225,airline:'easyJet',tail:'G-UZHA',icao24:'4072C7',type:'Airbus A320neo',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'An easyJet Airbus A320neo in the bright-orange livery.',sightings:[]},
+  {id:226,airline:'easyJet',tail:'G-EZBT',icao24:'400FE3',type:'Airbus A319',era:'2010s',livery:'Current (orange)',colors:['#FF6600','#FFFFFF','#5A5A5A'],tags:['current','low-cost'],notes:'An easyJet Airbus A319, long the mainstay of its fleet.',sightings:[]},
+  {id:227,airline:'El Al',tail:'4X-EKU',icao24:'738058',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#003DA5','#FFFFFF','#A6A6A6'],tags:['current'],notes:'An El Al Boeing 737-800 on short- and medium-haul routes.',sightings:[]},
+  {id:229,airline:'Emirates',tail:'A6-ENV',icao24:'896318',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','widebody'],notes:'Emirates flies the world\'s largest Boeing 777 fleet; A6-ENV is a 777-300ER.',sightings:[]},
+  {id:230,airline:'Ethiopian Airlines',tail:'ET-ASK',icao24:'040105',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','widebody'],notes:'An Ethiopian Airlines Boeing 777-300ER.',sightings:[]},
+  {id:231,airline:'Ethiopian Airlines',tail:'ET-AVC',icao24:'04014C',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#15803C','#E4A400','#D5121E'],tags:['current','widebody'],notes:'An Ethiopian Airlines Airbus A350-900, the flagship of Africa\'s largest carrier.',sightings:[]},
+  {id:232,airline:'Etihad Airways',tail:'A6-BMI',icao24:'89656E',type:'Boeing 787-10',era:'2010s',livery:'Current',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','dreamliner'],notes:'Etihad Airways\' Boeing 787-10 Dreamliner, the largest of the 787 family.',sightings:[]},
+  {id:233,airline:'Etihad Airways',tail:'A6-API',icao24:'89649D',type:'Airbus A380',era:'2010s',livery:'Current',colors:['#BD8B13','#4A4A4A','#FFFFFF'],tags:['current','superjumbo'],notes:'An Etihad Airways Airbus A380 — home to "The Residence", a three-room suite.',sightings:[]},
+  {id:234,airline:'EVA Air',tail:'B-16722',icao24:'8990E4',type:'Boeing 777-300ER',era:'2010s',livery:'Hello Kitty',colors:['#E89AC7','#005E3C','#FFFFFF'],tags:['special','hello kitty','rare'],notes:'EVA Air\'s famous Hello Kitty jet — a Boeing 777-300ER covered in Sanrio characters inside and out.',sightings:[]},
+  {id:235,airline:'EVA Air',tail:'B-17881',icao24:'89907B',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#005E3C','#F0A800','#FFFFFF'],tags:['current','dreamliner'],notes:'An EVA Air Boeing 787-9 in the green-and-orange livery.',sightings:[]},
+  {id:236,airline:'Finnair',tail:'OH-LTO',icao24:'461F08',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#0B1560','#FFFFFF','#A0A0A0'],tags:['current','widebody'],notes:'A Finnair Airbus A330-300 on long-haul routes to Asia.',sightings:[]},
+  {id:237,airline:'Finnair',tail:'OH-LWL',icao24:'461F53',type:'Airbus A350-900',era:'2010s',livery:'Marimekko (Kivet)',colors:['#0B1560','#3A6FB0','#FFFFFF'],tags:['special','marimekko'],notes:'A Finnair Airbus A350 wearing the Marimekko "Kivet" (stones) pattern — a collaboration with the Finnish design house.',sightings:[]},
+  {id:238,airline:'Frontier Airlines',tail:'N701FR',icao24:'A958D2',type:'Airbus A321',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'A Frontier Airbus A321; each Frontier jet carries a different wild-animal portrait on its tail.',sightings:[]},
+  {id:239,airline:'Frontier Airlines',tail:'N230FR',icao24:'A2090D',type:'Airbus A320',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'A Frontier Airbus A320 with one of the airline\'s signature animal tails.',sightings:[]},
+  {id:240,airline:'Garuda Indonesia',tail:'PK-GPA',icao24:'8A0037',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#1A6AAE','#0E8A3C','#FFFFFF'],tags:['current','widebody'],notes:'A Garuda Indonesia Airbus A330-300.',sightings:[]},
+  {id:241,airline:'Hawaiian Airlines',tail:'N202HA',icao24:'A19A21',type:'Airbus A321neo',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current'],notes:'A Hawaiian Airlines Airbus A321neo, used on US-mainland routes.',sightings:[]},
+  {id:242,airline:'Hawaiian Airlines',tail:'N480HA',icao24:'A5E949',type:'Boeing 717-200',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current'],notes:'Hawaiian flies Boeing 717s on short inter-island hops across the Hawaiian islands.',sightings:[]},
+  {id:243,airline:'Iberia',tail:'EC-MAA',icao24:'344503',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','widebody'],notes:'An Iberia Airbus A330-300 in the red-and-yellow livery.',sightings:[]},
+  {id:244,airline:'Lufthansa',tail:'D-AIXD',icao24:'3C6704',type:'Airbus A350-900',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','widebody'],notes:'A Lufthansa Airbus A350-900 in the navy-and-yellow crane livery.',sightings:[]},
+  {id:245,airline:'Lufthansa',tail:'D-ABVM',icao24:'3C4ACD',type:'Boeing 747-400',era:'2000s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['jumbo','widebody'],notes:'A Lufthansa Boeing 747-400 — Lufthansa was the largest operator of the passenger 747-400.',sightings:[]},
+  {id:246,airline:'KLM',tail:'PH-BHA',icao24:'4851AD',type:'Boeing 787-9',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','dreamliner'],notes:'PH-BHA was KLM\'s first Boeing 787-9 Dreamliner.',sightings:[]},
   {id:247,airline:'Singapore Airlines',tail:'9V-SWA',type:'Boeing 777-300ER',era:'2000s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','widebody'],notes:'A Singapore Airlines Boeing 777-300ER.',sightings:[]},
-  {id:248,airline:'Singapore Airlines',tail:'9V-SMF',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','widebody'],notes:'A Singapore Airlines Airbus A350-900, used on some of the world\'s longest flights.',sightings:[]},
-  {id:249,airline:'Qatar Airways',tail:'A7-ALA',type:'Airbus A350-900',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','widebody','oryx'],notes:'A7-ALA was the world\'s first Airbus A350 in service, delivered to Qatar Airways in 2014.',sightings:[]},
-  {id:250,airline:'Qatar Airways',tail:'A7-APA',type:'Airbus A380',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','superjumbo'],notes:'A7-APA was Qatar Airways\' first Airbus A380.',sightings:[]},
-  {id:251,airline:'Turkish Airlines',tail:'TC-LLA',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','dreamliner'],notes:'A Turkish Airlines Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:252,airline:'Japan Airlines',tail:'JA01XJ',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'JA01XJ was Japan Airlines\' first Airbus A350-900, with the red Tsurumaru crane.',sightings:[]},
-  {id:253,airline:'Virgin Atlantic',tail:'G-VLUX',type:'Airbus A350-1000',era:'2010s',livery:'Current',colors:['#E10A0A','#FFFFFF','#4B0082'],tags:['current','widebody'],notes:'A Virgin Atlantic Airbus A350-1000, the modern flagship of the Virgin fleet.',sightings:[]},
-  {id:254,airline:'JetBlue',tail:'N2002J',type:'Airbus A321neo',era:'2010s',livery:'Current',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current'],notes:'A JetBlue Airbus A321neo, used on transcon and transatlantic routes.',sightings:[]},
-  {id:255,airline:'Air Canada',tail:'C-FIVR',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','widebody'],notes:'An Air Canada Boeing 777-300ER in the red-and-black livery.',sightings:[]},
-  {id:256,airline:'Korean Air',tail:'HL8348',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current'],notes:'A Korean Air Boeing 737-8 MAX.',sightings:[]},
-  {id:257,airline:'Korean Air',tail:'HL8081',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current','dreamliner'],notes:'A Korean Air Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:248,airline:'Singapore Airlines',tail:'9V-SMF',icao24:'76CDA6',type:'Airbus A350-900',era:'2010s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','widebody'],notes:'A Singapore Airlines Airbus A350-900, used on some of the world\'s longest flights.',sightings:[]},
+  {id:249,airline:'Qatar Airways',tail:'A7-ALA',icao24:'06A0F5',type:'Airbus A350-900',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','widebody','oryx'],notes:'A7-ALA was the world\'s first Airbus A350 in service, delivered to Qatar Airways in 2014.',sightings:[]},
+  {id:250,airline:'Qatar Airways',tail:'A7-APA',icao24:'06A142',type:'Airbus A380',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','superjumbo'],notes:'A7-APA was Qatar Airways\' first Airbus A380.',sightings:[]},
+  {id:251,airline:'Turkish Airlines',tail:'TC-LLA',icao24:'4BB181',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','dreamliner'],notes:'A Turkish Airlines Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:252,airline:'Japan Airlines',tail:'JA01XJ',icao24:'8406E8',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'JA01XJ was Japan Airlines\' first Airbus A350-900, with the red Tsurumaru crane.',sightings:[]},
+  {id:253,airline:'Virgin Atlantic',tail:'G-VLUX',icao24:'4075B3',type:'Airbus A350-1000',era:'2010s',livery:'Current',colors:['#E10A0A','#FFFFFF','#4B0082'],tags:['current','widebody'],notes:'A Virgin Atlantic Airbus A350-1000, the modern flagship of the Virgin fleet.',sightings:[]},
+  {id:254,airline:'JetBlue',tail:'N2002J',icao24:'A194AA',type:'Airbus A321neo',era:'2010s',livery:'Current',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current'],notes:'A JetBlue Airbus A321neo, used on transcon and transatlantic routes.',sightings:[]},
+  {id:255,airline:'Air Canada',tail:'C-FIVR',icao24:'C01754',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','widebody'],notes:'An Air Canada Boeing 777-300ER in the red-and-black livery.',sightings:[]},
+  {id:256,airline:'Korean Air',tail:'HL8348',icao24:'71C348',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current'],notes:'A Korean Air Boeing 737-8 MAX.',sightings:[]},
+  {id:257,airline:'Korean Air',tail:'HL8081',icao24:'71C081',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#1B4DA1','#7AB3E0','#FFFFFF'],tags:['current','dreamliner'],notes:'A Korean Air Boeing 787-9 Dreamliner.',sightings:[]},
   // ── Big-carrier fleet depth (live-hydrated by reg via the photo API) ──
-  {id:300,airline:'Air Canada',tail:'C-GROV',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'The Airbus A220-300 has become a cornerstone of Air Canada\'s narrowbody fleet, with dozens in service.',sightings:[]},
-  {id:301,airline:'Air Canada',tail:'C-GFUR',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A330-300, a long-haul workhorse on transatlantic and high-density routes.',sightings:[]},
-  {id:302,airline:'Air Canada',tail:'C-FSDB',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Boeing 737 MAX 8, flown on domestic, US and transatlantic sectors.',sightings:[]},
-  {id:303,airline:'Air Canada',tail:'C-FIVK',type:'Boeing 777-200LR',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Air Canada\'s Boeing 777-200LR — an ultra-long-range twin used on some of its longest routes.',sightings:[]},
-  {id:304,airline:'Air Canada',tail:'C-GHPQ',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air Canada Boeing 787-8 Dreamliner in the red-and-black livery.',sightings:[]},
-  {id:305,airline:'American Airlines',tail:'N304RB',type:'Boeing 737 MAX 8',era:'2020s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Boeing 737 MAX 8, a core narrowbody of its domestic fleet.',sightings:[]},
-  {id:306,airline:'American Airlines',tail:'N803NN',type:'Boeing 737-800',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'A standard-livery American Airlines Boeing 737-800 — the backbone of its narrowbody fleet.',sightings:[]},
-  {id:307,airline:'American Airlines',tail:'N835AN',type:'Boeing 787-9',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'An American Airlines Boeing 787-9 Dreamliner on long-haul international routes.',sightings:[]},
-  {id:308,airline:'American Airlines',tail:'N93003',type:'Airbus A319',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Airbus A319 in the 2013 \'New American\' livery.',sightings:[]},
-  {id:309,airline:'American Airlines',tail:'N400AN',type:'Airbus A321neo',era:'2020s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Airbus A321neo, the largest of its single-aisle fleet.',sightings:[]},
-  {id:310,airline:'United Airlines',tail:'N66825',type:'Boeing 737-900ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Airlines Boeing 737-900ER in the blue globe livery.',sightings:[]},
-  {id:311,airline:'United Airlines',tail:'N653UA',type:'Boeing 767-300ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 767-300ER, a long-serving transatlantic widebody.',sightings:[]},
-  {id:312,airline:'United Airlines',tail:'N13014',type:'Boeing 787-10',era:'2020s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','dreamliner'],notes:'A United Boeing 787-10 Dreamliner, the largest of the 787 family.',sightings:[]},
-  {id:313,airline:'Delta Air Lines',tail:'N844MH',type:'Boeing 767-400ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'Delta is the world\'s only passenger operator of the Boeing 767-400ER.',sightings:[]},
-  {id:314,airline:'British Airways',tail:'G-ZBLB',type:'Boeing 787-10',era:'2020s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','dreamliner'],notes:'A British Airways Boeing 787-10 Dreamliner in the Chatham Dockyard livery.',sightings:[]},
-  {id:315,airline:'Lufthansa',tail:'D-ABPB',type:'Boeing 787-9',era:'2020s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','dreamliner'],notes:'A Lufthansa Boeing 787-9 Dreamliner — a recent addition to its long-haul fleet.',sightings:[]},
-  {id:316,airline:'Lufthansa',tail:'D-AIND',type:'Airbus A320neo',era:'2020s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','narrowbody'],notes:'A Lufthansa Airbus A320neo in the navy-and-yellow crane livery.',sightings:[]},
-  {id:317,airline:'Lufthansa',tail:'D-AIHW',type:'Airbus A340-600',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','narrowbody'],notes:'Lufthansa is one of the last operators of the stretched, four-engined Airbus A340-600.',sightings:[]},
-  {id:318,airline:'Air France',tail:'F-HEPA',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A320 on European short-haul routes.',sightings:[]},
-  {id:319,airline:'Air France',tail:'F-GZCA',type:'Airbus A330-200',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A330-200 widebody.',sightings:[]},
-  {id:320,airline:'Air France',tail:'F-HUVA',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A350-900, the modern flagship of its long-haul fleet.',sightings:[]},
-  {id:321,airline:'Emirates',tail:'A6-EWA',type:'Boeing 777-200LR',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','narrowbody'],notes:'Emirates\' Boeing 777-200LR — for years the world\'s longest-range airliner — on ultra-long routes.',sightings:[]},
-  {id:322,airline:'Emirates',tail:'A6-EXA',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','narrowbody'],notes:'Emirates began taking Airbus A350-900s in 2024, broadening a fleet long built around the A380 and 777.',sightings:[]},
-  {id:323,airline:'Qatar Airways',tail:'A7-ANA',type:'Airbus A350-1000',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'Qatar Airways was the launch customer of the Airbus A350-1000.',sightings:[]},
-  {id:324,airline:'Qatar Airways',tail:'A7-BEG',type:'Boeing 777-300ER',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'A Qatar Airways Boeing 777-300ER, a mainstay of its long-haul fleet.',sightings:[]},
-  {id:325,airline:'Qatar Airways',tail:'A7-BBI',type:'Boeing 777-200LR',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'A Qatar Airways Boeing 777-200LR, flown on its longest ultra-long-haul routes.',sightings:[]},
-  {id:326,airline:'Singapore Airlines',tail:'9V-SCR',type:'Boeing 787-10',era:'2010s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','dreamliner'],notes:'Singapore Airlines was the launch customer of the Boeing 787-10 Dreamliner.',sightings:[]},
-  {id:327,airline:'Singapore Airlines',tail:'9V-MBP',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','narrowbody'],notes:'A Singapore Airlines Boeing 737-8 MAX, flown on regional routes (inherited via the SilkAir merger).',sightings:[]},
-  {id:328,airline:'Cathay Pacific',tail:'B-LXA',type:'Airbus A350-1000',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A350-1000 in the green brushwing livery.',sightings:[]},
-  {id:329,airline:'Cathay Pacific',tail:'B-LAK',type:'Airbus A330-300',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A330-300, a regional-widebody workhorse.',sightings:[]},
-  {id:330,airline:'Cathay Pacific',tail:'B-HPI',type:'Airbus A321neo',era:'2020s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A321neo, the airline\'s newest narrowbody.',sightings:[]},
-  {id:331,airline:'Iberia',tail:'EC-KHM',type:'Airbus A319',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A319 in the red-and-yellow livery.',sightings:[]},
-  {id:332,airline:'Iberia',tail:'EC-NER',type:'Airbus A320neo',era:'2020s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A320neo on short- and medium-haul European routes.',sightings:[]},
-  {id:333,airline:'Iberia',tail:'EC-MYA',type:'Airbus A330-200',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A330-200 widebody on transatlantic routes to the Americas.',sightings:[]},
-  {id:334,airline:'All Nippon Airways',tail:'JA813A',type:'Boeing 787-8',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','dreamliner'],notes:'ANA is the world\'s largest operator of the Boeing 787; JA813A is a 787-8.',sightings:[]},
-  {id:335,airline:'All Nippon Airways',tail:'JA714A',type:'Boeing 777-200ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','narrowbody'],notes:'An ANA Boeing 777-200ER in the blue Triton livery.',sightings:[]},
-  {id:336,airline:'All Nippon Airways',tail:'JA608A',type:'Boeing 767-300ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','narrowbody'],notes:'An ANA Boeing 767-300ER, long a backbone of its domestic and regional network.',sightings:[]},
-  {id:337,airline:'KLM',tail:'PH-BXA',type:'Boeing 737-800',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','narrowbody'],notes:'A KLM Boeing 737-800, the mainstay of its European short-haul fleet.',sightings:[]},
-  {id:338,airline:'KLM',tail:'PH-BKA',type:'Boeing 787-10',era:'2020s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','dreamliner'],notes:'A KLM Boeing 787-10 Dreamliner in the sky-blue livery.',sightings:[]},
-  {id:339,airline:'Qantas',tail:'VH-ZNG',type:'Boeing 787-9',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','dreamliner'],notes:'A Qantas Boeing 787-9 Dreamliner, flown on ultra-long routes such as Perth–London.',sightings:[]},
-  {id:340,airline:'Qantas',tail:'VH-QPH',type:'Airbus A330-300',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','narrowbody'],notes:'A Qantas Airbus A330-300 on domestic trunk and regional-international routes.',sightings:[]},
-  {id:341,airline:'Qantas',tail:'VH-EBG',type:'Airbus A330-200',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','narrowbody'],notes:'A Qantas Airbus A330-200 widebody.',sightings:[]},
+  {id:300,airline:'Air Canada',tail:'C-GROV',icao24:'C0730E',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'The Airbus A220-300 has become a cornerstone of Air Canada\'s narrowbody fleet, with dozens in service.',sightings:[]},
+  {id:301,airline:'Air Canada',tail:'C-GFUR',icao24:'C053F6',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A330-300, a long-haul workhorse on transatlantic and high-density routes.',sightings:[]},
+  {id:302,airline:'Air Canada',tail:'C-FSDB',icao24:'C02FD8',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Boeing 737 MAX 8, flown on domestic, US and transatlantic sectors.',sightings:[]},
+  {id:303,airline:'Air Canada',tail:'C-FIVK',icao24:'C0174D',type:'Boeing 777-200LR',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Air Canada\'s Boeing 777-200LR — an ultra-long-range twin used on some of its longest routes.',sightings:[]},
+  {id:304,airline:'Air Canada',tail:'C-GHPQ',icao24:'C058BB',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air Canada Boeing 787-8 Dreamliner in the red-and-black livery.',sightings:[]},
+  {id:305,airline:'American Airlines',tail:'N304RB',icao24:'A32FA7',type:'Boeing 737 MAX 8',era:'2020s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Boeing 737 MAX 8, a core narrowbody of its domestic fleet.',sightings:[]},
+  {id:306,airline:'American Airlines',tail:'N803NN',icao24:'AAEE3B',type:'Boeing 737-800',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'A standard-livery American Airlines Boeing 737-800 — the backbone of its narrowbody fleet.',sightings:[]},
+  {id:307,airline:'American Airlines',tail:'N835AN',icao24:'AB6AFA',type:'Boeing 787-9',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'An American Airlines Boeing 787-9 Dreamliner on long-haul international routes.',sightings:[]},
+  {id:308,airline:'American Airlines',tail:'N93003',icao24:'ACE81D',type:'Airbus A319',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Airbus A319 in the 2013 \'New American\' livery.',sightings:[]},
+  {id:309,airline:'American Airlines',tail:'N400AN',icao24:'A4ACAE',type:'Airbus A321neo',era:'2020s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Airbus A321neo, the largest of its single-aisle fleet.',sightings:[]},
+  {id:310,airline:'United Airlines',tail:'N66825',icao24:'A8D4AD',type:'Boeing 737-900ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Airlines Boeing 737-900ER in the blue globe livery.',sightings:[]},
+  {id:311,airline:'United Airlines',tail:'N653UA',icao24:'A899A2',type:'Boeing 767-300ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 767-300ER, a long-serving transatlantic widebody.',sightings:[]},
+  {id:312,airline:'United Airlines',tail:'N13014',icao24:'A07DC9',type:'Boeing 787-10',era:'2020s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','dreamliner'],notes:'A United Boeing 787-10 Dreamliner, the largest of the 787 family.',sightings:[]},
+  {id:313,airline:'Delta Air Lines',tail:'N844MH',icao24:'AB8FD0',type:'Boeing 767-400ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'Delta is the world\'s only passenger operator of the Boeing 767-400ER.',sightings:[]},
+  {id:314,airline:'British Airways',tail:'G-ZBLB',icao24:'4078DE',type:'Boeing 787-10',era:'2020s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','dreamliner'],notes:'A British Airways Boeing 787-10 Dreamliner in the Chatham Dockyard livery.',sightings:[]},
+  {id:315,airline:'Lufthansa',tail:'D-ABPB',icao24:'3C4A02',type:'Boeing 787-9',era:'2020s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','dreamliner'],notes:'A Lufthansa Boeing 787-9 Dreamliner — a recent addition to its long-haul fleet.',sightings:[]},
+  {id:316,airline:'Lufthansa',tail:'D-AIND',icao24:'3C65C4',type:'Airbus A320neo',era:'2020s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','narrowbody'],notes:'A Lufthansa Airbus A320neo in the navy-and-yellow crane livery.',sightings:[]},
+  {id:317,airline:'Lufthansa',tail:'D-AIHW',icao24:'3C6517',type:'Airbus A340-600',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','narrowbody'],notes:'Lufthansa is one of the last operators of the stretched, four-engined Airbus A340-600.',sightings:[]},
+  {id:318,airline:'Air France',tail:'F-HEPA',icao24:'3991E0',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A320 on European short-haul routes.',sightings:[]},
+  {id:319,airline:'Air France',tail:'F-GZCA',icao24:'396440',type:'Airbus A330-200',era:'2010s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A330-200 widebody.',sightings:[]},
+  {id:320,airline:'Air France',tail:'F-HUVA',icao24:'39D2A0',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#002157','#FFFFFF','#EE2737'],tags:['current','narrowbody'],notes:'An Air France Airbus A350-900, the modern flagship of its long-haul fleet.',sightings:[]},
+  {id:321,airline:'Emirates',tail:'A6-EWA',icao24:'896173',type:'Boeing 777-200LR',era:'2010s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','narrowbody'],notes:'Emirates\' Boeing 777-200LR — for years the world\'s longest-range airliner — on ultra-long routes.',sightings:[]},
+  {id:322,airline:'Emirates',tail:'A6-EXA',icao24:'89661E',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#D71921','#FFFFFF','#C9A227'],tags:['current','narrowbody'],notes:'Emirates began taking Airbus A350-900s in 2024, broadening a fleet long built around the A380 and 777.',sightings:[]},
+  {id:323,airline:'Qatar Airways',tail:'A7-ANA',icao24:'06A11D',type:'Airbus A350-1000',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'Qatar Airways was the launch customer of the Airbus A350-1000.',sightings:[]},
+  {id:324,airline:'Qatar Airways',tail:'A7-BEG',icao24:'06A1BD',type:'Boeing 777-300ER',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'A Qatar Airways Boeing 777-300ER, a mainstay of its long-haul fleet.',sightings:[]},
+  {id:325,airline:'Qatar Airways',tail:'A7-BBI',icao24:'06A0DB',type:'Boeing 777-200LR',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','narrowbody'],notes:'A Qatar Airways Boeing 777-200LR, flown on its longest ultra-long-haul routes.',sightings:[]},
+  {id:326,airline:'Singapore Airlines',tail:'9V-SCR',icao24:'76CC72',type:'Boeing 787-10',era:'2010s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','dreamliner'],notes:'Singapore Airlines was the launch customer of the Boeing 787-10 Dreamliner.',sightings:[]},
+  {id:327,airline:'Singapore Airlines',tail:'9V-MBP',icao24:'76B450',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['current','narrowbody'],notes:'A Singapore Airlines Boeing 737-8 MAX, flown on regional routes (inherited via the SilkAir merger).',sightings:[]},
+  {id:328,airline:'Cathay Pacific',tail:'B-LXA',icao24:'789213',type:'Airbus A350-1000',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A350-1000 in the green brushwing livery.',sightings:[]},
+  {id:329,airline:'Cathay Pacific',tail:'B-LAK',icao24:'780236',type:'Airbus A330-300',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A330-300, a regional-widebody workhorse.',sightings:[]},
+  {id:330,airline:'Cathay Pacific',tail:'B-HPI',icao24:'789263',type:'Airbus A321neo',era:'2020s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','narrowbody'],notes:'A Cathay Pacific Airbus A321neo, the airline\'s newest narrowbody.',sightings:[]},
+  {id:331,airline:'Iberia',tail:'EC-KHM',icao24:'34260E',type:'Airbus A319',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A319 in the red-and-yellow livery.',sightings:[]},
+  {id:332,airline:'Iberia',tail:'EC-NER',icao24:'346303',type:'Airbus A320neo',era:'2020s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A320neo on short- and medium-haul European routes.',sightings:[]},
+  {id:333,airline:'Iberia',tail:'EC-MYA',icao24:'346045',type:'Airbus A330-200',era:'2010s',livery:'Current',colors:['#D40F2D','#F6B500','#FFFFFF'],tags:['current','narrowbody'],notes:'An Iberia Airbus A330-200 widebody on transatlantic routes to the Americas.',sightings:[]},
+  {id:334,airline:'All Nippon Airways',tail:'JA813A',icao24:'86D244',type:'Boeing 787-8',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','dreamliner'],notes:'ANA is the world\'s largest operator of the Boeing 787; JA813A is a 787-8.',sightings:[]},
+  {id:335,airline:'All Nippon Airways',tail:'JA714A',icao24:'86789E',type:'Boeing 777-200ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','narrowbody'],notes:'An ANA Boeing 777-200ER in the blue Triton livery.',sightings:[]},
+  {id:336,airline:'All Nippon Airways',tail:'JA608A',icao24:'861BCA',type:'Boeing 767-300ER',era:'2010s',livery:'Triton (current)',colors:['#1B0088','#00A1E0','#FFFFFF'],tags:['current','narrowbody'],notes:'An ANA Boeing 767-300ER, long a backbone of its domestic and regional network.',sightings:[]},
+  {id:337,airline:'KLM',tail:'PH-BXA',icao24:'484130',type:'Boeing 737-800',era:'2010s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','narrowbody'],notes:'A KLM Boeing 737-800, the mainstay of its European short-haul fleet.',sightings:[]},
+  {id:338,airline:'KLM',tail:'PH-BKA',icao24:'485B42',type:'Boeing 787-10',era:'2020s',livery:'Current (blue)',colors:['#00A1DE','#FFFFFF','#003082'],tags:['current','dreamliner'],notes:'A KLM Boeing 787-10 Dreamliner in the sky-blue livery.',sightings:[]},
+  {id:339,airline:'Qantas',tail:'VH-ZNG',icao24:'7C806A',type:'Boeing 787-9',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','dreamliner'],notes:'A Qantas Boeing 787-9 Dreamliner, flown on ultra-long routes such as Perth–London.',sightings:[]},
+  {id:340,airline:'Qantas',tail:'VH-QPH',icao24:'7C5323',type:'Airbus A330-300',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','narrowbody'],notes:'A Qantas Airbus A330-300 on domestic trunk and regional-international routes.',sightings:[]},
+  {id:341,airline:'Qantas',tail:'VH-EBG',icao24:'7C146A',type:'Airbus A330-200',era:'2010s',livery:'Flying Roo (current)',colors:['#E40000','#FFFFFF','#C0C0C0'],tags:['current','narrowbody'],notes:'A Qantas Airbus A330-200 widebody.',sightings:[]},
   // ── More fleet depth: North American majors (Air Canada A320/A321 families, US3 widebodies) ──
   {id:342,airline:'Air Canada',tail:'C-FDQQ',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A320 — part of a narrowbody fleet of around 30 A320-family jets.',sightings:[]},
-  {id:343,airline:'Air Canada',tail:'C-FKCK',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A320 on a domestic or US transborder route.',sightings:[]},
-  {id:344,airline:'Air Canada',tail:'C-FNVU',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A320 in the red-and-black livery.',sightings:[]},
-  {id:345,airline:'Air Canada',tail:'C-FGKP',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321, the largest of its A320-family narrowbodies.',sightings:[]},
-  {id:346,airline:'Air Canada',tail:'C-GIUF',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321 on a high-density domestic route.',sightings:[]},
-  {id:347,airline:'Air Canada',tail:'C-GITU',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321 in the current livery.',sightings:[]},
-  {id:348,airline:'Air Canada',tail:'C-GHLM',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Another of Air Canada\'s Airbus A330-300s, used on transatlantic and high-density routes.',sightings:[]},
-  {id:349,airline:'Air Canada',tail:'C-GJXN',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A220-300, built in Mirabel, Québec.',sightings:[]},
-  {id:350,airline:'Air Canada',tail:'C-GJXW',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A220-300 on a North American route.',sightings:[]},
-  {id:351,airline:'Air Canada',tail:'C-GEHV',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air Canada Boeing 737 MAX 8, flown on domestic and transborder routes.',sightings:[]},
-  {id:352,airline:'Air Canada',tail:'C-GHPX',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'Another Air Canada Boeing 787-8 Dreamliner.',sightings:[]},
-  {id:353,airline:'American Airlines',tail:'N721AN',type:'Boeing 777-300ER',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Boeing 777-300ER — the flagship of its long-haul fleet — in the standard 2013 livery.',sightings:[]},
-  {id:354,airline:'American Airlines',tail:'N802AN',type:'Boeing 787-8',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'An American Airlines Boeing 787-8 Dreamliner.',sightings:[]},
-  {id:355,airline:'United Airlines',tail:'N17122',type:'Boeing 757-200',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 757-200, flown on transcon and some transatlantic routes.',sightings:[]},
-  {id:356,airline:'United Airlines',tail:'N66051',type:'Boeing 767-400ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'United is one of only two passenger operators of the Boeing 767-400ER.',sightings:[]},
-  {id:357,airline:'United Airlines',tail:'N47280',type:'Boeing 737 MAX 8',era:'2020s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 737 MAX 8 in the blue globe livery.',sightings:[]},
-  {id:358,airline:'Delta Air Lines',tail:'N3748Y',type:'Boeing 737-800',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 737-800, a core narrowbody of its domestic fleet.',sightings:[]},
-  {id:359,airline:'Delta Air Lines',tail:'N821DN',type:'Boeing 737-900ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 737-900ER, the largest of its 737 family.',sightings:[]},
-  {id:360,airline:'Delta Air Lines',tail:'N858NW',type:'Airbus A330-200',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Airbus A330-200 widebody, inherited from the Northwest merger.',sightings:[]},
-  {id:361,airline:'Delta Air Lines',tail:'N810NW',type:'Airbus A330-300',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Airbus A330-300 on transatlantic and transpacific routes.',sightings:[]},
-  {id:362,airline:'Delta Air Lines',tail:'N188DN',type:'Boeing 767-300ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 767-300ER, a long-serving transatlantic widebody.',sightings:[]},
+  {id:343,airline:'Air Canada',tail:'C-FKCK',icao24:'C01AA7',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A320 on a domestic or US transborder route.',sightings:[]},
+  {id:344,airline:'Air Canada',tail:'C-FNVU',icao24:'C0248B',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A320 in the red-and-black livery.',sightings:[]},
+  {id:345,airline:'Air Canada',tail:'C-FGKP',icao24:'C010EC',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321, the largest of its A320-family narrowbodies.',sightings:[]},
+  {id:346,airline:'Air Canada',tail:'C-GIUF',icao24:'C05BD6',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321 on a high-density domestic route.',sightings:[]},
+  {id:347,airline:'Air Canada',tail:'C-GITU',icao24:'C05BCB',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A321 in the current livery.',sightings:[]},
+  {id:348,airline:'Air Canada',tail:'C-GHLM',icao24:'C0584F',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Another of Air Canada\'s Airbus A330-300s, used on transatlantic and high-density routes.',sightings:[]},
+  {id:349,airline:'Air Canada',tail:'C-GJXN',icao24:'C05ED0',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A220-300, built in Mirabel, Québec.',sightings:[]},
+  {id:350,airline:'Air Canada',tail:'C-GJXW',icao24:'C05ED9',type:'Airbus A220-300',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air Canada Airbus A220-300 on a North American route.',sightings:[]},
+  {id:351,airline:'Air Canada',tail:'C-GEHV',icao24:'C05004',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air Canada Boeing 737 MAX 8, flown on domestic and transborder routes.',sightings:[]},
+  {id:352,airline:'Air Canada',tail:'C-GHPX',icao24:'C058C2',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'Another Air Canada Boeing 787-8 Dreamliner.',sightings:[]},
+  {id:353,airline:'American Airlines',tail:'N721AN',icao24:'A9A750',type:'Boeing 777-300ER',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','narrowbody'],notes:'An American Airlines Boeing 777-300ER — the flagship of its long-haul fleet — in the standard 2013 livery.',sightings:[]},
+  {id:354,airline:'American Airlines',tail:'N802AN',icao24:'AAE958',type:'Boeing 787-8',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','dreamliner'],notes:'An American Airlines Boeing 787-8 Dreamliner.',sightings:[]},
+  {id:355,airline:'United Airlines',tail:'N17122',icao24:'A11F9D',type:'Boeing 757-200',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 757-200, flown on transcon and some transatlantic routes.',sightings:[]},
+  {id:356,airline:'United Airlines',tail:'N66051',icao24:'A8B75A',type:'Boeing 767-400ER',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'United is one of only two passenger operators of the Boeing 767-400ER.',sightings:[]},
+  {id:357,airline:'United Airlines',tail:'N47280',icao24:'A5CC11',type:'Boeing 737 MAX 8',era:'2020s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','narrowbody'],notes:'A United Boeing 737 MAX 8 in the blue globe livery.',sightings:[]},
+  {id:358,airline:'Delta Air Lines',tail:'N3748Y',icao24:'A4462E',type:'Boeing 737-800',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 737-800, a core narrowbody of its domestic fleet.',sightings:[]},
+  {id:359,airline:'Delta Air Lines',tail:'N821DN',icao24:'AB34EA',type:'Boeing 737-900ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 737-900ER, the largest of its 737 family.',sightings:[]},
+  {id:360,airline:'Delta Air Lines',tail:'N858NW',icao24:'ABC651',type:'Airbus A330-200',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Airbus A330-200 widebody, inherited from the Northwest merger.',sightings:[]},
+  {id:361,airline:'Delta Air Lines',tail:'N810NW',icao24:'AB0A9D',type:'Airbus A330-300',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Airbus A330-300 on transatlantic and transpacific routes.',sightings:[]},
+  {id:362,airline:'Delta Air Lines',tail:'N188DN',icao24:'A15EBC',type:'Boeing 767-300ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','narrowbody'],notes:'A Delta Boeing 767-300ER, a long-serving transatlantic widebody.',sightings:[]},
   // ── More fleet depth: Aeroméxico, Air China + thin world carriers (live-hydrated by reg) ──
   {id:363,airline:'Aeroméxico',tail:'XA-AMT',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'An Aeroméxico Boeing 737 MAX 8, the core of its narrowbody fleet.',sightings:[]},
-  {id:364,airline:'Aeroméxico',tail:'XA-MAQ',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Aeroméxico Boeing 737 MAX 8.',sightings:[]},
-  {id:365,airline:'Aeroméxico',tail:'XA-AML',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'An Aeroméxico Boeing 737-800.',sightings:[]},
-  {id:366,airline:'Aeroméxico',tail:'XA-AMU',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'An Aeroméxico Boeing 737-800 on a domestic or US route.',sightings:[]},
-  {id:367,airline:'Aeroméxico',tail:'N967AM',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','dreamliner'],notes:'An Aeroméxico Boeing 787-8 Dreamliner, a long-haul flagship.',sightings:[]},
-  {id:368,airline:'Air China',tail:'B-2032',type:'Boeing 777-300ER',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Boeing 777-300ER on long-haul intercontinental routes.',sightings:[]},
-  {id:369,airline:'Air China',tail:'B-2087',type:'Boeing 777-300ER',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air China Boeing 777-300ER.',sightings:[]},
-  {id:370,airline:'Air China',tail:'B-7878',type:'Boeing 787-9',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air China Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:371,airline:'Air China',tail:'B-1466',type:'Boeing 787-9',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air China Boeing 787-9 Dreamliner in the phoenix livery.',sightings:[]},
-  {id:372,airline:'Air China',tail:'B-5916',type:'Airbus A330-300',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Airbus A330-300, a regional-widebody workhorse.',sightings:[]},
-  {id:373,airline:'Air China',tail:'B-1085',type:'Airbus A350-900',era:'2020s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Airbus A350-900, the flagship of its modern fleet.',sightings:[]},
-  {id:374,airline:'Air China',tail:'B-32F1',type:'Airbus A350-900',era:'2020s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air China Airbus A350-900.',sightings:[]},
-  {id:375,airline:'Japan Airlines',tail:'JA831J',type:'Boeing 787-8',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','dreamliner'],notes:'A Japan Airlines Boeing 787-8 Dreamliner with the red Tsurumaru crane.',sightings:[]},
-  {id:376,airline:'Turkish Airlines',tail:'TC-LCH',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Boeing 737 MAX 8.',sightings:[]},
-  {id:377,airline:'Turkish Airlines',tail:'TC-JVA',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Boeing 737-800, a short-haul workhorse.',sightings:[]},
-  {id:378,airline:'Turkish Airlines',tail:'TC-JOH',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Airbus A330-300.',sightings:[]},
-  {id:379,airline:'Saudia',tail:'HZ-AR25',type:'Boeing 787-10',era:'2020s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','dreamliner'],notes:'A Saudia Boeing 787-10 Dreamliner.',sightings:[]},
-  {id:380,airline:'Saudia',tail:'HZ-ARF',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','dreamliner'],notes:'A Saudia Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:381,airline:'Air India',tail:'VT-ALM',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air India Boeing 777-300ER on ultra-long-haul routes to North America.',sightings:[]},
-  {id:382,airline:'Air India',tail:'VT-ALP',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air India Boeing 777-300ER.',sightings:[]},
-  {id:383,airline:'Air India',tail:'VT-JRA',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'VT-JRA was among Air India\'s first Airbus A350-900s, the flagship of its post-2022 fleet renewal.',sightings:[]},
-  {id:384,airline:'LATAM',tail:'CC-CXJ',type:'Boeing 767-300ER',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Boeing 767-300ER, long a widebody mainstay across the Americas.',sightings:[]},
-  {id:385,airline:'LATAM',tail:'CC-BBC',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','dreamliner'],notes:'A LATAM Boeing 787-8 Dreamliner.',sightings:[]},
-  {id:386,airline:'LATAM',tail:'CC-BLA',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Airbus A320 on a domestic South American route.',sightings:[]},
-  {id:387,airline:'LATAM',tail:'CC-BEA',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Airbus A321, the largest of its single-aisle fleet.',sightings:[]},
-  {id:388,airline:'Vietnam Airlines',tail:'VN-A897',type:'Airbus A350-900',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'A Vietnam Airlines Airbus A350-900 with the golden-lotus emblem.',sightings:[]},
-  {id:389,airline:'Vietnam Airlines',tail:'VN-A888',type:'Airbus A350-900',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Vietnam Airlines Airbus A350-900.',sightings:[]},
-  {id:390,airline:'Vietnam Airlines',tail:'VN-A872',type:'Boeing 787-10',era:'2020s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','dreamliner'],notes:'A Vietnam Airlines Boeing 787-10 Dreamliner.',sightings:[]},
-  {id:391,airline:'Vietnam Airlines',tail:'VN-A622',type:'Airbus A321neo',era:'2020s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'A Vietnam Airlines Airbus A321neo on regional routes.',sightings:[]},
+  {id:364,airline:'Aeroméxico',tail:'XA-MAQ',icao24:'0D0B04',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Aeroméxico Boeing 737 MAX 8.',sightings:[]},
+  {id:365,airline:'Aeroméxico',tail:'XA-AML',icao24:'0D0804',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'An Aeroméxico Boeing 737-800.',sightings:[]},
+  {id:366,airline:'Aeroméxico',tail:'XA-AMU',icao24:'0D08EE',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','narrowbody'],notes:'An Aeroméxico Boeing 737-800 on a domestic or US route.',sightings:[]},
+  {id:367,airline:'Aeroméxico',tail:'N967AM',icao24:'AD7633',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#0B2B5B','#E40521','#FFFFFF'],tags:['current','dreamliner'],notes:'An Aeroméxico Boeing 787-8 Dreamliner, a long-haul flagship.',sightings:[]},
+  {id:368,airline:'Air China',tail:'B-2032',icao24:'7808AC',type:'Boeing 777-300ER',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Boeing 777-300ER on long-haul intercontinental routes.',sightings:[]},
+  {id:369,airline:'Air China',tail:'B-2087',icao24:'78076D',type:'Boeing 777-300ER',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air China Boeing 777-300ER.',sightings:[]},
+  {id:370,airline:'Air China',tail:'B-7878',icao24:'780FDA',type:'Boeing 787-9',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air China Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:371,airline:'Air China',tail:'B-1466',icao24:'7811A2',type:'Boeing 787-9',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','dreamliner'],notes:'An Air China Boeing 787-9 Dreamliner in the phoenix livery.',sightings:[]},
+  {id:372,airline:'Air China',tail:'B-5916',icao24:'780971',type:'Airbus A330-300',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Airbus A330-300, a regional-widebody workhorse.',sightings:[]},
+  {id:373,airline:'Air China',tail:'B-1085',icao24:'781347',type:'Airbus A350-900',era:'2020s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air China Airbus A350-900, the flagship of its modern fleet.',sightings:[]},
+  {id:374,airline:'Air China',tail:'B-32F1',icao24:'781FB4',type:'Airbus A350-900',era:'2020s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air China Airbus A350-900.',sightings:[]},
+  {id:375,airline:'Japan Airlines',tail:'JA831J',icao24:'86D930',type:'Boeing 787-8',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','dreamliner'],notes:'A Japan Airlines Boeing 787-8 Dreamliner with the red Tsurumaru crane.',sightings:[]},
+  {id:376,airline:'Turkish Airlines',tail:'TC-LCH',icao24:'4BB068',type:'Boeing 737 MAX 8',era:'2020s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Boeing 737 MAX 8.',sightings:[]},
+  {id:377,airline:'Turkish Airlines',tail:'TC-JVA',icao24:'4BAAC1',type:'Boeing 737-800',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Boeing 737-800, a short-haul workhorse.',sightings:[]},
+  {id:378,airline:'Turkish Airlines',tail:'TC-JOH',icao24:'4BA9E8',type:'Airbus A330-300',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','narrowbody'],notes:'A Turkish Airlines Airbus A330-300.',sightings:[]},
+  {id:379,airline:'Saudia',tail:'HZ-AR25',icao24:'7105AC',type:'Boeing 787-10',era:'2020s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','dreamliner'],notes:'A Saudia Boeing 787-10 Dreamliner.',sightings:[]},
+  {id:380,airline:'Saudia',tail:'HZ-ARF',icao24:'7103D7',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#005430','#7BA05B','#FFFFFF'],tags:['current','dreamliner'],notes:'A Saudia Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:381,airline:'Air India',tail:'VT-ALM',icao24:'800462',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'An Air India Boeing 777-300ER on ultra-long-haul routes to North America.',sightings:[]},
+  {id:382,airline:'Air India',tail:'VT-ALP',icao24:'8004DE',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Air India Boeing 777-300ER.',sightings:[]},
+  {id:383,airline:'Air India',tail:'VT-JRA',icao24:'8015F7',type:'Airbus A350-900',era:'2020s',livery:'Current',colors:['#D31247','#FF6A13','#FFFFFF'],tags:['current','narrowbody'],notes:'VT-JRA was among Air India\'s first Airbus A350-900s, the flagship of its post-2022 fleet renewal.',sightings:[]},
+  {id:384,airline:'LATAM',tail:'CC-CXJ',icao24:'E8040C',type:'Boeing 767-300ER',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Boeing 767-300ER, long a widebody mainstay across the Americas.',sightings:[]},
+  {id:385,airline:'LATAM',tail:'CC-BBC',icao24:'E8043A',type:'Boeing 787-8',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','dreamliner'],notes:'A LATAM Boeing 787-8 Dreamliner.',sightings:[]},
+  {id:386,airline:'LATAM',tail:'CC-BLA',icao24:'E80238',type:'Airbus A320',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Airbus A320 on a domestic South American route.',sightings:[]},
+  {id:387,airline:'LATAM',tail:'CC-BEA',icao24:'E80440',type:'Airbus A321',era:'2010s',livery:'Current',colors:['#1B0088','#E40046','#FFFFFF'],tags:['current','narrowbody'],notes:'A LATAM Airbus A321, the largest of its single-aisle fleet.',sightings:[]},
+  {id:388,airline:'Vietnam Airlines',tail:'VN-A897',icao24:'888153',type:'Airbus A350-900',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'A Vietnam Airlines Airbus A350-900 with the golden-lotus emblem.',sightings:[]},
+  {id:389,airline:'Vietnam Airlines',tail:'VN-A888',icao24:'8880E6',type:'Airbus A350-900',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'Another Vietnam Airlines Airbus A350-900.',sightings:[]},
+  {id:390,airline:'Vietnam Airlines',tail:'VN-A872',icao24:'888187',type:'Boeing 787-10',era:'2020s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','dreamliner'],notes:'A Vietnam Airlines Boeing 787-10 Dreamliner.',sightings:[]},
+  {id:391,airline:'Vietnam Airlines',tail:'VN-A622',icao24:'88816D',type:'Airbus A321neo',era:'2020s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'A Vietnam Airlines Airbus A321neo on regional routes.',sightings:[]},
   // ── More liveries: alliance schemes (Star Alliance / oneworld / SkyTeam), retro & specials ──
-  {id:392,airline:'Singapore Airlines',tail:'9V-SWI',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Singapore Airlines Boeing 777-300ER in the all-white Star Alliance livery, marking its membership in the global alliance.',sightings:[]},
-  {id:393,airline:'Turkish Airlines',tail:'TC-JJU',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Turkish Airlines Boeing 777-300ER wearing the Star Alliance livery.',sightings:[]},
-  {id:394,airline:'Turkish Airlines',tail:'TC-JRR',type:'Airbus A321',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','narrowbody'],notes:'A Turkish Airlines Airbus A321 in the Star Alliance livery.',sightings:[]},
-  {id:395,airline:'Finnair',tail:'OH-LWB',type:'Airbus A350-900',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Finnair Airbus A350-900 in the grey oneworld alliance livery.',sightings:[]},
-  {id:396,airline:'Japan Airlines',tail:'JA732J',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Japan Airlines Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
-  {id:397,airline:'Qatar Airways',tail:'A7-BAF',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Qatar Airways Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
-  {id:398,airline:'KLM',tail:'PH-BVD',type:'Boeing 777-300ER',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','widebody'],notes:'A KLM Boeing 777-300ER in the blue SkyTeam alliance livery.',sightings:[]},
+  {id:392,airline:'Singapore Airlines',tail:'9V-SWI',icao24:'76CEE9',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Singapore Airlines Boeing 777-300ER in the all-white Star Alliance livery, marking its membership in the global alliance.',sightings:[]},
+  {id:393,airline:'Turkish Airlines',tail:'TC-JJU',icao24:'4BA955',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Turkish Airlines Boeing 777-300ER wearing the Star Alliance livery.',sightings:[]},
+  {id:394,airline:'Turkish Airlines',tail:'TC-JRR',icao24:'4BAA52',type:'Airbus A321',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','narrowbody'],notes:'A Turkish Airlines Airbus A321 in the Star Alliance livery.',sightings:[]},
+  {id:395,airline:'Finnair',tail:'OH-LWB',icao24:'461F49',type:'Airbus A350-900',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Finnair Airbus A350-900 in the grey oneworld alliance livery.',sightings:[]},
+  {id:396,airline:'Japan Airlines',tail:'JA732J',icao24:'867F8A',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Japan Airlines Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
+  {id:397,airline:'Qatar Airways',tail:'A7-BAF',icao24:'06A070',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Qatar Airways Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
+  {id:398,airline:'KLM',tail:'PH-BVD',icao24:'484561',type:'Boeing 777-300ER',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','widebody'],notes:'A KLM Boeing 777-300ER in the blue SkyTeam alliance livery.',sightings:[]},
   {id:399,airline:'Air France',tail:'F-GTAE',type:'Airbus A321',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','narrowbody'],notes:'An Air France Airbus A321 in the silver-and-blue SkyTeam alliance livery.',sightings:[]},
-  {id:400,airline:'Icelandair',tail:'TF-FIU',type:'Boeing 757-200',era:'2010s',livery:'Hekla Aurora',colors:['#0A2240','#2BAE66','#F2C200'],tags:['special','aurora','rare'],notes:'‘Hekla Aurora’ — an Icelandair Boeing 757-200 painted in a shimmering northern-lights livery, with green-and-blue auroras down the fuselage and yellow engines.',sightings:[]},
-  {id:401,airline:'American Airlines',tail:'N915NN',type:'Boeing 737-800',era:'2010s',livery:'TWA heritage',colors:['#C8102E','#FFFFFF','#C0C0C0'],tags:['retro','heritage','TWA'],notes:'A TWA heritage retrojet — American 737-800 N915NN wears the red-cheatline livery of Trans World Airlines, which American absorbed in 2001.',sightings:[]},
-  {id:402,airline:'Alaska Airlines',tail:'N570AS',type:'Boeing 737-800',era:'2010s',livery:'Eskimo (current)',colors:['#01426A','#00467F','#76858F'],tags:['current','eskimo'],notes:'An Alaska Airlines Boeing 737-800 in the standard ‘Eskimo’ livery, with the parka-hooded Alaska Native face on the tail.',sightings:[]},
+  {id:400,airline:'Icelandair',tail:'TF-FIU',icao24:'4CC2C5',type:'Boeing 757-200',era:'2010s',livery:'Hekla Aurora',colors:['#0A2240','#2BAE66','#F2C200'],tags:['special','aurora','rare'],notes:'‘Hekla Aurora’ — an Icelandair Boeing 757-200 painted in a shimmering northern-lights livery, with green-and-blue auroras down the fuselage and yellow engines.',sightings:[]},
+  {id:401,airline:'American Airlines',tail:'N915NN',icao24:'ACAA77',type:'Boeing 737-800',era:'2010s',livery:'TWA heritage',colors:['#C8102E','#FFFFFF','#C0C0C0'],tags:['retro','heritage','TWA'],notes:'A TWA heritage retrojet — American 737-800 N915NN wears the red-cheatline livery of Trans World Airlines, which American absorbed in 2001.',sightings:[]},
+  {id:402,airline:'Alaska Airlines',tail:'N570AS',icao24:'A74E7A',type:'Boeing 737-800',era:'2010s',livery:'Eskimo (current)',colors:['#01426A','#00467F','#76858F'],tags:['current','eskimo'],notes:'An Alaska Airlines Boeing 737-800 in the standard ‘Eskimo’ livery, with the parka-hooded Alaska Native face on the tail.',sightings:[]},
   // ── Military aircraft (rare catches) ──
   {id:101,category:'military',airline:'U.S. Air Force',tail:'04-4070',type:'F-22 Raptor',era:'2010s',livery:'Air dominance grey',colors:['#5A6470','#3E4651','#8A95A3'],tags:['fighter','stealth','rare'],notes:'Fifth-generation air-superiority fighter. The Raptor\'s low-observable grey is rarely seen outside air shows.',sightings:[]},
   {id:102,category:'military',airline:'U.S. Navy',tail:'168912',type:'F/A-18 Super Hornet',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['fighter','carrier','navy'],notes:'Carrier-based multirole fighter in standard tactical paint.',sightings:[]},
   {id:103,category:'military',airline:'U.S. Navy',tail:'165664',type:'F/A-18 Super Hornet',era:'2020s',livery:'Blue Angels',colors:['#002F6C','#FFC72C','#FFFFFF'],tags:['display','rare','iconic'],notes:'U.S. Navy flight demonstration squadron. The Blue Angels switched to the blue-and-gold F/A-18E/F Super Hornet in 2021 — a prized airshow catch.',sightings:[]},
   {id:104,category:'military',airline:'U.S. Air Force',tail:'87-0293',type:'F-16 Fighting Falcon',era:'2020s',livery:'Thunderbirds',colors:['#C8102E','#0A2472','#FFFFFF'],tags:['display','rare','iconic'],notes:'USAF Air Demonstration Squadron. The red-white-and-blue Thunderbirds F-16C is a rare-catch airshow favourite.',sightings:[]},
-  {id:105,category:'military',airline:'Royal Air Force',tail:'ZK308',type:'Eurofighter Typhoon',era:'2010s',livery:'Air-defence grey',colors:['#5C6670','#3A424C','#8993A0'],tags:['fighter','RAF','europe'],notes:'RAF multirole fighter in standard air-defence grey.',sightings:[]},
+  {id:105,category:'military',airline:'Royal Air Force',tail:'ZK308',icao24:'43C610',type:'Eurofighter Typhoon',era:'2010s',livery:'Air-defence grey',colors:['#5C6670','#3A424C','#8993A0'],tags:['fighter','RAF','europe'],notes:'RAF multirole fighter in standard air-defence grey.',sightings:[]},
   {id:106,category:'military',airline:'U.S. Air Force',tail:'82-1066',type:'B-2 Spirit',era:'1990s',livery:'Stealth black',colors:['#2A2D33','#1A1C20','#3E424A'],tags:['bomber','stealth','very rare'],notes:'Stealth strategic bomber — only 21 were ever built, making a B-2 the rarest of finds. 82-1066 "Spirit of America" was the very first B-2.',sightings:[]},
-  {id:107,category:'military',airline:'U.S. Air Force',tail:'80-0221',type:'A-10 Thunderbolt II',era:'2010s',livery:'Warthog grey',colors:['#5A5F4D','#3E4234','#7A7F6A'],tags:['attack','warthog','rare'],notes:'The A-10 "Warthog" close-air-support jet, built around its enormous 30 mm GAU-8 cannon, in low-visibility grey.',sightings:[]},
+  {id:107,category:'military',airline:'U.S. Air Force',tail:'80-0221',icao24:'AE197E',type:'A-10 Thunderbolt II',era:'2010s',livery:'Warthog grey',colors:['#5A5F4D','#3E4234','#7A7F6A'],tags:['attack','warthog','rare'],notes:'The A-10 "Warthog" close-air-support jet, built around its enormous 30 mm GAU-8 cannon, in low-visibility grey.',sightings:[]},
   {id:108,category:'military',airline:'U.S. Air Force',tail:'60-0034',type:'B-52H Stratofortress',era:'2010s',livery:'Bomber grey',colors:['#4C4F45','#33352D','#6B6E60'],tags:['bomber','strategic','rare'],notes:'The B-52H heavy bomber — in USAF service since the 1960s and projected to keep flying into the 2050s.',sightings:[]},
   {id:109,category:'military',airline:'U.S. Air Force',tail:'84-0001',type:'F-15 Eagle',era:'2010s',livery:'Air-superiority grey',colors:['#5E6770','#3F464D','#8A93A0'],tags:['fighter','eagle'],notes:'The F-15 Eagle air-superiority fighter, famed for an undefeated air-to-air record, in two-tone grey.',sightings:[]},
-  {id:110,category:'military',airline:'U.S. Navy',tail:'168267',type:'EA-18G Growler',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['carrier','electronic warfare'],notes:'The EA-18G Growler — the U.S. Navy\'s carrier-based electronic-attack jet, derived from the F/A-18F Super Hornet.',sightings:[]},
-  {id:111,category:'military',airline:'Royal Air Force',tail:'XX219',type:'BAE Hawk T1',era:'2010s',livery:'Red Arrows',colors:['#E1001A','#FFFFFF','#1B3A8B'],tags:['display','red arrows','iconic','rare'],notes:'The Red Arrows — the RAF Aerobatic Team — fly the BAE Hawk T1 in their famous red display livery. A prized airshow catch.',sightings:[]},
+  {id:110,category:'military',airline:'U.S. Navy',tail:'168267',icao24:'AE2F1C',type:'EA-18G Growler',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['carrier','electronic warfare'],notes:'The EA-18G Growler — the U.S. Navy\'s carrier-based electronic-attack jet, derived from the F/A-18F Super Hornet.',sightings:[]},
+  {id:111,category:'military',airline:'Royal Air Force',tail:'XX219',icao24:'43C40D',type:'BAE Hawk T1',era:'2010s',livery:'Red Arrows',colors:['#E1001A','#FFFFFF','#1B3A8B'],tags:['display','red arrows','iconic','rare'],notes:'The Red Arrows — the RAF Aerobatic Team — fly the BAE Hawk T1 in their famous red display livery. A prized airshow catch.',sightings:[]},
   {id:112,category:'military',airline:'Royal Air Force',tail:'ZM145',type:'F-35B Lightning II',era:'2020s',livery:'Lightning grey',colors:['#54606B','#3A434C','#838E9B'],tags:['fighter','stealth','f-35'],notes:'The RAF\'s F-35B Lightning — a short-takeoff/vertical-landing stealth fighter flown from land bases and the Royal Navy\'s carriers.',sightings:[]},
   {id:113,category:'military',airline:'German Air Force',tail:'31+00',type:'Eurofighter Typhoon',era:'2010s',livery:'Luftwaffe grey',colors:['#5C6670','#3A424C','#8993A0'],tags:['fighter','luftwaffe','europe'],notes:'A Eurofighter Typhoon of the German Air Force (Luftwaffe) in standard air-defence grey.',sightings:[]},
 ];
@@ -602,7 +602,9 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      LATAM, Vietnam (29 more verified, live-hydrated by reg).
 // v14: more liveries per airline — alliance schemes (Star Alliance/oneworld/SkyTeam), Icelandair
 //      Hekla Aurora, TWA heritage; fixed #30 (N559AS is the Xaat Kwaani salmon livery, not standard).
-const SEED_VERSION = 14;
+// v15: live traffic — enriched 222 entries with icao24 hex for the "rare planes near you" feature
+//      (airplanes.live primary + OpenSky failover), used to match live ADS-B against the catalog.
+const SEED_VERSION = 15;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
@@ -905,6 +907,7 @@ function openDetail(id) {
           </span>`).join('')}</p>
         </div>
       </div>
+      ${liveDetailHTML(l)}
       <div class="spotter-section">
         <h3>My sightings (${(sightings[id]||[]).length})</h3>
         <div class="log-add">
@@ -1211,4 +1214,493 @@ if (document.querySelector('aside')) {
   backdrop.className = 'drawer-backdrop';
   backdrop.addEventListener('click', () => toggleSidebar(false));
   document.body.appendChild(backdrop);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  LIVE TRAFFIC — "rare planes near you"
+//
+//  Primary source: airplanes.live (CORS-open, no auth, returns registration
+//  directly). Failover: /api/opensky (Vercel serverless proxy, this repo).
+//  We match each live aircraft against the catalog by registration (tail) or,
+//  for the OpenSky path, by the enriched icao24 hex.
+// ══════════════════════════════════════════════════════════════════════════
+const LIVE = {
+  radiusNm: 90,          // default scan radius
+  airports: null,        // lazily-loaded airports.json
+  airportsPromise: null,
+};
+
+// ── geo helpers ──
+const NM_PER_DEG = 60;
+function toRad(d) { return d * Math.PI / 180; }
+function haversineNm(aLat, aLon, bLat, bLon) {
+  const R = 3440.065; // nautical miles
+  const dLat = toRad(bLat - aLat), dLon = toRad(bLon - aLon);
+  const s = Math.sin(dLat/2)**2 + Math.cos(toRad(aLat))*Math.cos(toRad(bLat))*Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(s));
+}
+function bearingDeg(aLat, aLon, bLat, bLon) {
+  const y = Math.sin(toRad(bLon-aLon)) * Math.cos(toRad(bLat));
+  const x = Math.cos(toRad(aLat))*Math.sin(toRad(bLat)) -
+            Math.sin(toRad(aLat))*Math.cos(toRad(bLat))*Math.cos(toRad(bLon-aLon));
+  return (Math.atan2(y, x) * 180/Math.PI + 360) % 360;
+}
+function compass(deg) {
+  return ['N','NE','E','SE','S','SW','W','NW'][Math.round(deg/45)%8];
+}
+
+// ── airports.json (lazy) ──
+function loadAirports() {
+  if (LIVE.airportsPromise) return LIVE.airportsPromise;
+  LIVE.airportsPromise = fetch('airports.json')
+    .then(r => r.ok ? r.json() : [])
+    .then(list => { LIVE.airports = list; return list; })
+    .catch(() => { LIVE.airports = []; return []; });
+  return LIVE.airportsPromise;
+}
+function nearestAirport(lat, lon) {
+  if (!LIVE.airports || !LIVE.airports.length) return null;
+  let best = null, bestD = Infinity;
+  for (const a of LIVE.airports) {
+    const d = haversineNm(lat, lon, a.lat, a.lon);
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  return best ? { ...best, distNm: bestD } : null;
+}
+function airportsNear(lat, lon, n = 6) {
+  if (!LIVE.airports) return [];
+  return LIVE.airports
+    .map(a => ({ ...a, distNm: haversineNm(lat, lon, a.lat, a.lon) }))
+    .sort((x, y) => x.distNm - y.distNm)
+    .slice(0, n);
+}
+// Resolve a free-text sighting location ("KLAX", "JFK", "Heathrow") to an airport.
+function airportByText(text) {
+  if (!LIVE.airports || !text) return null;
+  const t = text.trim().toUpperCase();
+  const code = t.replace(/[^A-Z0-9]/g, '');
+  let hit = LIVE.airports.find(a => a.iata === code || a.icao === code);
+  if (hit) return hit;
+  // first token as IATA/ICAO, else loose name/city contains
+  const tok = code.slice(0, 4);
+  hit = LIVE.airports.find(a => a.icao === tok) ||
+        LIVE.airports.find(a => a.iata === tok.slice(0, 3));
+  if (hit) return hit;
+  const low = text.trim().toLowerCase();
+  return LIVE.airports.find(a =>
+    (a.name && a.name.toLowerCase().includes(low)) ||
+    (a.city && a.city.toLowerCase().includes(low))) || null;
+}
+
+// ── catalog index (tail + hex → livery) ──
+let _liveIndex = null;
+function liveIndex() {
+  if (_liveIndex) return _liveIndex;
+  const byReg = new Map(), byHex = new Map();
+  for (const l of db) {
+    if (l.tail) byReg.set(l.tail.toUpperCase().replace(/[^A-Z0-9]/g, ''), l);
+    if (l.icao24) byHex.set(l.icao24.toLowerCase(), l);
+  }
+  _liveIndex = { byReg, byHex };
+  return _liveIndex;
+}
+function liveryForLive(ac) {
+  const idx = liveIndex();
+  if (ac.reg) {
+    const hit = idx.byReg.get(ac.reg.toUpperCase().replace(/[^A-Z0-9]/g, ''));
+    if (hit) return hit;
+  }
+  if (ac.hex) {
+    const hit = idx.byHex.get(ac.hex.toLowerCase());
+    if (hit) return hit;
+  }
+  return null;
+}
+
+// ── live fetch (airplanes.live primary → /api/opensky failover) ──
+function normAircraft(a) {
+  return {
+    hex: (a.hex || '').toLowerCase(),
+    reg: (a.r || a.reg || '').trim() || null,
+    type: a.t || a.type || '',
+    flight: (a.flight || '').trim(),
+    lat: a.lat, lon: a.lon,
+    alt: typeof a.alt_baro === 'number' ? a.alt_baro
+       : typeof a.alt_geom === 'number' ? a.alt_geom
+       : (a.alt ?? null),
+    gs: a.gs != null ? Math.round(a.gs) : null,
+    track: a.track ?? a.true_heading ?? null,
+    vrate: typeof a.baro_rate === 'number' ? a.baro_rate
+         : typeof a.geom_rate === 'number' ? a.geom_rate
+         : (a.vrate ?? null),
+    ground: a.alt_baro === 'ground' || a.ground === true,
+  };
+}
+
+// Classify a live aircraft into a human state relative to your scan center + nearest airport:
+// on the ground, arriving (descending into a field), climbing out, flying over you (with ETA),
+// or just en route. The overfly ETA projects the aircraft's track/speed toward your location.
+function angDiff(a, b) {
+  const d = Math.abs(a - b) % 360;
+  return d > 180 ? 360 - d : d;
+}
+function aircraftStatus(ac, lat, lon, nearAirport) {
+  if (ac.ground) {
+    const at = nearAirport && nearAirport.distNm < 6 ? ' at ' + nearAirport.iata : '';
+    return { kind: 'ground', cls: 'st-ground', label: '● On the ground' + at };
+  }
+  const gs = ac.gs || 0;
+
+  // Flying over YOUR location: is the track aimed at you, and how soon?
+  if (gs > 60 && ac.track != null && lat != null) {
+    const d = haversineNm(ac.lat, ac.lon, lat, lon);
+    if (d > 0.3) {
+      const brg = bearingDeg(ac.lat, ac.lon, lat, lon);
+      const theta = angDiff(ac.track, brg);
+      const along = d * Math.cos(toRad(theta));        // nm to closest approach (>0 = inbound)
+      const cross = Math.abs(d * Math.sin(toRad(theta))); // nm it'll miss you by
+      if (along > 0 && cross < 12) {
+        const mins = Math.round(along / gs * 60);
+        if (mins <= 30) {
+          return { kind: 'overhead', cls: 'st-over',
+            label: mins <= 1 ? '✈ Over you now' : `✈ Over you in ~${mins} min` };
+        }
+      }
+    }
+  }
+
+  // Arriving: low + descending toward a nearby field.
+  if (nearAirport && nearAirport.distNm < 40 &&
+      (ac.alt == null || ac.alt < 13000) &&
+      (ac.vrate == null || ac.vrate < -250)) {
+    const eta = gs > 40 ? Math.round(nearAirport.distNm / gs * 60) : null;
+    const etaTxt = eta != null && eta <= 40 ? ` · ~${eta} min` : '';
+    return { kind: 'arriving', cls: 'st-arrive', label: `↓ Arriving ${nearAirport.iata}${etaTxt}` };
+  }
+
+  // Climbing out of a nearby field.
+  if (nearAirport && nearAirport.distNm < 30 && ac.vrate != null && ac.vrate > 400) {
+    return { kind: 'departing', cls: 'st-depart', label: `↑ Departing ${nearAirport.iata}` };
+  }
+
+  return { kind: 'cruise', cls: 'st-cruise', label: '→ En route' };
+}
+async function fetchLiveBox(lat, lon, radiusNm) {
+  // Primary: airplanes.live point query.
+  try {
+    const ctl = AbortSignal.timeout ? AbortSignal.timeout(9000) : undefined;
+    const r = await fetch(`https://api.airplanes.live/v2/point/${lat.toFixed(4)}/${lon.toFixed(4)}/${Math.round(radiusNm)}`,
+      ctl ? { signal: ctl } : {});
+    if (r.ok) {
+      const j = await r.json();
+      const ac = (j.ac || j.aircraft || []).map(normAircraft).filter(a => a.lat != null);
+      return { source: 'airplanes.live', ac };
+    }
+  } catch (e) { /* fall through to failover */ }
+
+  // Failover: OpenSky via our serverless proxy. Convert radius → bounding box.
+  try {
+    const dLat = radiusNm / NM_PER_DEG;
+    const dLon = radiusNm / (NM_PER_DEG * Math.max(0.1, Math.cos(toRad(lat))));
+    const qs = `lamin=${(lat-dLat).toFixed(4)}&lomin=${(lon-dLon).toFixed(4)}` +
+               `&lamax=${(lat+dLat).toFixed(4)}&lomax=${(lon+dLon).toFixed(4)}`;
+    const r = await fetch(`/api/opensky?${qs}`);
+    if (r.ok) {
+      const j = await r.json();
+      const ac = (j.ac || []).map(normAircraft).filter(a => a.lat != null);
+      return { source: j.source || 'opensky', ac };
+    }
+  } catch (e) { /* both down */ }
+  return { source: null, ac: [] };
+}
+
+// Look up ONE aircraft's current position by registration (for the detail map).
+async function fetchLiveOne(reg, hex) {
+  const tryUrl = async (u) => {
+    try {
+      const r = await fetch(u);
+      if (!r.ok) return null;
+      const j = await r.json();
+      const ac = (j.ac || j.aircraft || []).map(normAircraft).filter(a => a.lat != null);
+      return ac[0] || null;
+    } catch (e) { return null; }
+  };
+  if (reg) {
+    const a = await tryUrl(`https://api.airplanes.live/v2/reg/${encodeURIComponent(reg)}`);
+    if (a) return a;
+  }
+  if (hex) {
+    const a = await tryUrl(`https://api.airplanes.live/v2/hex/${encodeURIComponent(hex)}`);
+    if (a) return a;
+  }
+  return null;
+}
+
+// ── orchestration: scan a center point, return rare matches with context ──
+async function scanRareNear(lat, lon, radiusNm) {
+  await loadAirports();
+  const { source, ac } = await fetchLiveBox(lat, lon, radiusNm);
+  const matches = [];
+  for (const a of ac) {
+    const livery = liveryForLive(a);
+    if (!livery) continue;
+    const distNm = haversineNm(lat, lon, a.lat, a.lon);
+    if (distNm > radiusNm + 5) continue;
+    const near = nearestAirport(a.lat, a.lon);
+    matches.push({
+      livery, ac: a, distNm,
+      bearing: bearingDeg(lat, lon, a.lat, a.lon),
+      nearAirport: near,
+      status: aircraftStatus(a, lat, lon, near),
+    });
+  }
+  matches.sort((x, y) => x.distNm - y.distNm);
+  return { source, total: ac.length, matches };
+}
+
+// ── Leaflet (lazy CDN load; no API key, free OSM tiles) ──
+let _leafletPromise = null;
+function loadLeaflet() {
+  if (_leafletPromise) return _leafletPromise;
+  _leafletPromise = new Promise((resolve, reject) => {
+    if (window.L) return resolve(window.L);
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(css);
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = () => resolve(window.L);
+    s.onerror = () => reject(new Error('leaflet-failed'));
+    document.head.appendChild(s);
+  });
+  return _leafletPromise;
+}
+
+function planeDivIcon(L, track) {
+  const rot = (track || 0);
+  return L.divIcon({
+    className: 'live-plane-icon',
+    html: `<svg viewBox="0 0 24 24" width="30" height="30" style="transform:rotate(${rot}deg)">
+      <path fill="#e8472b" stroke="#fff" stroke-width="0.8"
+        d="M12 2 L13.4 9 L22 13 L22 14.5 L13.4 12.5 L13 19 L16 21 L16 22 L12 21 L8 22 L8 21 L11 19 L10.6 12.5 L2 14.5 L2 13 L10.6 9 Z"/>
+    </svg>`,
+    iconSize: [30, 30], iconAnchor: [15, 15],
+  });
+}
+
+// Render a Leaflet map into `el`. opts: { plane:{lat,lon,track,label}, pins:[{lat,lon,label,kind}] }
+async function buildLiveMap(el, opts) {
+  const L = await loadLeaflet();
+  if (el._map) { el._map.remove(); el._map = null; }
+  const pts = [];
+  if (opts.plane) pts.push([opts.plane.lat, opts.plane.lon]);
+  (opts.pins || []).forEach(p => pts.push([p.lat, p.lon]));
+  const center = pts.length ? pts[0] : [20, 0];
+  const map = L.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false })
+    .setView(center, opts.plane ? 7 : 4);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18, attribution: '&copy; OpenStreetMap',
+  }).addTo(map);
+
+  (opts.pins || []).forEach(p => {
+    const color = p.kind === 'sighting' ? '#1f9d6b' : '#7a8aa0';
+    L.circleMarker([p.lat, p.lon], {
+      radius: 6, color: '#fff', weight: 2, fillColor: color, fillOpacity: 1,
+    }).addTo(map).bindPopup(p.label);
+  });
+
+  if (opts.plane) {
+    L.marker([opts.plane.lat, opts.plane.lon], { icon: planeDivIcon(L, opts.plane.track) })
+      .addTo(map).bindPopup(opts.plane.label).openPopup();
+  }
+
+  if (pts.length > 1) {
+    map.fitBounds(pts, { padding: [40, 40], maxZoom: 9 });
+  }
+  el._map = map;
+  // Tiles need a reflow once the container is visible.
+  setTimeout(() => map.invalidateSize(), 60);
+  return map;
+}
+
+// ── human-readable live status line ──
+function liveAltText(ac) {
+  if (ac.ground) return 'on the ground';
+  if (ac.alt == null) return 'airborne';
+  if (ac.alt >= 18000) return 'FL' + Math.round(ac.alt / 100);
+  return ac.alt.toLocaleString() + ' ft';
+}
+
+// ══════════════ HOME-PAGE "RARE PLANES NEAR YOU" ══════════════
+let _liveScanCenter = null;
+
+function liveSet(html) {
+  const s = document.getElementById('liveStatus');
+  if (s) s.innerHTML = html;
+}
+
+async function liveUseLocation() {
+  if (!navigator.geolocation) { liveSet('Geolocation isn’t available in this browser — search an airport instead.'); return; }
+  liveSet('<span class="live-spin"></span> Getting your location…');
+  navigator.geolocation.getCurrentPosition(
+    pos => runLiveScan(pos.coords.latitude, pos.coords.longitude, 'your location'),
+    () => liveSet('Location permission denied — search an airport below instead.'),
+    { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+  );
+}
+
+async function liveAirportSuggest(q) {
+  const box = document.getElementById('liveAirportResults');
+  if (!box) return;
+  q = q.trim();
+  if (q.length < 2) { box.innerHTML = ''; box.style.display = 'none'; return; }
+  await loadAirports();
+  const low = q.toLowerCase(), up = q.toUpperCase();
+  const scored = LIVE.airports.map(a => {
+    let s = 99;
+    if (a.iata === up) s = 0;
+    else if (a.icao === up) s = 1;
+    else if (a.city && a.city.toLowerCase().startsWith(low)) s = 2;
+    else if (a.name && a.name.toLowerCase().startsWith(low)) s = 3;
+    else if (a.city && a.city.toLowerCase().includes(low)) s = 4;
+    else if (a.name && a.name.toLowerCase().includes(low)) s = 5;
+    return { a, s };
+  }).filter(x => x.s < 99).sort((x, y) => x.s - y.s || (y.a.big - x.a.big)).slice(0, 7);
+  if (!scored.length) { box.innerHTML = ''; box.style.display = 'none'; return; }
+  box.innerHTML = scored.map(({ a }) =>
+    `<button class="live-ap-opt" onclick="pickAirport('${esc(a.iata)}',${a.lat},${a.lon})">
+       <strong>${esc(a.iata)}</strong> ${esc(a.name)}<span>${esc(a.city || '')}${a.city ? ', ' : ''}${esc(a.cc)}</span>
+     </button>`).join('');
+  box.style.display = 'block';
+}
+
+function pickAirport(iata, lat, lon) {
+  const box = document.getElementById('liveAirportResults');
+  if (box) { box.innerHTML = ''; box.style.display = 'none'; }
+  const inp = document.getElementById('liveAirportSearch');
+  if (inp) inp.value = iata;
+  runLiveScan(lat, lon, iata);
+}
+
+async function runLiveScan(lat, lon, label) {
+  _liveScanCenter = { lat, lon, label };
+  const radius = parseInt((document.getElementById('liveRadius') || {}).value, 10) || LIVE.radiusNm;
+  liveSet(`<span class="live-spin"></span> Scanning ${Math.round(radius)} nm around ${esc(label)}…`);
+  const grid = document.getElementById('liveResults');
+  if (grid) grid.innerHTML = '';
+  let out;
+  try {
+    out = await scanRareNear(lat, lon, radius);
+  } catch (e) {
+    liveSet('Couldn’t reach the live-traffic feed. Try again in a moment.');
+    return;
+  }
+  const near = airportsNear(lat, lon, 5);
+  const apLine = near.length
+    ? `Airports near ${esc(label)}: ` + near.map(a => `<span class="live-ap-chip" title="${esc(a.name)}">${esc(a.iata)} · ${Math.round(a.distNm)}nm</span>`).join(' ')
+    : '';
+  if (!out.matches.length) {
+    liveSet(`No catalog liveries airborne within ${Math.round(radius)} nm right now — ` +
+      `scanned ${out.total} aircraft via ${esc(out.source || 'live feed')}. Check back later. ${apLine ? '<br>' + apLine : ''}`);
+    return;
+  }
+  liveSet(`<strong>${out.matches.length}</strong> catalog liver${out.matches.length === 1 ? 'y' : 'ies'} airborne near ${esc(label)} ` +
+    `<span class="live-src">(of ${out.total} aircraft · ${esc(out.source)})</span>${apLine ? '<br>' + apLine : ''}`);
+  if (grid) {
+    grid.innerHTML = out.matches.map(liveCardHTML).join('');
+    hydratePhotos(grid);
+  }
+}
+
+function liveCardHTML(m) {
+  const l = m.livery, a = m.ac, st = m.status || { cls: 'st-cruise', label: '→ En route' };
+  const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1]||l.colors[0]} 40% 70%, ${l.colors[2]||l.colors[1]||l.colors[0]} 70%)`;
+  const dir = compass(m.bearing);
+  return `
+    <div class="live-card" role="button" tabindex="0" aria-label="${esc(l.airline)} — ${esc(l.livery)} live near you" onclick="openDetailLive(${l.id})">
+      <div class="card-swatch"${l.photo ? '' : ` data-reg="${esc(l.tail)}"`} style="${bg}">
+        <div class="swatch-plane">${planeSVG()}</div>
+        ${photoImgHTML(l)}
+        <span class="live-pill ${st.cls}">${esc(st.label)}</span>
+        <span class="swatch-tail">${esc(l.tail)}</span>
+      </div>
+      <div class="home-card-body">
+        <div class="home-card-airline">${esc(l.airline)}</div>
+        <div class="home-card-livery">${esc(l.livery)}</div>
+        <div class="live-meta">${liveAltText(a)} · ${Math.round(m.distNm)}nm ${dir}${a.gs ? ' · ' + a.gs + ' kt' : ''}</div>
+      </div>
+    </div>`;
+}
+
+function openDetailLive(id) {
+  openDetail(id);
+  trackLive(id);
+}
+
+// ══════════════ DETAIL "WHERE IS IT NOW?" ══════════════
+function liveDetailHTML(l) {
+  return `
+    <div class="live-detail" id="live-detail-${l.id}">
+      <h3>Where is it now?</h3>
+      <p class="live-detail-hint">Live position from airplanes.live, plus the airports where you've logged it.</p>
+      <button class="detail-action-btn live-track-btn" id="live-track-${l.id}" onclick="trackLive(${l.id})">✈ Track live</button>
+      <div class="live-detail-status" id="live-status-${l.id}"></div>
+      <div class="live-map" id="live-map-${l.id}" style="display:none"></div>
+    </div>`;
+}
+
+async function trackLive(id) {
+  const l = db.find(x => x.id === id);
+  if (!l) return;
+  const statusEl = document.getElementById(`live-status-${id}`);
+  const mapEl = document.getElementById(`live-map-${id}`);
+  const btn = document.getElementById(`live-track-${id}`);
+  if (!statusEl || !mapEl) return;
+  if (btn) btn.style.display = 'none';
+  statusEl.innerHTML = '<span class="live-spin"></span> Locating…';
+
+  await loadAirports();
+  // Pins for every place you've logged this aircraft.
+  const pins = [];
+  for (const s of (sightings[id] || [])) {
+    const ap = airportByText(s.location || '');
+    if (ap) pins.push({ lat: ap.lat, lon: ap.lon, kind: 'sighting',
+      label: `Logged: ${esc(ap.iata)} ${esc(ap.name)}${s.date ? ' · ' + esc(s.date) : ''}` });
+  }
+
+  let ac = null;
+  try { ac = await fetchLiveOne(l.tail, l.icao24); } catch (e) { /* offline */ }
+
+  if (ac) {
+    const near = nearestAirport(ac.lat, ac.lon);
+    // If you've scanned from a location on the home page, classify relative to it (enables
+    // the "over you in N min" call-out); otherwise classify by altitude/airport only.
+    const ctr = _liveScanCenter;
+    const st = aircraftStatus(ac, ctr ? ctr.lat : null, ctr ? ctr.lon : null, near);
+    const apTxt = near && near.distNm < 80 ? ` · ${Math.round(near.distNm)}nm from ${esc(near.iata)}` : '';
+    statusEl.innerHTML = `<span class="live-pill ${st.cls} inline">${esc(st.label)}</span> ` +
+      `${esc(l.tail)} ${ac.flight ? 'as ' + esc(ac.flight) + ' ' : ''}at ${liveAltText(ac)}` +
+      `${ac.gs ? ', ' + ac.gs + ' kt' : ''}${ac.track != null ? ', heading ' + compass(ac.track) : ''}${apTxt}` +
+      ` · <a href="https://globe.airplanes.live/?icao=${esc(ac.hex)}" target="_blank" rel="noopener">full tracker ↗</a>`;
+    mapEl.style.display = 'block';
+    try {
+      await buildLiveMap(mapEl, {
+        plane: { lat: ac.lat, lon: ac.lon, track: ac.track,
+          label: `${esc(l.tail)} — ${esc(l.airline)}<br>${liveAltText(ac)}` },
+        pins,
+      });
+    } catch (e) { statusEl.innerHTML += '<br><span class="live-warn">Map failed to load.</span>'; }
+  } else {
+    // Not broadcasting — still show where it's been logged.
+    if (pins.length) {
+      statusEl.innerHTML = `${esc(l.tail)} isn’t broadcasting a position right now. Showing the ${pins.length} place${pins.length>1?'s':''} you've logged it.`;
+      mapEl.style.display = 'block';
+      try { await buildLiveMap(mapEl, { pins }); } catch (e) {}
+    } else {
+      statusEl.innerHTML = `${esc(l.tail)} isn’t broadcasting a position right now, and you haven’t logged a location yet. ` +
+        `<a href="https://globe.airplanes.live/?reg=${encodeURIComponent(l.tail)}" target="_blank" rel="noopener">Open tracker ↗</a>`;
+      if (btn) { btn.style.display = ''; btn.textContent = '↻ Try again'; }
+    }
+  }
 }
