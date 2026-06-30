@@ -4,8 +4,8 @@
 // the shared helpers below: renderSidebar(), filterPool() and renderGrid().
 
 const LIVERIES = [
-  {id:1,airline:'United Airlines',tail:'N14120',icao24:'A0A91E',type:'Boeing 757-200',era:'2010s',livery:'Globe (current)',colors:['#004B87','#FFFFFF','#A2AAAD'],tags:['current','mainline'],notes:'United\'s current globe livery, introduced 2010 and kept through the Continental merger. N14120 is a Boeing 757-200.',sightings:[]},
-  {id:2,airline:'United Airlines',tail:'N516UA',type:'Boeing 757-200',era:'1990s',livery:'Battleship (tulip)',colors:['#4A4E5A','#C6A84B','#FFFFFF'],tags:['retro','tulip','classic'],notes:'Nicknamed "Battleship" for its grey fuselage. Flew 1993–2004, one of the most distinctive US carrier schemes.',sightings:[]},
+  {id:1,airline:'United Airlines',tail:'N14120',icao24:'A0A91E',type:'Boeing 757-200',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','narrowbody'],notes:'United Boeing 757-200 N14120 in the Star Alliance livery — the dark-blue-and-white scheme with the star motif on the tail, marking United\'s membership in the global airline alliance.',sightings:[]},
+  {id:2,airline:'United Airlines',tail:'N555UA',type:'Boeing 757-200',era:'2000s',livery:'Blue Tulip',colors:['#1A3C7B','#2E5AA8','#FFFFFF'],tags:['retro','tulip','classic'],notes:'United\'s 2004–2010 "Blue Tulip" livery — a blue belly with the blue tulip "U" on the tail, the last scheme before the Continental-merger globe. Retired and no longer flying.',sightings:[]},
   {id:3,airline:'American Airlines',tail:'N335AA',type:'Boeing 767-200',era:'1980s',livery:'Polished metal',colors:['#C0C0C0','#CC0000','#003087'],tags:['classic','bare metal','iconic'],notes:'Iconic unpainted aluminium fuselage with red and blue cheatline. No base coat — actual polished bare metal.',sightings:[]},
   {id:4,airline:'American Airlines',tail:'N102NN',icao24:'A00D5B',type:'Airbus A321',era:'2010s',livery:'New American (2013)',colors:['#0078D2','#C8102E','#B0B7BC'],tags:['current','heritage','flag'],notes:'American\'s livery launched January 2013, around the US Airways merger. N102NN is an Airbus A321.',sightings:[]},
   {id:5,airline:'Delta Air Lines',tail:'N668DN',icao24:'A8D249',type:'Boeing 757-200',era:'2000s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget'],notes:'Delta\'s widget tail design. Scheme introduced 2000, refreshed with brighter red in 2007.',sightings:[]},
@@ -20,7 +20,7 @@ const LIVERIES = [
   {id:13,airline:'Delta Air Lines',tail:'N171DZ',icao24:'A11D47',type:'Boeing 767-300ER',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'A Delta 767-300ER in the current widget livery — a long-serving transatlantic workhorse.',sightings:[]},
   {id:14,airline:'Delta Air Lines',tail:'N502DN',icao24:'A641B6',type:'Airbus A350-900',era:'2010s',livery:'Widget (current)',colors:['#E01933','#003366','#FFFFFF'],tags:['current','widget','widebody'],notes:'Delta\'s flagship Airbus A350-900, leading its long-haul fleet across the Pacific and Atlantic.',sightings:[]},
   {id:15,airline:'Southwest Airlines',tail:'N8645A',icao24:'ABE0BB',type:'Boeing 737-800',era:'2010s',livery:'Heart (current)',colors:['#304CB2','#E4002B','#F9B612'],tags:['current','heart'],notes:'Southwest\'s current "Heart" livery, introduced in 2014, on a Boeing 737-800.',sightings:[]},
-  {id:16,airline:'British Airways',tail:'G-CIVB',type:'Boeing 747-400',era:'2010s',livery:'BOAC retro',colors:['#00247D','#FFFFFF','#D4AF37'],tags:['retro','BOAC','jumbo'],notes:'For BA\'s centenary in 2019, Boeing 747-400 G-CIVB was repainted into the classic BOAC blue-and-gold livery. Retired in 2020 and now preserved at Cotswold Airport.',sightings:[]},
+  {id:16,airline:'British Airways',tail:'G-BYGC',type:'Boeing 747-400',era:'2010s',livery:'BOAC retro',colors:['#00247D','#FFFFFF','#D4AF37'],tags:['retro','BOAC','jumbo'],notes:'For BA\'s centenary in 2019, Boeing 747-400 G-BYGC was repainted into the classic BOAC blue-and-gold livery. Retired in 2020 and now preserved at Cotswold Airport.',sightings:[]},
   {id:17,airline:'British Airways',tail:'G-XLEA',icao24:'40688B',type:'Airbus A380',era:'2010s',livery:'Chatham Dockyard (current)',colors:['#0051A5','#EB2226','#FFFFFF'],tags:['current','superjumbo','flag'],notes:'G-XLEA was British Airways\' first Airbus A380, wearing the current Chatham Dockyard livery with the Union-flag tail.',sightings:[]},
   {id:18,airline:'Lufthansa',tail:'D-ABYA',icao24:'3C4B21',type:'Boeing 747-8',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','jumbo','star alliance'],notes:'Lufthansa\'s Boeing 747-8 Intercontinental in the navy-and-yellow crane livery — the flagship of its long-haul fleet and the only Western passenger 747-8 operator.',sightings:[]},
   {id:19,airline:'Lufthansa',tail:'D-AIMA',icao24:'3C65A1',type:'Airbus A380',era:'2010s',livery:'Crane (current)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['current','superjumbo'],notes:'D-AIMA was Lufthansa\'s first Airbus A380, named "Frankfurt am Main".',sightings:[]},
@@ -31,7 +31,7 @@ const LIVERIES = [
   {id:25,airline:'Singapore Airlines',tail:'9V-SKA',type:'Airbus A380',era:'2000s',livery:'Current',colors:['#F7A800','#003E7E','#FFFFFF'],tags:['flag','superjumbo'],notes:'9V-SKA operated the world\'s first commercial Airbus A380 flight, Singapore to Sydney, in October 2007.',sightings:[]},
   {id:26,airline:'Cathay Pacific',tail:'B-KPB',type:'Boeing 777-300ER',era:'2010s',livery:'Brushwing (current)',colors:['#006564','#FFFFFF','#9C8C5A'],tags:['current','widebody','brushwing'],notes:'Cathay Pacific\'s green "brushwing" livery on a Boeing 777-300ER.',sightings:[]},
   {id:27,airline:'Japan Airlines',tail:'JA743J',icao24:'868340',type:'Boeing 777-300ER',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'Japan Airlines\' red "Tsurumaru" crane emblem on a Boeing 777-300ER.',sightings:[]},
-  {id:28,airline:'Virgin Atlantic',tail:'G-VLIP',type:'Boeing 747-400',era:'2000s',livery:'Hot Lips',colors:['#E10A0A','#FFFFFF','#4B0082'],tags:['jumbo','flying lady'],notes:'Virgin Atlantic Boeing 747-400 G-VLIP, named "Hot Lips", in the red Virgin livery with a Flying Lady on the nose.',sightings:[]},
+  {id:28,airline:'Virgin Atlantic',tail:'G-VLIP',type:'Boeing 747-400',era:'2010s',livery:'Star Wars (Millennium Falcon)',colors:['#E10A0A','#FFFFFF','#8A8D8F'],tags:['special','star wars','jumbo'],notes:'Virgin Atlantic Boeing 747-400 G-VLIP — originally named "Hot Lips" — was repainted in September 2019 with a Millennium Falcon "Star Wars" livery and renamed "The Falcon", flying Gatwick–Orlando to promote Star Wars: Galaxy\'s Edge at Walt Disney World.',sightings:[]},
   {id:29,airline:'JetBlue',tail:'N709JB',icao24:'A976C7',type:'Airbus A320',era:'2010s',livery:'Stripes',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current','tailfin'],notes:'A JetBlue Airbus A320 wearing one of the airline\'s patterned tailfin designs.',sightings:[]},
   {id:30,airline:'Alaska Airlines',tail:'N559AS',icao24:'A720EB',type:'Boeing 737-800',era:'2020s',livery:'Xáat Kwáani (Salmon People)',colors:['#0B2A5B','#1E6FB0','#E6649B'],tags:['special','salmon','indigenous','rare'],notes:'N559AS ‘Xáat Kwáani’ (Salmon People) — a 2023 Alaska Airlines 737-800 livery by Tlingit artist Crystal Worl, depicting a salmon in Northwest Coast formline art. The first US airliner named in an Alaska Native language.',sightings:[]},
   {id:31,airline:'Air Canada',tail:'C-FRTG',icao24:'C02ED9',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#D8222A','#202020','#FFFFFF'],tags:['current','dreamliner'],notes:'Air Canada\'s bold red-and-black livery on a Boeing 787-9 Dreamliner.',sightings:[]},
@@ -240,12 +240,12 @@ const LIVERIES = [
   {id:391,airline:'Vietnam Airlines',tail:'VN-A622',icao24:'88816D',type:'Airbus A321neo',era:'2020s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','narrowbody'],notes:'A Vietnam Airlines Airbus A321neo on regional routes.',sightings:[]},
   // ── More liveries: alliance schemes (Star Alliance / oneworld / SkyTeam), retro & specials ──
   {id:392,airline:'Singapore Airlines',tail:'9V-SWI',icao24:'76CEE9',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Singapore Airlines Boeing 777-300ER in the all-white Star Alliance livery, marking its membership in the global alliance.',sightings:[]},
-  {id:393,airline:'Turkish Airlines',tail:'TC-JJU',icao24:'4BA955',type:'Boeing 777-300ER',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','widebody'],notes:'A Turkish Airlines Boeing 777-300ER wearing the Star Alliance livery.',sightings:[]},
+  {id:393,airline:'Turkish Airlines',tail:'TC-JJU',icao24:'4BA955',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','widebody'],notes:'A Turkish Airlines Boeing 777-300ER in the standard white livery with the red tail and dark-blue titles.',sightings:[]},
   {id:394,airline:'Turkish Airlines',tail:'TC-JRR',icao24:'4BAA52',type:'Airbus A321',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','narrowbody'],notes:'A Turkish Airlines Airbus A321 in the Star Alliance livery.',sightings:[]},
   {id:395,airline:'Finnair',tail:'OH-LWB',icao24:'461F49',type:'Airbus A350-900',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Finnair Airbus A350-900 in the grey oneworld alliance livery.',sightings:[]},
   {id:396,airline:'Japan Airlines',tail:'JA732J',icao24:'867F8A',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Japan Airlines Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
   {id:397,airline:'Qatar Airways',tail:'A7-BAF',icao24:'06A070',type:'Boeing 777-300ER',era:'2010s',livery:'oneworld',colors:['#A7A9AC','#1A1A2E','#FFFFFF'],tags:['special','oneworld','widebody'],notes:'A Qatar Airways Boeing 777-300ER in the oneworld alliance livery.',sightings:[]},
-  {id:398,airline:'KLM',tail:'PH-BVD',icao24:'484561',type:'Boeing 777-300ER',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','widebody'],notes:'A KLM Boeing 777-300ER in the blue SkyTeam alliance livery.',sightings:[]},
+  {id:398,airline:'KLM',tail:'PH-BVA',type:'Boeing 777-300ER',era:'2010s',livery:'Orange Pride',colors:['#0F3F87','#F36F21','#FFFFFF'],tags:['special','jumbo','widebody'],notes:'KLM Boeing 777-300ER PH-BVA in the special "Orange Pride" livery — the front half in KLM blue, the rear half in Dutch national orange.',sightings:[]},
   {id:399,airline:'Air France',tail:'F-GTAE',type:'Airbus A321',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','narrowbody'],notes:'An Air France Airbus A321 in the silver-and-blue SkyTeam alliance livery.',sightings:[]},
   {id:400,airline:'Icelandair',tail:'TF-FIU',icao24:'4CC2C5',type:'Boeing 757-200',era:'2010s',livery:'Hekla Aurora',colors:['#0A2240','#2BAE66','#F2C200'],tags:['special','aurora','rare'],notes:'‘Hekla Aurora’ — an Icelandair Boeing 757-200 painted in a shimmering northern-lights livery, with green-and-blue auroras down the fuselage and yellow engines.',sightings:[]},
   {id:401,airline:'American Airlines',tail:'N915NN',icao24:'ACAA77',type:'Boeing 737-800',era:'2010s',livery:'TWA heritage',colors:['#C8102E','#FFFFFF','#C0C0C0'],tags:['retro','heritage','TWA'],notes:'A TWA heritage retrojet — American 737-800 N915NN wears the red-cheatline livery of Trans World Airlines, which American absorbed in 2001.',sightings:[]},
@@ -421,6 +421,109 @@ const SEED_PHOTOS = {
   255:'photos/seed-255.jpg',
   256:'photos/seed-256.jpg',
   257:'photos/seed-257.jpg',
+  300:'photos/seed-300.jpg',
+  301:'photos/seed-301.jpg',
+  302:'photos/seed-302.jpg',
+  303:'photos/seed-303.jpg',
+  304:'photos/seed-304.jpg',
+  305:'photos/seed-305.jpg',
+  306:'photos/seed-306.jpg',
+  307:'photos/seed-307.jpg',
+  308:'photos/seed-308.jpg',
+  309:'photos/seed-309.jpg',
+  310:'photos/seed-310.jpg',
+  311:'photos/seed-311.jpg',
+  312:'photos/seed-312.jpg',
+  313:'photos/seed-313.jpg',
+  314:'photos/seed-314.jpg',
+  315:'photos/seed-315.jpg',
+  316:'photos/seed-316.jpg',
+  317:'photos/seed-317.jpg',
+  318:'photos/seed-318.jpg',
+  319:'photos/seed-319.jpg',
+  320:'photos/seed-320.jpg',
+  321:'photos/seed-321.jpg',
+  322:'photos/seed-322.jpg',
+  323:'photos/seed-323.jpg',
+  324:'photos/seed-324.jpg',
+  325:'photos/seed-325.jpg',
+  326:'photos/seed-326.jpg',
+  327:'photos/seed-327.jpg',
+  328:'photos/seed-328.jpg',
+  329:'photos/seed-329.jpg',
+  330:'photos/seed-330.jpg',
+  331:'photos/seed-331.jpg',
+  332:'photos/seed-332.jpg',
+  333:'photos/seed-333.jpg',
+  334:'photos/seed-334.jpg',
+  335:'photos/seed-335.jpg',
+  336:'photos/seed-336.jpg',
+  337:'photos/seed-337.jpg',
+  338:'photos/seed-338.jpg',
+  339:'photos/seed-339.jpg',
+  340:'photos/seed-340.jpg',
+  341:'photos/seed-341.jpg',
+  342:'photos/seed-342.jpg',
+  343:'photos/seed-343.jpg',
+  344:'photos/seed-344.jpg',
+  345:'photos/seed-345.jpg',
+  346:'photos/seed-346.jpg',
+  347:'photos/seed-347.jpg',
+  348:'photos/seed-348.jpg',
+  349:'photos/seed-349.jpg',
+  350:'photos/seed-350.jpg',
+  351:'photos/seed-351.jpg',
+  352:'photos/seed-352.jpg',
+  353:'photos/seed-353.jpg',
+  354:'photos/seed-354.jpg',
+  355:'photos/seed-355.jpg',
+  356:'photos/seed-356.jpg',
+  357:'photos/seed-357.jpg',
+  358:'photos/seed-358.jpg',
+  359:'photos/seed-359.jpg',
+  360:'photos/seed-360.jpg',
+  361:'photos/seed-361.jpg',
+  362:'photos/seed-362.jpg',
+  363:'photos/seed-363.jpg',
+  364:'photos/seed-364.jpg',
+  365:'photos/seed-365.jpg',
+  366:'photos/seed-366.jpg',
+  367:'photos/seed-367.jpg',
+  368:'photos/seed-368.jpg',
+  369:'photos/seed-369.jpg',
+  370:'photos/seed-370.jpg',
+  371:'photos/seed-371.jpg',
+  372:'photos/seed-372.jpg',
+  373:'photos/seed-373.jpg',
+  374:'photos/seed-374.jpg',
+  375:'photos/seed-375.jpg',
+  376:'photos/seed-376.jpg',
+  377:'photos/seed-377.jpg',
+  378:'photos/seed-378.jpg',
+  379:'photos/seed-379.jpg',
+  380:'photos/seed-380.jpg',
+  381:'photos/seed-381.jpg',
+  382:'photos/seed-382.jpg',
+  383:'photos/seed-383.jpg',
+  384:'photos/seed-384.jpg',
+  385:'photos/seed-385.jpg',
+  386:'photos/seed-386.jpg',
+  387:'photos/seed-387.jpg',
+  388:'photos/seed-388.jpg',
+  389:'photos/seed-389.jpg',
+  390:'photos/seed-390.jpg',
+  391:'photos/seed-391.jpg',
+  392:'photos/seed-392.jpg',
+  393:'photos/seed-393.jpg',
+  394:'photos/seed-394.jpg',
+  395:'photos/seed-395.jpg',
+  396:'photos/seed-396.jpg',
+  397:'photos/seed-397.jpg',
+  398:'photos/seed-398.jpg',
+  399:'photos/seed-399.jpg',
+  400:'photos/seed-400.jpg',
+  401:'photos/seed-401.jpg',
+  402:'photos/seed-402.jpg',
 };
 for (const l of LIVERIES) if (SEED_PHOTOS[l.id]) l.photo = SEED_PHOTOS[l.id];
 
@@ -428,7 +531,7 @@ for (const l of LIVERIES) if (SEED_PHOTOS[l.id]) l.photo = SEED_PHOTOS[l.id];
 // Resolved from the Planespotters photo API and matched to the exact SEED_PHOTOS image.
 const SEED_PHOTO_CREDITS = {
   1:{by:'Marc Najberg',link:'https://www.planespotters.net/photo/1900709/n14120-united-airlines-boeing-757-224-wl'},
-  2:{by:'Nicolas C. Kaemmerer',link:'https://www.planespotters.net/photo/573631/n516ua-united-airlines-boeing-757-222'},
+  2:{by:'Mark Empson - AeroResource',link:'https://www.planespotters.net/photo/246260/n555ua-united-airlines-boeing-757-222-wl'},
   3:{by:'Klaus Ecker',link:'https://www.planespotters.net/photo/190143/n335aa-american-airlines-boeing-767-223er'},
   4:{by:'Jan Seler',link:'https://www.planespotters.net/photo/1578075/n102nn-american-airlines-airbus-a321-231-wl'},
   5:{by:'Stephen J Stein',link:'https://www.planespotters.net/photo/1838422/n668dn-delta-air-lines-boeing-757-232'},
@@ -448,7 +551,7 @@ const SEED_PHOTO_CREDITS = {
   13:{by:'OMGcat',link:'https://www.planespotters.net/photo/1931319/n171dz-delta-air-lines-boeing-767-332er-wl'},
   14:{by:'NKG_Zhao',link:'https://www.planespotters.net/photo/1909737/n502dn-delta-air-lines-airbus-a350-941'},
   15:{by:'OMGcat',link:'https://www.planespotters.net/photo/1934359/n8645a-southwest-airlines-boeing-737-8h4-wl'},
-  16:{by:'Lewis Rowland',link:'https://www.planespotters.net/photo/1481199/g-civb-british-airways-boeing-747-436'},
+  16:{by:'Márk Páter',link:'https://www.planespotters.net/photo/1055415/g-bygc-british-airways-boeing-747-436'},
   17:{by:'Lewis Zhao',link:'https://www.planespotters.net/photo/1933782/g-xlea-british-airways-airbus-a380-841'},
   18:{by:'Simone Bertarini',link:'https://www.planespotters.net/photo/1921129/d-abya-lufthansa-boeing-747-830'},
   19:{by:'Martin Nimmervoll',link:'https://www.planespotters.net/photo/1898163/d-aima-lufthansa-airbus-a380-841'},
@@ -576,6 +679,109 @@ const SEED_PHOTO_CREDITS = {
   255:{by:'TulZub Promkhuntong',link:'https://www.planespotters.net/photo/1934227/c-fivr-air-canada-boeing-777-333er'},
   256:{by:'Daniyar Atadjanov',link:'https://www.planespotters.net/photo/1913108/hl8348-korean-air-boeing-737-8-max'},
   257:{by:'Bui Duc Thien',link:'https://www.planespotters.net/photo/1928083/hl8081-korean-air-boeing-787-9-dreamliner'},
+  300:{by:'Jianan Lin',link:'https://www.planespotters.net/photo/1862708/c-grov-air-canada-airbus-a220-300-bd-500-1a11'},
+  301:{by:'Mario Ferioli',link:'https://www.planespotters.net/photo/1909259/c-gfur-air-canada-airbus-a330-343'},
+  302:{by:'WalAndPl',link:'https://www.planespotters.net/photo/1873423/c-fsdb-air-canada-boeing-737-8-max'},
+  303:{by:'Christian Jilg',link:'https://www.planespotters.net/photo/1942116/c-fivk-air-canada-boeing-777-233lr'},
+  304:{by:'Niclas Karich',link:'https://www.planespotters.net/photo/1943588/c-ghpq-air-canada-boeing-787-8-dreamliner'},
+  305:{by:'Wolfgang Kaiser',link:'https://www.planespotters.net/photo/1825858/n304rb-american-airlines-boeing-737-8-max'},
+  306:{by:'Conor Clancy - Alpha Victor Photo',link:'https://www.planespotters.net/photo/1663125/n803nn-american-airlines-boeing-737-823-wl'},
+  307:{by:'Frederick Tremblay',link:'https://www.planespotters.net/photo/1890288/n835an-american-airlines-boeing-787-9-dreamliner'},
+  308:{by:'Martin Tietz',link:'https://www.planespotters.net/photo/1782647/n93003-american-airlines-airbus-a319-115-wl'},
+  309:{by:'Julian Martin',link:'https://www.planespotters.net/photo/1835549/n400an-american-airlines-airbus-a321-253nx'},
+  310:{by:'Ruoyang Yan',link:'https://www.planespotters.net/photo/1809640/n66825-united-airlines-boeing-737-924er-wl'},
+  311:{by:'Lukas Schmid',link:'https://www.planespotters.net/photo/1939911/n653ua-united-airlines-boeing-767-322er-wl'},
+  312:{by:'Yukino-JA8161',link:'https://www.planespotters.net/photo/1923422/n13014-united-airlines-boeing-787-10-dreamliner'},
+  313:{by:'Marvin Knitl',link:'https://www.planespotters.net/photo/1914112/n844mh-delta-air-lines-boeing-767-432er'},
+  314:{by:'TulZub Promkhuntong',link:'https://www.planespotters.net/photo/1922951/g-zblb-british-airways-boeing-787-10-dreamliner'},
+  315:{by:'OMGcat',link:'https://www.planespotters.net/photo/1933660/d-abpb-lufthansa-boeing-787-9-dreamliner'},
+  316:{by:'Yann Bougdour',link:'https://www.planespotters.net/photo/1945233/d-aind-lufthansa-airbus-a320-271n'},
+  317:{by:'Elias Dieckert',link:'https://www.planespotters.net/photo/1933507/d-aihw-lufthansa-airbus-a340-642'},
+  318:{by:'sebastien david',link:'https://www.planespotters.net/photo/1845955/f-hepa-air-france-airbus-a320-214'},
+  319:{by:'Bram Steeman',link:'https://www.planespotters.net/photo/1849407/f-gzca-air-france-airbus-a330-203'},
+  320:{by:'dn280',link:'https://www.planespotters.net/photo/1928166/f-huva-air-france-airbus-a350-941'},
+  321:{by:'Ramon Jordi',link:'https://www.planespotters.net/photo/1884888/a6-ewa-emirates-boeing-777-21hlr'},
+  322:{by:'Phan Hoài Sang',link:'https://www.planespotters.net/photo/1893181/a6-exa-emirates-airbus-a350-941'},
+  323:{by:'Julian Martin',link:'https://www.planespotters.net/photo/1887446/a7-ana-qatar-airways-airbus-a350-1041'},
+  324:{by:'Mehmed Bekir Cakmak',link:'https://www.planespotters.net/photo/1943696/a7-beg-qatar-airways-boeing-777-3dzer'},
+  325:{by:'Cornelius Grossmann',link:'https://www.planespotters.net/photo/1901048/a7-bbi-qatar-airways-boeing-777-2dzlr'},
+  326:{by:'Jhang Yao Yun',link:'https://www.planespotters.net/photo/1930582/9v-scr-singapore-airlines-boeing-787-10-dreamliner'},
+  327:{by:'CAN-CSN',link:'https://www.planespotters.net/photo/1898574/9v-mbp-singapore-airlines-boeing-737-8-max'},
+  328:{by:'Radiance777',link:'https://www.planespotters.net/photo/1882500/b-lxa-cathay-pacific-airbus-a350-1041'},
+  329:{by:'Wanping Chen',link:'https://www.planespotters.net/photo/1907544/b-lak-cathay-pacific-airbus-a330-343'},
+  330:{by:'Henry Chow',link:'https://www.planespotters.net/photo/1940074/b-hpi-cathay-pacific-airbus-a321-251nx'},
+  331:{by:'Niclas Karich',link:'https://www.planespotters.net/photo/1936542/ec-khm-iberia-airbus-a319-111'},
+  332:{by:'Howard Wang',link:'https://www.planespotters.net/photo/1898418/ec-ner-iberia-airbus-a320-251n'},
+  333:{by:'KirkXWB',link:'https://www.planespotters.net/photo/1867839/ec-mya-iberia-airbus-a330-202'},
+  334:{by:'OMGcat',link:'https://www.planespotters.net/photo/1932092/ja813a-all-nippon-airways-boeing-787-8-dreamliner'},
+  335:{by:'Yukino-JA8161',link:'https://www.planespotters.net/photo/1923256/ja714a-all-nippon-airways-boeing-777-281'},
+  336:{by:'Demo Borstell',link:'https://www.planespotters.net/photo/1879452/ja608a-all-nippon-airways-boeing-767-381er'},
+  337:{by:'Pablo Bernárdez',link:'https://www.planespotters.net/photo/1918953/ph-bxa-klm-royal-dutch-airlines-boeing-737-8k2-wl'},
+  338:{by:'Sayo Hikawa',link:'https://www.planespotters.net/photo/1941428/ph-bka-klm-royal-dutch-airlines-boeing-787-10-dreamliner'},
+  339:{by:'Yukino-JA8161',link:'https://www.planespotters.net/photo/1897881/vh-zng-qantas-boeing-787-9-dreamliner'},
+  340:{by:'Reeri',link:'https://www.planespotters.net/photo/1945046/vh-qph-qantas-airbus-a330-303'},
+  341:{by:'Alphathreeeighty',link:'https://www.planespotters.net/photo/1924987/vh-ebg-qantas-airbus-a330-203'},
+  342:{by:'Hamza',link:'https://www.planespotters.net/photo/998150/c-fdqq-air-canada-airbus-a320-211'},
+  343:{by:'Hamza',link:'https://www.planespotters.net/photo/1009622/c-fkck-air-canada-airbus-a320-211'},
+  344:{by:'Reza Teflissi',link:'https://www.planespotters.net/photo/1491072/c-fnvu-air-canada-airbus-a320-211'},
+  345:{by:'Stephen Lian',link:'https://www.planespotters.net/photo/1896563/c-fgkp-air-canada-airbus-a321-211'},
+  346:{by:'Terry Figg',link:'https://www.planespotters.net/photo/1922676/c-giuf-air-canada-airbus-a321-211'},
+  347:{by:'Ava',link:'https://www.planespotters.net/photo/1863082/c-gitu-air-canada-airbus-a321-211'},
+  348:{by:'Piotr Persona',link:'https://www.planespotters.net/photo/1935958/c-ghlm-air-canada-airbus-a330-343'},
+  349:{by:'Will Dubuc',link:'https://www.planespotters.net/photo/1879854/c-gjxn-air-canada-airbus-a220-300-bd-500-1a11'},
+  350:{by:'Shon Fridman',link:'https://www.planespotters.net/photo/1817330/c-gjxw-air-canada-airbus-a220-300-bd-500-1a11'},
+  351:{by:'Souluxy',link:'https://www.planespotters.net/photo/1922575/c-gehv-air-canada-boeing-737-8-max'},
+  352:{by:'Gerhard.zant',link:'https://www.planespotters.net/photo/1943841/c-ghpx-air-canada-boeing-787-8-dreamliner'},
+  353:{by:'Tokyo-Japan',link:'https://www.planespotters.net/photo/1926102/n721an-american-airlines-boeing-777-323er'},
+  354:{by:'Wolfgang Kaiser',link:'https://www.planespotters.net/photo/1917930/n802an-american-airlines-boeing-787-8-dreamliner'},
+  355:{by:'OMGcat',link:'https://www.planespotters.net/photo/1852559/n17122-united-airlines-boeing-757-224-wl'},
+  356:{by:'Howard Wang',link:'https://www.planespotters.net/photo/1931691/n66051-united-airlines-boeing-767-424er'},
+  357:{by:'Matthias Klassen',link:'https://www.planespotters.net/photo/1667664/n47280-united-airlines-boeing-737-8-max'},
+  358:{by:'Tran Nguyen An Binh',link:'https://www.planespotters.net/photo/1871476/n3748y-delta-air-lines-boeing-737-832-wl'},
+  359:{by:'Wolfgang Kaiser',link:'https://www.planespotters.net/photo/1891035/n821dn-delta-air-lines-boeing-737-932er-wl'},
+  360:{by:'AidanBurke05',link:'https://www.planespotters.net/photo/1886397/n858nw-delta-air-lines-airbus-a330-223'},
+  361:{by:'OMGcat',link:'https://www.planespotters.net/photo/1933658/n810nw-delta-air-lines-airbus-a330-323'},
+  362:{by:'Wolfgang Kaiser',link:'https://www.planespotters.net/photo/1900559/n188dn-delta-air-lines-boeing-767-332er-wl'},
+  363:{by:'M Kramer',link:'https://www.planespotters.net/photo/1931854/xa-amt-aeromexico-boeing-737-8-max'},
+  364:{by:'Mingfei S',link:'https://www.planespotters.net/photo/1709719/xa-maq-aeromexico-boeing-737-8-max'},
+  365:{by:'Jon Marzo',link:'https://www.planespotters.net/photo/1598118/xa-aml-aeromexico-boeing-737-852-wl'},
+  366:{by:'Felipe Garcia R.',link:'https://www.planespotters.net/photo/1696142/xa-amu-aeromexico-boeing-737-852-wl'},
+  367:{by:'Swoboda Darius',link:'https://www.planespotters.net/photo/1929205/n967am-aeromexico-boeing-787-8-dreamliner'},
+  368:{by:'Niclas Karich',link:'https://www.planespotters.net/photo/1944232/b-2032-air-china-boeing-777-39ler'},
+  369:{by:'HJM',link:'https://www.planespotters.net/photo/1926029/b-2087-air-china-boeing-777-39ler'},
+  370:{by:'Farkas Tamás',link:'https://www.planespotters.net/photo/1933772/b-7878-air-china-boeing-787-9-dreamliner'},
+  371:{by:'GONG ZI MING',link:'https://www.planespotters.net/photo/1938086/b-1466-air-china-boeing-787-9-dreamliner'},
+  372:{by:'Gerrit Griem',link:'https://www.planespotters.net/photo/1929130/b-5916-air-china-airbus-a330-343'},
+  373:{by:'Martin Oswald',link:'https://www.planespotters.net/photo/1931883/b-1085-air-china-airbus-a350-941'},
+  374:{by:'Leo',link:'https://www.planespotters.net/photo/1937023/b-32f1-air-china-airbus-a350-941'},
+  375:{by:'OMGcat',link:'https://www.planespotters.net/photo/1930407/ja831j-japan-airlines-boeing-787-8-dreamliner'},
+  376:{by:'Yerbol Yespol - Kazakhstan Spotting Club',link:'https://www.planespotters.net/photo/1895441/tc-lch-turkish-airlines-boeing-737-8-max'},
+  377:{by:'Gabor Podlovics',link:'https://www.planespotters.net/photo/1910049/tc-jva-turkish-airlines-boeing-737-8f2-wl'},
+  378:{by:'miramila',link:'https://www.planespotters.net/photo/1888112/tc-joh-turkish-airlines-airbus-a330-303'},
+  379:{by:'Rafal Pruszkowski',link:'https://www.planespotters.net/photo/1846289/hz-ar25-saudia-boeing-787-10-dreamliner'},
+  380:{by:'耗子哥',link:'https://www.planespotters.net/photo/1939942/hz-arf-saudia-boeing-787-9-dreamliner'},
+  381:{by:'Lukas Ponitka-Bessert',link:'https://www.planespotters.net/photo/1938694/vt-alm-air-india-boeing-777-337er'},
+  382:{by:'Gerhard.zant',link:'https://www.planespotters.net/photo/1918744/vt-alp-air-india-boeing-777-337er'},
+  383:{by:'Piotr Persona',link:'https://www.planespotters.net/photo/1897506/vt-jra-air-india-airbus-a350-941'},
+  384:{by:'Marc Najberg',link:'https://www.planespotters.net/photo/1901963/cc-cxj-latam-airlines-chile-boeing-767-316er-wl'},
+  385:{by:'Stephen J Stein',link:'https://www.planespotters.net/photo/1869876/cc-bbc-latam-airlines-chile-boeing-787-8-dreamliner'},
+  386:{by:'Carlos Ospino',link:'https://www.planespotters.net/photo/1875754/cc-bla-latam-airlines-chile-airbus-a320-233'},
+  387:{by:'Maurice Becker',link:'https://www.planespotters.net/photo/1814279/cc-bea-latam-airlines-chile-airbus-a321-211-wl'},
+  388:{by:'Martin Tietz',link:'https://www.planespotters.net/photo/1931347/vn-a897-vietnam-airlines-airbus-a350-941'},
+  389:{by:'K M',link:'https://www.planespotters.net/photo/1909561/vn-a888-vietnam-airlines-airbus-a350-941'},
+  390:{by:'Bui Duc Thien',link:'https://www.planespotters.net/photo/1898594/vn-a872-vietnam-airlines-boeing-787-10-dreamliner'},
+  391:{by:'Kinmei',link:'https://www.planespotters.net/photo/1641889/vn-a622-vietnam-airlines-airbus-a321-272n'},
+  392:{by:'sgthy1609',link:'https://www.planespotters.net/photo/1918024/9v-swi-singapore-airlines-boeing-777-312er'},
+  393:{by:'Mario Ferioli',link:'https://www.planespotters.net/photo/1889149/tc-jju-turkish-airlines-boeing-777-3f2er'},
+  394:{by:'András Soós',link:'https://www.planespotters.net/photo/1886487/tc-jrr-turkish-airlines-airbus-a321-231'},
+  395:{by:'OMGcat',link:'https://www.planespotters.net/photo/1929780/oh-lwb-finnair-airbus-a350-941'},
+  396:{by:'Spotting Avgeek',link:'https://www.planespotters.net/photo/1935446/ja732j-japan-airlines-boeing-777-346er'},
+  397:{by:'Lewis Zhao',link:'https://www.planespotters.net/photo/1911902/a7-baf-qatar-airways-boeing-777-3dzer'},
+  398:{by:'Aldo Martinelli',link:'https://www.planespotters.net/photo/1930074/ph-bva-klm-royal-dutch-airlines-boeing-777-306er'},
+  399:{by:'Guillaume',link:'https://www.planespotters.net/photo/1545144/f-gtae-air-france-airbus-a321-212'},
+  400:{by:'Swisse',link:'https://www.planespotters.net/photo/1852845/tf-fiu-icelandair-boeing-757-256-wl'},
+  401:{by:'Lisandro Pitowski',link:'https://www.planespotters.net/photo/1929727/n915nn-american-airlines-boeing-737-823-wl'},
+  402:{by:'M Kramer',link:'https://www.planespotters.net/photo/1942613/n570as-alaska-airlines-boeing-737-890-wl'},
 };
 
 // One-time migration from the old liveryarc_* storage keys to planelog_*.
@@ -1317,6 +1523,78 @@ function liveryForLive(ac) {
   return null;
 }
 
+// ── rarity ──
+// "Rare planes near you" must only surface genuinely uncommon catches — not the everyday
+// scheme an airline flies on most of its fleet. Two independent ways to qualify:
+//   1. RARE LIVERY  — a catalog entry whose paint is special/historic (retro, special scheme,
+//      retired type, alliance, military display, etc.). A livery tagged 'current' is the
+//      airline's standard fleet look (United globe, Delta widget, Frontier's animal tails) and
+//      is NOT rare, even if it also carries a flashy tag.
+//   2. RARE TYPE    — the airframe itself is an unusual sight (An-124, C-17, A380, Beluga…),
+//      regardless of livery and regardless of whether it's in the catalog. Identified from the
+//      live feed's ICAO type code, so it works for aircraft we don't track by tail.
+// A live aircraft is shown only if it matches (1) or (2).
+
+// tag → short badge label, scanned in priority order so the badge picks the best descriptor.
+const RARE_TAG_LABELS = [
+  ['retired', 'Retired type'], ['defunct', 'Defunct airline'], ['concorde', 'Concorde'],
+  ['supersonic', 'Supersonic'], ['bare metal', 'Bare metal'], ['retro', 'Retro'],
+  ['50th anniversary', 'Anniversary'], ['boac', 'Heritage'], ['bea', 'Heritage'],
+  ['twa', 'Heritage'], ['astrojet', 'Heritage'], ['heritage', 'Heritage'],
+  ['tribute', 'Tribute'], ['red arrows', 'Display team'], ['display', 'Display team'],
+  ['stealth', 'Military'], ['bomber', 'Military'], ['fighter', 'Military'],
+  ['warthog', 'Military'], ['attack', 'Military'], ['strategic', 'Military'],
+  ['eagle', 'Military'], ['carrier', 'Military'], ['navy', 'Military'], ['raf', 'Military'],
+  ['luftwaffe', 'Military'], ['f-35', 'Military'], ['electronic warfare', 'Military'],
+  ['star alliance', 'Alliance'], ['oneworld', 'Alliance'], ['skyteam', 'Alliance'],
+  ['hello kitty', 'Special'], ['marimekko', 'Special'], ['aurora', 'Special'],
+  ['honu', 'Special'], ['salmon', 'Special'], ['indigenous', 'Special'],
+  ['all blacks', 'Special'], ['state', 'Special'], ['flying lady', 'Classic'],
+  ['tulip', 'Retro'], ['classic', 'Classic'], ['historic', 'Historic'],
+  ['iconic', 'Iconic'], ['very rare', 'Very rare'], ['special', 'Special'], ['rare', 'Rare'],
+];
+function liveryRareReason(l) {
+  const tags = (l.tags || []).map((t) => String(t).toLowerCase());
+  if (tags.includes('current')) return null; // standard everyday fleet scheme
+  for (const [tag, label] of RARE_TAG_LABELS) if (tags.includes(tag)) return label;
+  return null;
+}
+function isRareLivery(l) {
+  return liveryRareReason(l) != null;
+}
+
+// Unusual airframes — keyed by ICAO type designator (airplanes.live `t`). Each is a catch a
+// spotter would stop for: outsized freighters, the last passenger jumbos/superjumbos, oddball
+// transport, and heavy military. Common types (737/A320/787/etc.) are deliberately absent.
+const RARE_TYPES = {
+  A124: { name: 'Antonov An-124 Ruslan', note: 'Outsized strategic freighter', colors: ['#3A4A5A', '#9AA7B4', '#FFFFFF'] },
+  A225: { name: 'Antonov An-225 Mriya', note: 'The largest aircraft ever built', colors: ['#1F4E79', '#C9D6E4', '#FFD200'] },
+  AN22: { name: 'Antonov An-22 Antei', note: 'Turboprop heavy lifter', colors: ['#3A4A5A', '#9AA7B4', '#FFFFFF'] },
+  AN12: { name: 'Antonov An-12', note: 'Classic Soviet transport', colors: ['#3A4A5A', '#9AA7B4', '#FFFFFF'] },
+  IL76: { name: 'Ilyushin Il-76', note: 'Heavy jet freighter', colors: ['#3A4A5A', '#9AA7B4', '#FFFFFF'] },
+  IL96: { name: 'Ilyushin Il-96', note: 'Rare Russian widebody', colors: ['#3A4A5A', '#9AA7B4', '#FFFFFF'] },
+  C17: { name: 'Boeing C-17 Globemaster III', note: 'Strategic military airlifter', colors: ['#4B5320', '#7A8450', '#D6D6C2'] },
+  C5M: { name: 'Lockheed C-5M Super Galaxy', note: 'Outsized military airlifter', colors: ['#4B5320', '#7A8450', '#D6D6C2'] },
+  A400: { name: 'Airbus A400M Atlas', note: 'Military transport', colors: ['#4B5320', '#7A8450', '#D6D6C2'] },
+  BLCF: { name: 'Boeing 747 Dreamlifter', note: 'Outsized 747 freighter', colors: ['#0B3D91', '#5C8AC6', '#FFFFFF'] },
+  A3ST: { name: 'Airbus A300-600ST Beluga', note: 'Outsized cargo whale', colors: ['#1F6FB2', '#9AD0EC', '#FFFFFF'] },
+  A337: { name: 'Airbus BelugaXL', note: 'Outsized cargo whale', colors: ['#1F6FB2', '#9AD0EC', '#FFFFFF'] },
+  A388: { name: 'Airbus A380', note: 'Double-deck superjumbo', colors: ['#1B3A6B', '#8FA9CC', '#FFFFFF'] },
+  B748: { name: 'Boeing 747-8', note: 'Last of the passenger jumbos', colors: ['#5A3A1B', '#A98A5C', '#FFFFFF'] },
+  B741: { name: 'Boeing 747-100', note: 'Original jumbo jet', colors: ['#5A3A1B', '#A98A5C', '#FFFFFF'] },
+  B742: { name: 'Boeing 747-200', note: 'Classic jumbo jet', colors: ['#5A3A1B', '#A98A5C', '#FFFFFF'] },
+  B743: { name: 'Boeing 747-300', note: 'Stretched-upper-deck jumbo', colors: ['#5A3A1B', '#A98A5C', '#FFFFFF'] },
+  VC25: { name: 'Boeing VC-25 (Air Force One)', note: 'Presidential 747', colors: ['#0A2A66', '#9CB6DD', '#FFFFFF'] },
+  B52: { name: 'Boeing B-52 Stratofortress', note: 'Strategic bomber', colors: ['#4B5320', '#7A8450', '#D6D6C2'] },
+  B1: { name: 'Rockwell B-1 Lancer', note: 'Supersonic bomber', colors: ['#3A3A3A', '#6E6E6E', '#B0B0B0'] },
+  B2: { name: 'Northrop B-2 Spirit', note: 'Stealth bomber', colors: ['#1A1A1A', '#3A3A3A', '#6E6E6E'] },
+  SR71: { name: 'Lockheed SR-71 Blackbird', note: 'Mach-3 reconnaissance', colors: ['#0A0A0A', '#2A2A2A', '#555555'] },
+};
+function rareTypeFor(ac) {
+  const code = String(ac.type || '').toUpperCase().trim();
+  return code && RARE_TYPES[code] ? { code, ...RARE_TYPES[code] } : null;
+}
+
 // ── live fetch (airplanes.live primary → /api/opensky failover) ──
 function normAircraft(a) {
   return {
@@ -1442,19 +1720,32 @@ async function scanRareNear(lat, lon, radiusNm) {
   const { source, ac } = await fetchLiveBox(lat, lon, radiusNm);
   const matches = [];
   for (const a of ac) {
-    const livery = liveryForLive(a);
-    if (!livery) continue;
     const distNm = haversineNm(lat, lon, a.lat, a.lon);
     if (distNm > radiusNm + 5) continue;
+
+    // Qualify the aircraft: a rare catalog livery, or failing that, a rare airframe type.
+    const livery = liveryForLive(a);
+    let rareReason = livery ? liveryRareReason(livery) : null;
+    let rareType = null;
+    if (!rareReason) {
+      rareType = rareTypeFor(a);
+      if (!rareType) continue; // common livery and ordinary type → not rare, skip
+    }
+
     const near = nearestAirport(a.lat, a.lon);
     matches.push({
-      livery, ac: a, distNm,
+      livery: livery || null,
+      rareType,                         // set when matched purely on airframe type
+      rareBadge: rareReason || (rareType ? rareType.note : ''),
+      ac: a, distNm,
       bearing: bearingDeg(lat, lon, a.lat, a.lon),
       nearAirport: near,
       status: aircraftStatus(a, lat, lon, near),
     });
   }
-  matches.sort((x, y) => x.distNm - y.distNm);
+  // Rare types and rare liveries both surface; closest first, but a known catalog livery
+  // (clickable, with photos) ranks ahead of a bare type match at a similar distance.
+  matches.sort((x, y) => (x.distNm - y.distNm) || ((x.livery ? 0 : 1) - (y.livery ? 0 : 1)));
   return { source, total: ac.length, matches };
 }
 
@@ -1601,11 +1892,11 @@ async function runLiveScan(lat, lon, label) {
     ? `Airports near ${esc(label)}: ` + near.map(a => `<span class="live-ap-chip" title="${esc(a.name)}">${esc(a.iata)} · ${Math.round(a.distNm)}nm</span>`).join(' ')
     : '';
   if (!out.matches.length) {
-    liveSet(`No catalog liveries airborne within ${Math.round(radius)} nm right now — ` +
-      `scanned ${out.total} aircraft via ${esc(out.source || 'live feed')}. Check back later. ${apLine ? '<br>' + apLine : ''}`);
+    liveSet(`No rare planes airborne within ${Math.round(radius)} nm right now — ` +
+      `scanned ${out.total} aircraft via ${esc(out.source || 'live feed')}. Most traffic is everyday liveries; check back later. ${apLine ? '<br>' + apLine : ''}`);
     return;
   }
-  liveSet(`<strong>${out.matches.length}</strong> catalog liver${out.matches.length === 1 ? 'y' : 'ies'} airborne near ${esc(label)} ` +
+  liveSet(`<strong>${out.matches.length}</strong> rare plane${out.matches.length === 1 ? '' : 's'} airborne near ${esc(label)} ` +
     `<span class="live-src">(of ${out.total} aircraft · ${esc(out.source)})</span>${apLine ? '<br>' + apLine : ''}`);
   if (grid) {
     grid.innerHTML = out.matches.map(liveCardHTML).join('');
@@ -1614,9 +1905,34 @@ async function runLiveScan(lat, lon, label) {
 }
 
 function liveCardHTML(m) {
-  const l = m.livery, a = m.ac, st = m.status || { cls: 'st-cruise', label: '→ En route' };
-  const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1]||l.colors[0]} 40% 70%, ${l.colors[2]||l.colors[1]||l.colors[0]} 70%)`;
+  const a = m.ac, st = m.status || { cls: 'st-cruise', label: '→ En route' };
   const dir = compass(m.bearing);
+  const meta = `${liveAltText(a)} · ${Math.round(m.distNm)}nm ${dir}${a.gs ? ' · ' + a.gs + ' kt' : ''}`;
+  const badge = m.rareBadge ? `<span class="live-rare-badge">${esc(m.rareBadge)}</span>` : '';
+
+  // Rare airframe with no catalog entry: not clickable into a detail page, links to the tracker.
+  if (!m.livery) {
+    const rt = m.rareType, tail = a.reg || (a.hex ? a.hex.toUpperCase() : '');
+    const cols = (rt && rt.colors) || ['#3A4A5A', '#9AA7B4', '#FFFFFF'];
+    const bg = `background: linear-gradient(135deg, ${cols[0]} 40%, ${cols[1]||cols[0]} 40% 70%, ${cols[2]||cols[1]||cols[0]} 70%)`;
+    const ident = a.reg ? esc(a.reg) : (a.hex ? esc(a.hex.toUpperCase()) : '');
+    return `
+    <div class="live-card live-card-type" role="button" tabindex="0" aria-label="${esc(rt.name)} live near you" onclick="openLiveTracker('${esc(a.reg || a.hex)}', ${a.reg ? 'false' : 'true'})">
+      <div class="card-swatch" style="${bg}">
+        <div class="swatch-plane">${planeSVG()}</div>
+        <span class="live-pill ${st.cls}">${esc(st.label)}</span>
+        ${tail ? `<span class="swatch-tail">${esc(tail)}</span>` : ''}
+      </div>
+      <div class="home-card-body">
+        <div class="home-card-airline">${esc(rt.name)}${badge}</div>
+        <div class="home-card-livery">${esc(rt.note)}${a.flight ? ' · ' + esc(a.flight) : ''}</div>
+        <div class="live-meta">${meta}</div>
+      </div>
+    </div>`;
+  }
+
+  const l = m.livery;
+  const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1]||l.colors[0]} 40% 70%, ${l.colors[2]||l.colors[1]||l.colors[0]} 70%)`;
   return `
     <div class="live-card" role="button" tabindex="0" aria-label="${esc(l.airline)} — ${esc(l.livery)} live near you" onclick="openDetailLive(${l.id})">
       <div class="card-swatch"${l.photo ? '' : ` data-reg="${esc(l.tail)}"`} style="${bg}">
@@ -1626,11 +1942,18 @@ function liveCardHTML(m) {
         <span class="swatch-tail">${esc(l.tail)}</span>
       </div>
       <div class="home-card-body">
-        <div class="home-card-airline">${esc(l.airline)}</div>
+        <div class="home-card-airline">${esc(l.airline)}${badge}</div>
         <div class="home-card-livery">${esc(l.livery)}</div>
-        <div class="live-meta">${liveAltText(a)} · ${Math.round(m.distNm)}nm ${dir}${a.gs ? ' · ' + a.gs + ' kt' : ''}</div>
+        <div class="live-meta">${meta}</div>
       </div>
     </div>`;
+}
+
+function openLiveTracker(idOrReg, isHex) {
+  const base = 'https://globe.airplanes.live/?';
+  const u = isHex ? base + 'icao=' + encodeURIComponent(idOrReg)
+                  : base + 'reg=' + encodeURIComponent(idOrReg);
+  window.open(u, '_blank', 'noopener');
 }
 
 function openDetailLive(id) {
