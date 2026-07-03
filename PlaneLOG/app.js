@@ -64,7 +64,7 @@ const LIVERIES = [
   {id:57,airline:'El Al',tail:'4X-EDA',icao24:'7380C0',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#003DA5','#FFFFFF','#A6A6A6'],tags:['current','dreamliner'],notes:'El Al Israel Airlines in the blue livery on a Boeing 787-9 Dreamliner.',sightings:[]},
   {id:58,airline:'Hawaiian Airlines',tail:'N380HA',icao24:'A45BFA',type:'Airbus A330-200',era:'2010s',livery:'Pualani (current)',colors:['#4C1F7A','#E6007E','#F5A800'],tags:['current','widebody'],notes:'Hawaiian Airlines, with the "Pualani" island-girl tail, on an Airbus A330-200.',sightings:[]},
   {id:59,airline:'Frontier Airlines',tail:'N705FR',icao24:'A967AE',type:'Airbus A321',era:'2010s',livery:'Animal tail (current)',colors:['#00754A','#FFFFFF','#6CC24A'],tags:['current','animal'],notes:'Frontier Airlines, famous for the wild-animal portraits on each tail, on an Airbus A321.',sightings:[]},
-  {id:60,airline:'Vietnam Airlines',tail:'VN-A868',icao24:'8880F8',type:'Boeing 787-9',era:'2010s',livery:'Golden Lotus (current)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['current','dreamliner'],notes:'Vietnam Airlines, with the golden-lotus emblem, on a Boeing 787-9 Dreamliner.',sightings:[]},
+  {id:60,airline:'Vietnam Airlines',tail:'VN-A868',icao24:'8880F8',type:'Boeing 787-9',era:'2020s',livery:'Chim Lạc (Lạc Bird)',colors:['#16599A','#C49A3A','#FFFFFF'],tags:['special','dreamliner'],notes:'Vietnam Airlines Boeing 787-9 VN-A868 in the special "Chim Lạc" (Lạc Bird) livery — golden Đông Sơn-drum birds flowing along the fuselage in place of the standard lotus tail — unveiled in April 2025 for the airline\'s 30th anniversary.',sightings:[]},
   {id:61,airline:'Philippine Airlines',tail:'RP-C7779',icao24:'7583EC',type:'Boeing 777-300ER',era:'2010s',livery:'Current',colors:['#00308F','#CE1126','#FCD116'],tags:['current','widebody'],notes:'Philippine Airlines, Asia\'s first commercial airline, on a Boeing 777-300ER.',sightings:[]},
   {id:62,airline:'Garuda Indonesia',tail:'PK-GIG',icao24:'8A0452',type:'Boeing 777-300ER',era:'2020s',livery:'Republik Indonesia',colors:['#C8102E','#FFFFFF','#0E8A3C'],tags:['special','widebody'],notes:'Garuda Indonesia Boeing 777-300ER PK-GIG in the red-and-white "Republik Indonesia" scheme — a government/state-charter livery carrying the national flag and the Garuda Pancasila emblem, applied in 2020.',sightings:[]},
   {id:63,airline:'Air China',tail:'B-2485',icao24:'780CB6',type:'Boeing 747-8',era:'2010s',livery:'Current (phoenix)',colors:['#C8102E','#E8B100','#FFFFFF'],tags:['current','jumbo'],notes:'Air China in the red livery with the gold phoenix logo on a Boeing 747-8 Intercontinental.',sightings:[]},
@@ -814,7 +814,9 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      but were labeled "Current" (Star Alliance/oneworld/SkyTeam, Quetzalcoatl, Welcome to Arabia,
 //      Wings of Dreams, Pride, Lufthansa Centennial, Maple Leaf retro, etc.) and swapped a few
 //      blank/duplicate photos. Bumped so returning visitors refresh their cached seed entries.
-const SEED_VERSION = 16;
+// v17: relabel Vietnam Airlines VN-A868 (787-9) from Golden Lotus to its actual "Chim Lạc"
+//      (Lạc Bird) 30th-anniversary special livery.
+const SEED_VERSION = 17;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
