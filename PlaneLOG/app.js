@@ -810,7 +810,11 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      Hekla Aurora, TWA heritage; fixed #30 (N559AS is the Xaat Kwaani salmon livery, not standard).
 // v15: live traffic — enriched 222 entries with icao24 hex for the "rare planes near you" feature
 //      (airplanes.live primary + OpenSky failover), used to match live ADS-B against the catalog.
-const SEED_VERSION = 15;
+// v16: livery-accuracy pass — relabeled ~30 entries whose photos show a special/alliance scheme
+//      but were labeled "Current" (Star Alliance/oneworld/SkyTeam, Quetzalcoatl, Welcome to Arabia,
+//      Wings of Dreams, Pride, Lufthansa Centennial, Maple Leaf retro, etc.) and swapped a few
+//      blank/duplicate photos. Bumped so returning visitors refresh their cached seed entries.
+const SEED_VERSION = 16;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
