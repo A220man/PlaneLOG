@@ -913,7 +913,11 @@ async function getPhoto(reg) {
   if (photoCache[reg]) return photoCache[reg];
   photoCache[reg] = { state: 'pending' };
   try {
-    const res = await fetch(`https://api.planespotters.net/pub/photos/reg/${encodeURIComponent(reg)}`);
+    // Bound the request so a slow/hung Planespotters call can't leave the swatch pending forever.
+    const ctl = AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined;
+    const res = await fetch(`https://api.planespotters.net/pub/photos/reg/${encodeURIComponent(reg)}`,
+      ctl ? { signal: ctl } : {});
+    if (!res.ok) { photoCache[reg] = { state: 'error' }; return photoCache[reg]; }
     const json = await res.json();
     const p = json.photos && json.photos[0];
     if (p) {
