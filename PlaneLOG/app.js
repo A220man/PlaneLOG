@@ -936,18 +936,25 @@ async function getPhoto(reg) {
 }
 
 // Lazily load real photos into any rendered swatches that have a [data-reg].
+// Requests run through a small worker pool so a page full of un-cached swatches
+// can't fire dozens of parallel Planespotters calls at once (and risk a 429).
+const HYDRATE_CONCURRENCY = 5;
 function hydratePhotos(root) {
-  (root || document).querySelectorAll('.card-swatch[data-reg]').forEach(async sw => {
-    if (sw.dataset.hydrated) return;
-    sw.dataset.hydrated = '1';
-    const res = await getPhoto(sw.dataset.reg);
-    if (res.state === 'done') {
-      const img = sw.querySelector('.swatch-photo');
-      if (!img) return;
-      img.onload = () => img.classList.add('loaded');
-      img.src = res.photo.src;
+  const swatches = [...(root || document).querySelectorAll('.card-swatch[data-reg]')]
+    .filter(sw => !sw.dataset.hydrated);
+  swatches.forEach(sw => { sw.dataset.hydrated = '1'; }); // claim up front so re-entry skips them
+  let next = 0;
+  const worker = async () => {
+    while (next < swatches.length) {
+      const sw = swatches[next++];
+      const res = await getPhoto(sw.dataset.reg);
+      if (res.state === 'done') {
+        const img = sw.querySelector('.swatch-photo');
+        if (img) { img.onload = () => img.classList.add('loaded'); img.src = res.photo.src; }
+      }
     }
-  });
+  };
+  for (let w = 0; w < Math.min(HYDRATE_CONCURRENCY, swatches.length); w++) worker();
 }
 
 // ── SIDEBAR (shared markup; each page calls with its own subset of liveries) ──
