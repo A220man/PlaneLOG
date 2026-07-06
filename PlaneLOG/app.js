@@ -1311,6 +1311,17 @@ function closeSubmit(e) {
   }
 }
 
+// A numeric, collision-free id for a new submission. Based on Date.now() so it stays a
+// creation-order proxy (see cardHTML's upload-date), but bumped past any id already in the
+// db — guards against two submits in the same millisecond and any seed-id overlap. Numeric
+// is required: ids are embedded raw into onclick handlers (openDetail(${l.id})).
+function nextLiveryId() {
+  const used = new Set(db.map(x => x.id));
+  let id = Date.now();
+  while (used.has(id)) id++;
+  return id;
+}
+
 function submitLivery() {
   const tail = document.getElementById('sub-tail').value.trim();
   const livery = document.getElementById('sub-livery').value.trim();
@@ -1334,7 +1345,7 @@ function submitLivery() {
       if (oldTail !== l.tail) delete photoCache[l.tail]; // re-fetch photo for the new registration
     }
   } else {
-    db.push({ id: Date.now(), airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto, sightings: [], submitted: true });
+    db.push({ id: nextLiveryId(), airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto, sightings: [], submitted: true });
   }
 
   save();
