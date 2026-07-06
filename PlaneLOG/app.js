@@ -1625,6 +1625,29 @@ function rareTypeFor(ac) {
   return code && RARE_TYPES[code] ? { code, ...RARE_TYPES[code] } : null;
 }
 
+// Rarity is relative to the airport. The superjumbos below are a genuine catch over a
+// regional field, but daily scheduled service at a big international gateway — so they
+// don't count as a rare *type* when the scan is centred near one of these hubs. (A special
+// livery on one still qualifies via liveryRareReason, independent of location.)
+const HUB_COMMON_TYPES = new Set(['A388', 'B748']); // A380, 747-8
+// Curated set of major international hubs where A380 / 747-8 are routine (passenger gateways
+// plus the big 747 freighter hubs). Not exhaustive — erring toward known superjumbo airports
+// so we don't cry "rare!" at LAX while still flagging one seen well away from a hub.
+const WIDEBODY_HUBS = new Set([
+  'LAX','SFO','JFK','EWR','IAD','IAH','DFW','MIA','BOS','ORD','SEA','ATL','YYZ','YVR','ANC','MEM','SDF','CVG',
+  'LHR','LGW','CDG','FRA','MUC','AMS','ZRH','VIE','MAD','BCN','FCO','IST','MAN','CPH','BRU','DUS','LEJ',
+  'DXB','DWC','DOH','AUH','JED','RUH','KWI','BAH','CAI','JNB','CPT',
+  'SIN','HKG','ICN','NRT','HND','KIX','BKK','KUL','CGK','DEL','BOM','PVG','PEK','PKX','CAN','TPE','MNL',
+  'SYD','MEL','BNE','PER','AKL','GRU','EZE',
+]);
+let _hubAirports = null;
+// True when any major hub airport is within `withinNm` of the scan centre.
+function nearMajorHub(lat, lon, withinNm = 30) {
+  if (!LIVE.airports) return false;
+  if (!_hubAirports) _hubAirports = LIVE.airports.filter(a => WIDEBODY_HUBS.has(a.iata));
+  return _hubAirports.some(a => haversineNm(lat, lon, a.lat, a.lon) <= withinNm);
+}
+
 // ── live fetch (airplanes.live primary → /api/opensky failover) ──
 function normAircraft(a) {
   return {
@@ -1748,6 +1771,7 @@ async function fetchLiveOne(reg, hex) {
 async function scanRareNear(lat, lon, radiusNm) {
   await loadAirports();
   const { source, ac } = await fetchLiveBox(lat, lon, radiusNm);
+  const atHub = nearMajorHub(lat, lon); // superjumbos are routine here, so don't flag them by type
   const matches = [];
   for (const a of ac) {
     const distNm = haversineNm(lat, lon, a.lat, a.lon);
@@ -1760,6 +1784,7 @@ async function scanRareNear(lat, lon, radiusNm) {
     if (!rareReason) {
       rareType = rareTypeFor(a);
       if (!rareType) continue; // common livery and ordinary type → not rare, skip
+      if (atHub && HUB_COMMON_TYPES.has(rareType.code)) continue; // superjumbo = everyday sight at this hub
     }
 
     const near = nearestAirport(a.lat, a.lon);
