@@ -54,7 +54,7 @@
       <div class="live-controls">
         <button class="live-loc-btn" onclick="liveUseLocation()">📍 Use my location</button>
         <div class="live-ap-search">
-          <input type="text" id="liveAirportSearch" placeholder="…or search an airport (JFK, Heathrow, LAX)" oninput="liveAirportSuggest(this.value)" autocomplete="off">
+          <input type="text" id="liveAirportSearch" placeholder="…or search an airport (JFK, Heathrow, LAX)" oninput="liveAirportSuggest(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();liveAirportGo(this.value)}" autocomplete="off">
           <div class="live-ap-results" id="liveAirportResults" style="display:none"></div>
         </div>
         <select id="liveRadius" aria-label="Scan radius">

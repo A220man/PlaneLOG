@@ -1904,6 +1904,30 @@ function pickAirport(iata, lat, lon) {
   runLiveScan(lat, lon, iata);
 }
 
+// Enter in the airport box: resolve the typed text to the best-matching airport and scan,
+// so the feature works without having to click a dropdown suggestion.
+async function liveAirportGo(q) {
+  q = (q || '').trim();
+  if (q.length < 2) return;
+  await loadAirports();
+  const low = q.toLowerCase(), up = q.toUpperCase();
+  let best = null, bestS = 99;
+  for (const a of (LIVE.airports || [])) {
+    let s = 99;
+    if (a.iata === up) s = 0;
+    else if (a.icao === up) s = 1;
+    else if (a.city && a.city.toLowerCase().startsWith(low)) s = 2;
+    else if (a.name && a.name.toLowerCase().startsWith(low)) s = 3;
+    else if (a.city && a.city.toLowerCase().includes(low)) s = 4;
+    else if (a.name && a.name.toLowerCase().includes(low)) s = 5;
+    // Same ranking as the dropdown: best score wins, big airports break ties.
+    if (s < bestS || (s === bestS && best && a.big && !best.big)) { bestS = s; best = a; }
+  }
+  if (!best) best = airportByText(q);
+  if (!best) { liveSet(`No airport found for “${esc(q)}”. Try an IATA/ICAO code like JFK or EGLL.`); return; }
+  pickAirport(best.iata, best.lat, best.lon);
+}
+
 async function runLiveScan(lat, lon, label) {
   _liveScanCenter = { lat, lon, label };
   const radius = parseInt((document.getElementById('liveRadius') || {}).value, 10) || LIVE.radiusNm;
