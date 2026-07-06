@@ -1910,6 +1910,10 @@ async function liveAirportGo(q) {
   q = (q || '').trim();
   if (q.length < 2) return;
   await loadAirports();
+  if (!LIVE.airports || !LIVE.airports.length) {
+    liveSet('Airport data couldn’t load. If you opened this page as a local file, run it from a web server instead (fetch is blocked on file://).');
+    return;
+  }
   const low = q.toLowerCase(), up = q.toUpperCase();
   let best = null, bestS = 99;
   for (const a of (LIVE.airports || [])) {
