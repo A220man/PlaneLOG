@@ -250,6 +250,8 @@ const LIVERIES = [
   {id:400,airline:'Icelandair',tail:'TF-FIU',icao24:'4CC2C5',type:'Boeing 757-200',era:'2010s',livery:'Hekla Aurora',colors:['#0A2240','#2BAE66','#F2C200'],tags:['special','aurora','rare','narrowbody'],notes:'‘Hekla Aurora’ — an Icelandair Boeing 757-200 painted in a shimmering northern-lights livery, with green-and-blue auroras down the fuselage and yellow engines.',sightings:[]},
   {id:401,airline:'American Airlines',tail:'N915NN',icao24:'ACAA77',type:'Boeing 737-800',era:'2010s',livery:'TWA heritage',colors:['#C8102E','#FFFFFF','#C0C0C0'],tags:['retro','heritage','TWA','narrowbody'],notes:'A TWA heritage retrojet — American 737-800 N915NN wears the red-cheatline livery of Trans World Airlines, which American absorbed in 2001.',sightings:[]},
   {id:402,airline:'Alaska Airlines',tail:'N533AS',type:'Boeing 737-800',era:'2010s',livery:'Eskimo (current)',colors:['#01426A','#00467F','#76858F'],tags:['current','eskimo','narrowbody'],notes:'An Alaska Airlines Boeing 737-800 in the standard ‘Eskimo’ livery, with the parka-hooded Alaska Native face on the tail.',sightings:[]},
+  {id:403,airline:'Lufthansa',tail:'D-AIUA',icao24:'3C66A1',type:'Airbus A320-200',era:'2010s',livery:'Star Alliance',colors:['#0A2D6E','#FFFFFF','#A2AAAD'],tags:['special','star alliance','narrowbody'],notes:'Lufthansa Airbus A320-214 D-AIUA in the dark-blue Star Alliance livery, a regular sight on short-haul routes out of Frankfurt and Munich, marking Lufthansa\'s founding membership in the global alliance.',sightings:[]},
+  {id:404,airline:'Korean Air',tail:'HL7783',icao24:'71BF83',type:'Boeing 777-300ER',era:'2010s',livery:'SkyTeam',colors:['#0F3F87','#8C9BB5','#FFFFFF'],tags:['special','skyteam','widebody'],notes:'Korean Air Boeing 777-300ER HL7783 in the silver "SkyTeam" alliance livery, flown on long-haul intercontinental routes such as Seoul–Frankfurt.',sightings:[]},
   // ── Military aircraft (rare catches) ──
   {id:101,category:'military',airline:'U.S. Air Force',tail:'04-4070',type:'F-22 Raptor',era:'2010s',livery:'Air dominance grey',colors:['#5A6470','#3E4651','#8A95A3'],tags:['fighter','stealth','rare'],notes:'Fifth-generation air-superiority fighter. The Raptor\'s low-observable grey is rarely seen outside air shows.',sightings:[]},
   {id:102,category:'military',airline:'U.S. Navy',tail:'168912',type:'F/A-18 Super Hornet',era:'2010s',livery:'Tactical grey',colors:['#6B7480','#4A525C','#9AA4B0'],tags:['fighter','carrier','navy'],notes:'Carrier-based multirole fighter in standard tactical paint.',sightings:[]},
@@ -818,7 +820,7 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      (Lạc Bird) 30th-anniversary special livery.
 // v18: split Air India entries by actual livery — VT-EXF/VT-JRA wear the new 2023 Tata "Vista"
 //      livery; VT-ANP/VT-ALM/VT-ALP still wear the previous "Konark sun" livery.
-const SEED_VERSION = 20;
+const SEED_VERSION = 21;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
@@ -1716,8 +1718,28 @@ function aircraftStatus(ac, lat, lon, nearAirport) {
 
   return { kind: 'cruise', cls: 'st-cruise', label: '→ En route' };
 }
+// airplanes.live is CORS-open and rich (registration + type) but its community ADS-B
+// coverage is thin in some regions — notably mainland China, where a 250 nm scan can
+// return a single aircraft while a dozen are airborne. When the primary comes back this
+// sparse we supplement with OpenSky and merge by hex, so one network's blind spot doesn't
+// leave the scan nearly empty. OpenSky carries no type, so its extras match the catalog by
+// icao24 (hex) only — enough to catch a known rare registration like the Qatar F1 777.
+const COVERAGE_MIN = 8;
+
+async function openSkyBox(lat, lon, radiusNm) {
+  const dLat = radiusNm / NM_PER_DEG;
+  const dLon = radiusNm / (NM_PER_DEG * Math.max(0.1, Math.cos(toRad(lat))));
+  const qs = `lamin=${(lat-dLat).toFixed(4)}&lomin=${(lon-dLon).toFixed(4)}` +
+             `&lamax=${(lat+dLat).toFixed(4)}&lomax=${(lon+dLon).toFixed(4)}`;
+  const r = await fetch(`/api/opensky?${qs}`);
+  if (!r.ok) return null;
+  const j = await r.json();
+  return { source: j.source || 'opensky', ac: (j.ac || []).map(normAircraft).filter(a => a.lat != null) };
+}
+
 async function fetchLiveBox(lat, lon, radiusNm) {
   // Primary: airplanes.live point query.
+  let primary = null;
   try {
     const ctl = AbortSignal.timeout ? AbortSignal.timeout(9000) : undefined;
     const r = await fetch(`https://api.airplanes.live/v2/point/${lat.toFixed(4)}/${lon.toFixed(4)}/${Math.round(radiusNm)}`,
@@ -1725,24 +1747,25 @@ async function fetchLiveBox(lat, lon, radiusNm) {
     if (r.ok) {
       const j = await r.json();
       const ac = (j.ac || j.aircraft || []).map(normAircraft).filter(a => a.lat != null);
-      return { source: 'airplanes.live', ac };
+      primary = { source: 'airplanes.live', ac };
     }
-  } catch (e) { /* fall through to failover */ }
+  } catch (e) { /* fall through to OpenSky */ }
 
-  // Failover: OpenSky via our serverless proxy. Convert radius → bounding box.
-  try {
-    const dLat = radiusNm / NM_PER_DEG;
-    const dLon = radiusNm / (NM_PER_DEG * Math.max(0.1, Math.cos(toRad(lat))));
-    const qs = `lamin=${(lat-dLat).toFixed(4)}&lomin=${(lon-dLon).toFixed(4)}` +
-               `&lamax=${(lat+dLat).toFixed(4)}&lomax=${(lon+dLon).toFixed(4)}`;
-    const r = await fetch(`/api/opensky?${qs}`);
-    if (r.ok) {
-      const j = await r.json();
-      const ac = (j.ac || []).map(normAircraft).filter(a => a.lat != null);
-      return { source: j.source || 'opensky', ac };
-    }
-  } catch (e) { /* both down */ }
-  return { source: null, ac: [] };
+  // Supplement (or fully fail over to) OpenSky when the primary is down or sparse.
+  if (!primary || primary.ac.length < COVERAGE_MIN) {
+    try {
+      const os = await openSkyBox(lat, lon, radiusNm);
+      if (os) {
+        if (!primary) return os;                       // primary down → OpenSky alone
+        const seen = new Set(primary.ac.map(a => a.hex).filter(Boolean));
+        const extra = os.ac.filter(a => a.hex && !seen.has(a.hex));
+        if (extra.length) {
+          return { source: 'airplanes.live+opensky', ac: primary.ac.concat(extra) };
+        }
+      }
+    } catch (e) { /* keep whatever the primary gave us */ }
+  }
+  return primary || { source: null, ac: [] };
 }
 
 // Look up ONE aircraft's current position by registration (for the detail map).
@@ -1975,8 +1998,13 @@ async function runLiveScan(lat, lon, label) {
     ? `Airports near ${esc(label)}: ` + near.map(a => `<span class="live-ap-chip" title="${esc(a.name)}">${esc(a.iata)} · ${Math.round(a.distNm)}nm</span>`).join(' ')
     : '';
   if (!out.matches.length) {
+    // A near-empty scan in some regions (notably China) means the free ADS-B networks just
+    // can't see the traffic, not that the skies are quiet — say so rather than imply "all clear".
+    const thin = out.total < COVERAGE_MIN
+      ? ' Free ADS-B coverage is sparse here, so commercial trackers may show planes we can’t.'
+      : ' Most traffic is everyday liveries; check back later.';
     liveSet(`No rare planes airborne within ${Math.round(radius)} nm right now — ` +
-      `scanned ${out.total} aircraft via ${esc(out.source || 'live feed')}. Most traffic is everyday liveries; check back later. ${apLine ? '<br>' + apLine : ''}`);
+      `scanned ${out.total} aircraft via ${esc(out.source || 'live feed')}.${thin} ${apLine ? '<br>' + apLine : ''}`);
     return;
   }
   liveSet(`<strong>${out.matches.length}</strong> rare plane${out.matches.length === 1 ? '' : 's'} airborne near ${esc(label)} ` +
