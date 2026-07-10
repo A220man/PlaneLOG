@@ -181,7 +181,8 @@
     <div class="form-grid">
       <div class="form-row">
         <label>Tail number</label>
-        <input type="text" placeholder="N12345 / G-ABCD" id="sub-tail">
+        <input type="text" placeholder="N12345 / G-ABCD" id="sub-tail" onchange="autofillFromTail()" oninput="autofillFromTail()">
+        <div class="autofill-hint" id="sub-autofill" style="display:none"></div>
       </div>
       <div class="form-row">
         <label>Livery name</label>
