@@ -137,7 +137,11 @@ const LIVERIES = [
   {id:249,airline:'Qatar Airways',tail:'A7-ALA',icao24:'06A0F5',type:'Airbus A350-900',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','widebody','oryx'],notes:'A7-ALA was the world\'s first Airbus A350 in service, delivered to Qatar Airways in 2014.',sightings:[]},
   {id:250,airline:'Qatar Airways',tail:'A7-APA',icao24:'06A142',type:'Airbus A380',era:'2010s',livery:'Oryx (current)',colors:['#5C0632','#FFFFFF','#A9A9A9'],tags:['current','superjumbo','widebody'],notes:'A7-APA was Qatar Airways\' first Airbus A380.',sightings:[]},
   {id:251,airline:'Turkish Airlines',tail:'TC-LLA',icao24:'4BB181',type:'Boeing 787-9',era:'2010s',livery:'Current',colors:['#C70A0C','#FFFFFF','#1A1A1A'],tags:['current','dreamliner','widebody'],notes:'A Turkish Airlines Boeing 787-9 Dreamliner.',sightings:[]},
-  {id:252,airline:'Japan Airlines',tail:'JA01XJ',icao24:'8406E8',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru (current)',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'JA01XJ was Japan Airlines\' first Airbus A350-900, with the red Tsurumaru crane.',sightings:[]},
+  {id:252,airline:'Japan Airlines',tail:'JA01XJ',icao24:'8406E8',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru + red "A350" logo',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'JA01XJ was Japan Airlines\' first Airbus A350-900. It wears the standard Tsurumaru livery with the large "A350" logo on the forward fuselage — JAL\'s first three A350s carry it in a different colour each: red for "challenge" (this frame), silver for innovation and green for the environment.',sightings:[]},
+  {id:542,airline:'Japan Airlines',tail:'JA02XJ',icao24:'840A7C',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru + silver "A350" logo',colors:['#C8102E','#FFFFFF','#B0B0B0'],tags:['current','widebody','crane'],notes:'JAL\'s second Airbus A350-900 in the standard Tsurumaru livery, carrying the forward-fuselage "A350" logo in silver — symbolising innovation, the second of the three launch-frame colours.',sightings:[]},
+  {id:543,airline:'Japan Airlines',tail:'JA03XJ',icao24:'840E10',type:'Airbus A350-900',era:'2010s',livery:'Tsurumaru + green "A350" logo',colors:['#C8102E','#FFFFFF','#009E60'],tags:['current','widebody','crane'],notes:'JAL\'s third Airbus A350-900 in the standard Tsurumaru livery, wearing the "A350" logo in green — symbolising environmental protection, completing the red/silver/green launch trio.',sightings:[]},
+  {id:544,airline:'Cargolux',tail:'LX-NCL',icao24:'4D0131',type:'Boeing 747-400ERF',era:'2020s',livery:'1970s retro (50th anniversary)',colors:['#00693C','#FFFFFF','#0067A5'],tags:['retro','jumbo','widebody','rare','heritage'],notes:'Cargolux 747-400ERF LX-NCL was repainted in 2020 into a retro scheme inspired by the livery the airline\'s first aircraft wore in the 1970s, marking Cargolux\'s 50th anniversary. A rare heritage catch among the fleet\'s standard blue freighters.',sightings:[]},
+  {id:545,airline:'Lufthansa',tail:'D-ABPU',icao24:'3C4A15',type:'Boeing 787-9',era:'2020s',livery:'100 Years (Super Crane)',colors:['#05164D','#FFFFFF','#FFAD00'],tags:['special','rare','widebody','dreamliner'],notes:'D-ABPU "Berlin" was the first aircraft in Lufthansa\'s centennial fleet, wearing the "Super Crane" livery for the airline\'s 100th anniversary (1926–2026): a blue fuselage with an oversized white crane, "100" on the left side and "1926 / 2026" on the right. It entered service in January 2026.',sightings:[]},
   {id:253,airline:'Virgin Atlantic',tail:'G-VLUX',icao24:'4075B3',type:'Airbus A350-1000',era:'2010s',livery:'Current',colors:['#E10A0A','#FFFFFF','#4B0082'],tags:['current','widebody'],notes:'A Virgin Atlantic Airbus A350-1000, the modern flagship of the Virgin fleet.',sightings:[]},
   {id:254,airline:'JetBlue',tail:'N2002J',icao24:'A194AA',type:'Airbus A321neo',era:'2010s',livery:'Current',colors:['#003876','#FFFFFF','#6CACE4'],tags:['current','narrowbody'],notes:'A JetBlue Airbus A321neo, used on transcon and transatlantic routes.',sightings:[]},
   {id:255,airline:'Air Canada',tail:'C-FIVR',icao24:'C01754',type:'Boeing 777-300ER',era:'2000s',livery:'Maple Leaf (2004)',colors:['#D8222A','#FFFFFF','#00857D'],tags:['retro','widebody'],notes:'An Air Canada Boeing 777-300ER, C-FIVR, still in the pre-2017 "Maple Leaf" livery — white with the red maple-leaf tail — rather than the current black-and-red scheme.',sightings:[]},
@@ -1224,7 +1228,7 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      (Lạc Bird) 30th-anniversary special livery.
 // v18: split Air India entries by actual livery — VT-EXF/VT-JRA wear the new 2023 Tata "Vista"
 //      livery; VT-ANP/VT-ALM/VT-ALP still wear the previous "Konark sun" livery.
-const SEED_VERSION = 28;
+const SEED_VERSION = 30;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
 if (!Array.isArray(db)) {
   db = LIVERIES.slice();
@@ -1630,6 +1634,10 @@ function hexOrDefault(c, fallback) {
 
 // Photo currently staged in the submit/edit form (data URL).
 let formPhoto = '';
+// Colours the last uploaded photo was reduced to, and whether the swatches are currently
+// held by an authoritative catalog (tail) match — which the photo shouldn't silently clobber.
+let _detectedPalette = [];
+let colorsLocked = false;
 
 // Read an image file, downscale it (to keep localStorage small), return a JPEG data URL.
 function readImageFile(file, cb) {
@@ -1653,7 +1661,121 @@ function readImageFile(file, cb) {
 function onPhotoPick(e) {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
-  readImageFile(file, dataUrl => { formPhoto = dataUrl; showPhotoPreview(); });
+  readImageFile(file, dataUrl => {
+    formPhoto = dataUrl;
+    showPhotoPreview();
+    // The photo is the other way to fill fields: read its dominant colours and offer them.
+    extractPalette(dataUrl, showDetectedPalette);
+  });
+}
+
+// ── Auto-detect livery colours from an uploaded photo ──
+// Reduce the image to its dominant colours so the swatch palette can fill itself in from a
+// picture. Sampling is weighted toward the vertical centre of the frame (where the fuselage
+// and tail usually sit) so a big patch of sky or tarmac doesn't win the histogram.
+function extractPalette(dataUrl, cb) {
+  const img = new Image();
+  img.onload = () => {
+    const w = 96, h = Math.max(1, Math.round(w * img.height / img.width));
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    let data;
+    try { data = ctx.getImageData(0, 0, w, h).data; }
+    catch (err) { cb([]); return; } // tainted/unreadable canvas
+    const buckets = new Map();
+    for (let y = 0; y < h; y++) {
+      const dy = (y - h / 2) / (h / 2);
+      const wy = Math.exp(-2.2 * dy * dy); // gaussian, peaks at the middle row
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        if (data[i + 3] < 128) continue;
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        const key = (r >> 3) + '|' + (g >> 3) + '|' + (b >> 3); // 32 levels/channel
+        const rec = buckets.get(key);
+        if (rec) { rec.w += wy; rec.r += r * wy; rec.g += g * wy; rec.b += b * wy; }
+        else buckets.set(key, { w: wy, r: r * wy, g: g * wy, b: b * wy });
+      }
+    }
+    const cols = [...buckets.values()]
+      .map(o => ({ w: o.w, r: Math.round(o.r / o.w), g: Math.round(o.g / o.w), b: Math.round(o.b / o.w) }))
+      .sort((a, b) => b.w - a.w);
+    // Greedily keep colours that are visually distinct from the ones already chosen.
+    const picked = [];
+    for (const col of cols) {
+      if (picked.every(p => colorDist(p, col) > 48)) picked.push(col);
+      if (picked.length === 3) break;
+    }
+    cb(picked.map(p => rgbToHex(p.r, p.g, p.b)));
+  };
+  img.onerror = () => cb([]);
+  img.src = dataUrl;
+}
+
+function colorDist(a, b) {
+  const dr = a.r - b.r, dg = a.g - b.g, db = a.b - b.b;
+  return Math.sqrt(dr * dr + dg * dg + db * db);
+}
+function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
+}
+
+// Show the detected palette under the photo picker. If the swatches are still untouched
+// (default, no catalog match holding them), paint the colours straight in; otherwise offer
+// a "Use these" button so an exact tail match or the user's own picks aren't overwritten.
+function showDetectedPalette(cols) {
+  _detectedPalette = (cols || []).slice(0, 3);
+  const box = ensurePaletteBox();
+  if (!box) return;
+  if (!_detectedPalette.length) { box.style.display = 'none'; return; }
+  const autoApplied = !colorsLocked && swatchesAreDefault();
+  if (autoApplied) applyDetectedPalette();
+  const chips = _detectedPalette.map(c => `<span class="pp-chip" style="background:${c}" title="${c}"></span>`).join('');
+  box.innerHTML = `<span class="pp-label">${autoApplied ? '✓ Colours pulled from your photo' : 'Detected in photo'}</span>`
+    + `<span class="pp-chips">${chips}</span>`
+    + (autoApplied ? '' : `<button type="button" class="pp-apply" onclick="applyDetectedPalette()">Use these</button>`);
+  box.style.display = 'flex';
+}
+
+function ensurePaletteBox() {
+  let box = document.getElementById('sub-photo-palette');
+  if (box) return box;
+  const hint = document.querySelector('.submit-overlay .photo-hint') || document.querySelector('.photo-hint');
+  if (!hint || !hint.parentNode) return null;
+  box = document.createElement('div');
+  box.id = 'sub-photo-palette';
+  box.className = 'photo-palette';
+  box.style.display = 'none';
+  hint.parentNode.insertBefore(box, hint.nextSibling);
+  return box;
+}
+
+function swatchesAreDefault() {
+  return ['sub-c1', 'sub-c2', 'sub-c3'].every((id, i) => {
+    const el = document.getElementById(id);
+    return el && el.value.toUpperCase() === DEFAULT_COLORS[i].toUpperCase();
+  });
+}
+
+function applyDetectedPalette() {
+  ['sub-c1', 'sub-c2', 'sub-c3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && _detectedPalette[i]) el.value = _detectedPalette[i];
+  });
+  const box = document.getElementById('sub-photo-palette');
+  if (box) {
+    const lbl = box.querySelector('.pp-label');
+    if (lbl) lbl.textContent = '✓ Colours pulled from your photo';
+    const btn = box.querySelector('.pp-apply');
+    if (btn) btn.remove();
+  }
+}
+
+function hideDetectedPalette() {
+  _detectedPalette = [];
+  const box = document.getElementById('sub-photo-palette');
+  if (box) { box.innerHTML = ''; box.style.display = 'none'; }
 }
 
 function showPhotoPreview() {
@@ -1670,6 +1792,7 @@ function clearPhoto() {
   formPhoto = '';
   document.getElementById('sub-photo').value = '';
   showPhotoPreview();
+  hideDetectedPalette();
 }
 
 function setForm(l) {
@@ -1689,6 +1812,9 @@ function setForm(l) {
   showPhotoPreview();
   const hint = document.getElementById('sub-autofill');
   if (hint) hint.style.display = 'none';
+  // Fresh form: nothing detected yet, and an edit's existing colours count as "chosen".
+  hideDetectedPalette();
+  colorsLocked = editingId != null;
 }
 
 // When you log a plane, look up its tail number in the catalog and pull the real livery's
@@ -1702,8 +1828,13 @@ function autofillFromTail() {
   const raw = tailEl.value.trim();
   const match = raw ? liveryForLive({ reg: raw }) : null;
   // Ignore a self-match while editing (an entry shouldn't recolor itself from itself).
-  if (!match || match.id === editingId) { if (hint) hint.style.display = 'none'; return; }
+  if (!match || match.id === editingId) {
+    if (hint) hint.style.display = 'none';
+    colorsLocked = editingId != null; // no catalog match holding the swatches now
+    return;
+  }
 
+  colorsLocked = true; // an exact frame match outranks photo-detected colours
   const colors = match.colors || DEFAULT_COLORS;
   document.getElementById('sub-c1').value = hexOrDefault(colors[0], DEFAULT_COLORS[0]);
   document.getElementById('sub-c2').value = hexOrDefault(colors[1], DEFAULT_COLORS[1]);
@@ -2067,12 +2198,26 @@ function rareTypeFor(ac) {
   return code && RARE_TYPES[code] ? { code, ...RARE_TYPES[code] } : null;
 }
 
-// Rarity is relative to the airport. The superjumbos below are a genuine catch over a
-// regional field, but daily scheduled service at a big international gateway — so they
-// don't count as a rare *type* when the scan is centred near one of these hubs. (A special
-// livery on one still qualifies via liveryRareReason, independent of location.)
-const HUB_COMMON_TYPES = new Set(['A388', 'B748']); // A380, 747-8
-// Curated set of major international hubs where A380 / 747-8 are routine (passenger gateways
+// Cathay retired its passenger 747s in 2016, so every Cathay 747 flying today is a Cathay Cargo
+// 747-8F — and those are among the most common heavy freighters through LAX. Don't flag one as a
+// rare airframe (even spotted well out on approach, past the hub radius). Matched by the Cathay
+// callsign (CPA) or the 747-8F registration block (B-LJx), so it holds regardless of location.
+function isCommonCargo(ac) {
+  if (!/^B74/.test(String(ac.type || '').toUpperCase())) return false;
+  const cs = String(ac.flight || '').toUpperCase();
+  const reg = String(ac.reg || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  return cs.startsWith('CPA') || reg.startsWith('BLJ');
+}
+
+// Rarity is relative to the airport. Big commercial airframes — every 747 jumbo and the A380
+// superjumbo — are a genuine catch over a regional field, but everyday sights at a major
+// international/cargo gateway, so they don't count as a rare *type* when the scan is centred
+// near one of these hubs. Ordinary widebodies (777/787/A350/A330) and ordinary freighters
+// (777F/747-400F/MD-11F) are never flagged by type anywhere, so at a hub the only airframes
+// that still surface are the exotic outsized cargo (Antonov/Beluga/Dreamlifter) and military.
+// A special livery on any of them still qualifies via liveryRareReason, independent of location.
+const HUB_COMMON_TYPES = new Set(['A388', 'B748', 'B741', 'B742', 'B743']); // A380 + every 747 jumbo
+// Curated set of major international hubs where jumbos are routine (passenger gateways
 // plus the big 747 freighter hubs). Not exhaustive — erring toward known superjumbo airports
 // so we don't cry "rare!" at LAX while still flagging one seen well away from a hub.
 const WIDEBODY_HUBS = new Set([
@@ -2248,6 +2393,7 @@ async function scanRareNear(lat, lon, radiusNm) {
       rareType = rareTypeFor(a);
       if (!rareType) continue; // common livery and ordinary type → not rare, skip
       if (atHub && HUB_COMMON_TYPES.has(rareType.code)) continue; // superjumbo = everyday sight at this hub
+      if (isCommonCargo(a)) continue; // Cathay Cargo 747-8F — routine LAX freighter, not a rare catch
     }
 
     const near = nearestAirport(a.lat, a.lon);

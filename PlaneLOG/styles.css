@@ -781,6 +781,36 @@ main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; 
   font-family: var(--mono);
 }
 
+.photo-palette {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--text3);
+}
+.photo-palette .pp-label { color: var(--accent); }
+.photo-palette .pp-chips { display: inline-flex; gap: 5px; }
+.photo-palette .pp-chip {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+}
+.photo-palette .pp-apply {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.12s;
+}
+.photo-palette .pp-apply:hover { border-color: var(--accent); color: var(--accent); }
+
 .color-inputs { display: flex; gap: 10px; }
 .color-inputs input[type="color"] {
   width: 52px;
