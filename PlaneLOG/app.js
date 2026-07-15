@@ -1230,16 +1230,20 @@ let db = JSON.parse(localStorage.getItem('planelog_db') || 'null');
 //      livery; VT-ANP/VT-ALM/VT-ALP still wear the previous "Konark sun" livery.
 const SEED_VERSION = 30;
 const storedSeedVersion = +(localStorage.getItem('planelog_seed_version') || 0);
+// Seed liveries the user has deleted — kept as tombstones so reconciliation doesn't re-add them.
+const LIVERY_SEED_IDS = new Set(LIVERIES.map(l => l.id));
+let deletedIds = new Set(JSON.parse(localStorage.getItem('planelog_deleted') || '[]'));
+const seedAlive = () => LIVERIES.filter(l => !deletedIds.has(l.id));
 if (!Array.isArray(db)) {
-  db = LIVERIES.slice();
+  db = seedAlive();
 } else if (storedSeedVersion < SEED_VERSION) {
   // Refresh the curated seed entries to the latest data, keeping any liveries you've added.
   const seedIds = new Set(LIVERIES.map(l => l.id));
-  db = LIVERIES.concat(db.filter(l => !seedIds.has(l.id)));
+  db = seedAlive().concat(db.filter(l => !seedIds.has(l.id)));
 } else {
   // Merge in any new seed liveries (e.g. military) added since the data was last saved.
   const have = new Set(db.map(l => l.id));
-  for (const l of LIVERIES) if (!have.has(l.id)) db.push(l);
+  for (const l of LIVERIES) if (!have.has(l.id) && !deletedIds.has(l.id)) db.push(l);
 }
 localStorage.setItem('planelog_db', JSON.stringify(db));
 localStorage.setItem('planelog_seed_version', String(SEED_VERSION));
@@ -1305,12 +1309,23 @@ let viewMode = 'grid';
 let selectedId = null;
 let editingId = null;
 
+// Persist db + sightings. Returns true on success. On failure (quota exceeded — usually a
+// too-large uploaded photo) it rolls the in-memory state back to the last persisted copy, so
+// the UI never shows a change that wasn't actually saved. Callers should check the return
+// value before re-rendering / closing their form.
 function save() {
+  _liveIndex = null; // db may have changed — force the live-scanner reg/hex index to rebuild
   try {
     localStorage.setItem('planelog_db', JSON.stringify(db));
     localStorage.setItem('planelog_sightings', JSON.stringify(sightings));
+    return true;
   } catch (e) {
-    alert('Could not save — local storage is full. Your uploaded photo may be too large; try a smaller image.');
+    const savedDb = JSON.parse(localStorage.getItem('planelog_db') || 'null');
+    if (Array.isArray(savedDb)) db = savedDb;
+    sightings = JSON.parse(localStorage.getItem('planelog_sightings') || '{}');
+    _liveIndex = null;
+    alert('Could not save — local storage is full (your uploaded photo may be too large; try a smaller image). Your last change was not kept.');
+    return false;
   }
 }
 
@@ -1479,16 +1494,16 @@ function renderGrid(results, emptyHTML) {
 function cardHTML(l) {
   const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1] || l.colors[0]} 40% 70%, ${l.colors[2] || l.colors[1] || l.colors[0]} 70%)`;
   const isSelected = l.id === selectedId;
-  const regAttr = l.photo ? '' : ` data-reg="${esc(l.tail)}"`;
+  const regAttr = (l.photo || !l.tail) ? '' : ` data-reg="${esc(l.tail)}"`;
   const on = inCollection(l.id);
   const star = `<button class="collect-star${on?' on':''}" onclick="toggleCollect(${l.id}, event)" aria-pressed="${on}" title="${on?'In your collection':'Add to collection'}">${on?'★':'☆'}</button>`;
   return `
-    <div class="livery-card${isSelected?' selected':''}" role="button" tabindex="0" aria-label="${esc(l.airline)} — ${esc(l.livery)}, ${esc(l.tail)}" onclick="openDetail(${l.id})">
+    <div class="livery-card${isSelected?' selected':''}" role="button" tabindex="0" aria-label="${esc(l.airline)} — ${esc(l.livery)}${l.tail ? ', ' + esc(l.tail) : ''}" onclick="openDetail(${l.id})">
       <div class="card-swatch"${regAttr} style="${bg}">
         <div class="swatch-plane">${planeSVG()}</div>
         ${photoImgHTML(l)}
         ${star}
-        <span class="swatch-tail">${esc(l.tail)}</span>
+        ${window.HIDE_CARD_REG ? '' : `<span class="swatch-tail">${esc(l.tail)}</span>`}
         <span class="swatch-era">${esc(l.era)}</span>
       </div>
       <div class="card-body">
@@ -1517,7 +1532,7 @@ function openDetail(id) {
   const bg = `background: linear-gradient(135deg, ${l.colors[0]} 40%, ${l.colors[1]||l.colors[0]} 40% 70%, ${l.colors[2]||l.colors[1]||l.colors[0]} 70%)`;
 
   document.getElementById('detailBox').innerHTML = `
-    <div class="detail-swatch-full card-swatch"${l.photo ? '' : ` data-reg="${esc(l.tail)}"`} style="${bg}">
+    <div class="detail-swatch-full card-swatch"${(l.photo || !l.tail) ? '' : ` data-reg="${esc(l.tail)}"`} style="${bg}">
       <div class="swatch-plane">${planeSVG()}</div>
       ${photoImgHTML(l)}
       <button class="detail-close" onclick="closeDetail(null,true)">×</button>
@@ -1525,7 +1540,7 @@ function openDetail(id) {
     <div class="detail-content">
       <div class="detail-title">${esc(l.livery)}</div>
       <div class="detail-sub">${esc(l.airline)} · ${esc(l.type)}</div>
-      <div class="detail-tail">${esc(l.tail)}</div>
+      ${window.HIDE_CARD_REG ? '' : `<div class="detail-tail">${esc(l.tail)}</div>`}
       <div class="detail-actions">
         <button class="detail-action-btn collect-btn${inCollection(l.id)?' on':''}" onclick="toggleCollect(${l.id})">${inCollection(l.id)?'★ In collection':'☆ Add to collection'}</button>
         <button class="detail-action-btn" onclick="editLivery(${l.id})">Edit</button>
@@ -1601,7 +1616,7 @@ function addSighting(id) {
   if (!loc) return;
   if (!sightings[id]) sightings[id] = [];
   sightings[id].unshift({ loc, date: date || '—' });
-  save();
+  if (!save()) { document.getElementById('log-entries-'+id).innerHTML = renderSightings(id); return; } // rolled back
   document.getElementById('log-entries-'+id).innerHTML = renderSightings(id);
   document.getElementById('log-loc-'+id).value = '';
   document.getElementById('log-date-'+id).value = '';
@@ -1795,14 +1810,20 @@ function clearPhoto() {
   hideDetectedPalette();
 }
 
+// Some fields are absent on the "Your Liveries" form (it collects only plane, livery,
+// airline, colours and photo), so every field write/read is guarded — a missing input
+// is simply skipped rather than throwing.
+function subEl(id) { return document.getElementById(id); }
+function setSub(id, val) { const el = subEl(id); if (el) el.value = val; }
+
 function setForm(l) {
-  document.getElementById('sub-tail').value = l.tail || '';
-  document.getElementById('sub-livery').value = l.livery || '';
-  document.getElementById('sub-airline').value = l.airline || '';
-  document.getElementById('sub-type').value = (l.type && l.type !== 'Unknown') ? l.type : '';
-  document.getElementById('sub-era').value = ERAS.includes(l.era) ? l.era : '';
-  document.getElementById('sub-notes').value = l.notes || '';
-  document.getElementById('sub-tags').value = (l.tags || []).join(', ');
+  setSub('sub-tail', l.tail || '');
+  setSub('sub-livery', l.livery || '');
+  setSub('sub-airline', l.airline || '');
+  setSub('sub-type', (l.type && l.type !== 'Unknown') ? l.type : '');
+  setSub('sub-era', ERAS.includes(l.era) ? l.era : '');
+  setSub('sub-notes', l.notes || '');
+  setSub('sub-tags', (l.tags || []).join(', '));
   const colors = l.colors || DEFAULT_COLORS;
   document.getElementById('sub-c1').value = hexOrDefault(colors[0], DEFAULT_COLORS[0]);
   document.getElementById('sub-c2').value = hexOrDefault(colors[1], DEFAULT_COLORS[1]);
@@ -1895,32 +1916,42 @@ function nextLiveryId() {
 }
 
 function submitLivery() {
-  const tail = document.getElementById('sub-tail').value.trim();
-  const livery = document.getElementById('sub-livery').value.trim();
-  const airline = document.getElementById('sub-airline').value.trim();
-  const type = document.getElementById('sub-type').value.trim();
-  const era = document.getElementById('sub-era').value;
-  const notes = document.getElementById('sub-notes').value.trim();
-  const tags = document.getElementById('sub-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+  const getSub = (id) => { const el = subEl(id); return el ? el.value.trim() : ''; };
+  const tail = getSub('sub-tail');
+  const livery = getSub('sub-livery');
+  const airline = getSub('sub-airline');
+  const type = getSub('sub-type');
+  const eraEl = subEl('sub-era');
+  const era = eraEl ? eraEl.value : '';
+  const notes = getSub('sub-notes');
+  const tagsEl = subEl('sub-tags');
+  const tags = tagsEl ? tagsEl.value.split(',').map(t => t.trim()).filter(Boolean) : [];
   const colors = [
     document.getElementById('sub-c1').value,
     document.getElementById('sub-c2').value,
     document.getElementById('sub-c3').value
   ];
-  if (!tail || !livery || !airline) { alert('Please fill in at least tail number, livery name, and airline.'); return; }
+  // The reg field is absent on the "Your Liveries" form; there we require the plane (type)
+  // instead of the tail, since that page collects plane + livery + airline.
+  const needTail = subEl('sub-tail') != null;
+  if (needTail) {
+    if (!tail || !livery || !airline) { alert('Please fill in at least tail number, livery name, and airline.'); return; }
+  } else {
+    if (!type || !livery || !airline) { alert('Please fill in at least the aircraft, livery name, and airline.'); return; }
+  }
 
   if (editingId) {
     const l = db.find(x => x.id === editingId);
     if (l) {
       const oldTail = l.tail;
       Object.assign(l, { airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto });
-      if (oldTail !== l.tail) delete photoCache[l.tail]; // re-fetch photo for the new registration
+      if (oldTail !== l.tail) { delete photoCache[oldTail]; delete photoCache[l.tail]; } // drop stale photo, re-fetch for the new reg
     }
   } else {
     db.push({ id: nextLiveryId(), airline, tail: tail.toUpperCase(), type: type || 'Unknown', era: era || 'Unknown', livery, colors, tags, notes, photo: formPhoto, sightings: [], submitted: true });
   }
 
-  save();
+  if (!save()) return; // storage full — state rolled back; keep the form open so nothing is lost
   buildSidebar();
   applyFilters();
   closeSubmit();
@@ -1929,10 +1960,12 @@ function submitLivery() {
 function deleteLivery(id) {
   const l = db.find(x => x.id === id);
   if (!l) return;
-  if (!confirm(`Delete "${l.livery}" — ${l.airline} ${l.tail}?\nThis also removes its sightings and cannot be undone.`)) return;
+  if (!confirm(`Delete "${l.livery}" — ${l.airline}${l.tail ? ' ' + l.tail : ''}?\nThis also removes its sightings and cannot be undone.`)) return;
   db = db.filter(x => x.id !== id);
   delete sightings[id];
-  save();
+  if (!save()) return; // rolled back; don't tombstone something still in the persisted db
+  // Tombstone curated (seed) ids so reconciliation on the next load doesn't resurrect them.
+  if (LIVERY_SEED_IDS.has(id)) { deletedIds.add(id); localStorage.setItem('planelog_deleted', JSON.stringify([...deletedIds])); }
   buildSidebar();
   closeDetail(null, true);
 }
@@ -2673,6 +2706,7 @@ function liveDetailHTML(l) {
 async function trackLive(id) {
   const l = db.find(x => x.id === id);
   if (!l) return;
+  const name = l.tail || l.airline || 'This aircraft'; // user submissions may have no registration
   const statusEl = document.getElementById(`live-status-${id}`);
   const mapEl = document.getElementById(`live-map-${id}`);
   const btn = document.getElementById(`live-track-${id}`);
@@ -2684,7 +2718,7 @@ async function trackLive(id) {
   // Pins for every place you've logged this aircraft.
   const pins = [];
   for (const s of (sightings[id] || [])) {
-    const ap = airportByText(s.location || '');
+    const ap = airportByText(s.loc || '');
     if (ap) pins.push({ lat: ap.lat, lon: ap.lon, kind: 'sighting',
       label: `Logged: ${esc(ap.iata)} ${esc(ap.name)}${s.date ? ' · ' + esc(s.date) : ''}` });
   }
@@ -2700,26 +2734,29 @@ async function trackLive(id) {
     const st = aircraftStatus(ac, ctr ? ctr.lat : null, ctr ? ctr.lon : null, near);
     const apTxt = near && near.distNm < 80 ? ` · ${Math.round(near.distNm)}nm from ${esc(near.iata)}` : '';
     statusEl.innerHTML = `<span class="live-pill ${st.cls} inline">${esc(st.label)}</span> ` +
-      `${esc(l.tail)} ${ac.flight ? 'as ' + esc(ac.flight) + ' ' : ''}at ${liveAltText(ac)}` +
+      `${esc(name)} ${ac.flight ? 'as ' + esc(ac.flight) + ' ' : ''}at ${liveAltText(ac)}` +
       `${ac.gs ? ', ' + ac.gs + ' kt' : ''}${ac.track != null ? ', heading ' + compass(ac.track) : ''}${apTxt}` +
       ` · <a href="https://globe.airplanes.live/?icao=${esc(ac.hex)}" target="_blank" rel="noopener">full tracker ↗</a>`;
     mapEl.style.display = 'block';
     try {
       await buildLiveMap(mapEl, {
         plane: { lat: ac.lat, lon: ac.lon, track: ac.track,
-          label: `${esc(l.tail)} — ${esc(l.airline)}<br>${liveAltText(ac)}` },
+          label: `${esc(name)} — ${esc(l.airline)}<br>${liveAltText(ac)}` },
         pins,
       });
     } catch (e) { statusEl.innerHTML += '<br><span class="live-warn">Map failed to load.</span>'; }
   } else {
     // Not broadcasting — still show where it's been logged.
     if (pins.length) {
-      statusEl.innerHTML = `${esc(l.tail)} isn’t broadcasting a position right now. Showing the ${pins.length} place${pins.length>1?'s':''} you've logged it.`;
+      statusEl.innerHTML = `${esc(name)} isn’t broadcasting a position right now. Showing the ${pins.length} place${pins.length>1?'s':''} you've logged it.`;
       mapEl.style.display = 'block';
       try { await buildLiveMap(mapEl, { pins }); } catch (e) {}
     } else {
-      statusEl.innerHTML = `${esc(l.tail)} isn’t broadcasting a position right now, and you haven’t logged a location yet. ` +
-        `<a href="https://globe.airplanes.live/?reg=${encodeURIComponent(l.tail)}" target="_blank" rel="noopener">Open tracker ↗</a>`;
+      // Only offer a tracker link when we have an identifier to look the aircraft up by.
+      const trackHref = l.tail ? `https://globe.airplanes.live/?reg=${encodeURIComponent(l.tail)}`
+                       : l.icao24 ? `https://globe.airplanes.live/?icao=${encodeURIComponent(l.icao24)}` : '';
+      statusEl.innerHTML = `${esc(name)} isn’t broadcasting a position right now, and you haven’t logged a location yet.` +
+        (trackHref ? ` <a href="${trackHref}" target="_blank" rel="noopener">Open tracker ↗</a>` : '');
       if (btn) { btn.style.display = ''; btn.textContent = '↻ Try again'; }
     }
   }

@@ -115,9 +115,8 @@
     <p id="submitDesc">Add a livery to your archive — saved locally in your browser.</p>
     <div class="form-grid">
       <div class="form-row">
-        <label>Tail number</label>
-        <input type="text" placeholder="N12345 / G-ABCD" id="sub-tail" onchange="autofillFromTail()" oninput="autofillFromTail()">
-        <div class="autofill-hint" id="sub-autofill" style="display:none"></div>
+        <label>Aircraft type</label>
+        <input type="text" placeholder="e.g. Boeing 737" id="sub-type">
       </div>
       <div class="form-row">
         <label>Livery name</label>
@@ -127,29 +126,6 @@
     <div class="form-row">
       <label>Airline</label>
       <input type="text" placeholder="e.g. United Airlines" id="sub-airline">
-    </div>
-    <div class="form-grid">
-      <div class="form-row">
-        <label>Aircraft type</label>
-        <input type="text" placeholder="e.g. Boeing 737" id="sub-type">
-      </div>
-      <div class="form-row">
-        <label>Era</label>
-        <select id="sub-era">
-          <option value="">Select era</option>
-          <option>1950s</option><option>1960s</option><option>1970s</option>
-          <option>1980s</option><option>1990s</option><option>2000s</option>
-          <option>2010s</option><option>2020s</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <label>Notes</label>
-      <textarea placeholder="History, details, interesting facts about this livery…" id="sub-notes"></textarea>
-    </div>
-    <div class="form-row">
-      <label>Tags (comma-separated)</label>
-      <input type="text" placeholder="retro, bare metal, heritage" id="sub-tags">
     </div>
     <div class="form-row">
       <label>Color palette</label>
@@ -169,7 +145,7 @@
         </label>
         <button type="button" id="sub-photo-clear" class="photo-clear" onclick="clearPhoto()" style="display:none">Remove</button>
       </div>
-      <div class="photo-hint">Upload your own shot of this aircraft. Leave blank to auto-load a photo by registration.</div>
+      <div class="photo-hint">Upload your own shot of this aircraft — colours fill in automatically from the photo.</div>
     </div>
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeSubmit()">Cancel</button>
@@ -181,6 +157,8 @@
 <script src="app.js"></script>
 <script>
 // ── YOUR LIVERIES PAGE (only the liveries you've submitted) ──
+// Hide the registration badge on cards/detail here — this surface is about plane + livery.
+window.HIDE_CARD_REG = true;
 const EMPTY_NO_SUBMISSIONS = `<div class="empty-state"><svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg><h3>No liveries yet</h3><p>Liveries you submit will show up here.</p><button class="nav-btn" style="margin-top:12px" onclick="openSubmit()">+ Submit your first livery</button></div>`;
 
 function buildSidebar() { renderSidebar(db.filter(isMine)); }
